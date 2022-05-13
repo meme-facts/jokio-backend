@@ -7,7 +7,7 @@ class User {
   id: string;
 
   @Column()
-  fullname: string;
+  full_name: string;
 
   @Column()
   nickname: string;
@@ -16,7 +16,7 @@ class User {
   email: string;
 
   @Column()
-  imgUrl: string;
+  img_url: string;
 
   @Column()
   password: string;

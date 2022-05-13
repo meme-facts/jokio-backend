@@ -1,7 +1,7 @@
 interface IUserDTO {
-fullname: string;
-nickname:string;
-email:string;
-password:string;
+  fullName: string;
+  nickname: string;
+  email: string;
+  password: string;
 }
-export { IUserDTO }
+export { IUserDTO };
