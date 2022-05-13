@@ -1,12 +1,3 @@
-import express from 'express'
+import { app } from "./app";
 
-
-const app = express();
-
-app.use(express.json());
-
-app.get('/', (request, response) =>  {
-    response.json({message:'opaaaa'})
-})
-
-app.listen(3333, () => console.log('Server running on port 3333'))
+app.listen(3333, () => console.log("Server running on port 3333"));
