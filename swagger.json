@@ -7,17 +7,18 @@
     },
     "components": {
         "securitySchemes": {
-          "JWT": {
-            "description": "",
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+          "jwt": {
+            "type": "http",
+            "scheme": "bearer",
+            "in": "header",
+            "bearerFormat": "JWT"
           }
         }
-      },
-      "security": {
-        "bearerAuth": []
-      },
+      }
+      ,
+      "security": [{
+        "jwt": []
+      }],
     "paths": {
         "/users": {
             "post": {

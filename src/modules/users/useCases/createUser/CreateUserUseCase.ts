@@ -1,5 +1,5 @@
 import { AppError } from "../../../../shared/errors/AppError";
-import { IUserDTO } from "../../../dtos/IUsersDTO";
+import { IUserDTO } from "../../dtos/IUsersDTO";
 import { User } from "../../infra/typeorm/entities/Users";
 import { IUserRepository } from "../../repositories/IUserRepository";
 import { hash } from "bcryptjs";
@@ -34,7 +34,7 @@ class CreateUserUseCase {
       email,
       password: hashedPassword,
     });
-    const token = sign({}, "74EBC35C58A5049F0F271EBF6F78CC8F", {
+    const token = sign({}, process.env.JWT_SECRET, {
       subject: user.id,
       expiresIn: "1d",
     });

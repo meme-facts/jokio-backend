@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import express from "express";
-import 'express-async-errors' // needs to be below express
+import "express-async-errors"; // needs to be below express
 import setupSwagger from "../../../../swagger.json";
 import swaggerUi from "swagger-ui-express";
 import { router } from "./routes";
@@ -24,4 +24,4 @@ app.use(router);
 
 app.use(errorHandler);
 
-export { app }
+export { app };

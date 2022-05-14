@@ -25,12 +25,12 @@ class AuthenticateUserUseCase {
     if (!user) {
       throw new AppError("Login or password incorrect.");
     }
-    const passwordHasMatch =  await compare(password, user.password);
+    const passwordHasMatch = await compare(password, user.password);
     if (!passwordHasMatch) {
-      throw new AppError('Login or password incorrect.');
+      throw new AppError("Login or password incorrect.");
     }
-  
-    const token = sign({}, "74EBC35C58A5049F0F271EBF6F78CC8F", {
+
+    const token = sign({}, process.env.JWT_SECRET, {
       subject: user.id,
       expiresIn: "1d",
     });
