@@ -1,4 +1,4 @@
-import { IUserDTO } from "../../dtos/IUsersDTO";
+import { IUserDTO } from "../dtos/IUsersDTO";
 import { User } from "../infra/typeorm/entities/Users";
 
 interface IUserRepository {
@@ -6,6 +6,7 @@ interface IUserRepository {
   getByEmail(email: string): Promise<User>;
   getByNickName(nickname: string): Promise<User>;
   getByNicknameOrEmail(login: string): Promise<User>;
+  getById(id: string): Promise<User>;
 }
 
 export { IUserRepository };

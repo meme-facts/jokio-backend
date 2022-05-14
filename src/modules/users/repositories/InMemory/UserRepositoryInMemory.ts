@@ -1,4 +1,4 @@
-import { IUserDTO } from "../../../dtos/IUsersDTO";
+import { IUserDTO } from "../../dtos/IUsersDTO";
 import { User } from "../../infra/typeorm/entities/Users";
 import { IUserRepository } from "../IUserRepository";
 
@@ -31,6 +31,9 @@ class UserRepositoryInMemory implements IUserRepository {
     return this.users.find(
       (user) => user.nickname === login || user.email === login
     );
+  }
+  async getById(id: string): Promise<User> {
+    return this.users.find((user) => user.id === id);
   }
 }
 

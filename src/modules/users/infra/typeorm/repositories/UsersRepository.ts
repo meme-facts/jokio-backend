@@ -1,5 +1,5 @@
-import { IUserDTO } from "modules/dtos/IUsersDTO";
-import { IUserRepository } from "modules/users/repositories/IUserRepository";
+import { IUserDTO } from "../../../dtos/IUsersDTO";
+import { IUserRepository } from "../../../repositories/IUserRepository";
 import { getRepository, Repository } from "typeorm";
 import { User } from "../entities/Users";
 
@@ -8,18 +8,18 @@ class UserRepository implements IUserRepository {
   constructor() {
     this.repository = getRepository(User);
   }
+
   async getByNicknameOrEmail(login: string): Promise<User> {
     const user = await this.repository
-    
-    .createQueryBuilder()
-    .where("email = :email OR nickname = :nickname", {
-      email: login,
-      nickname: login
-    })
-    .getOne()
-    return user
-  }
 
+      .createQueryBuilder()
+      .where("email = :email OR nickname = :nickname", {
+        email: login,
+        nickname: login,
+      })
+      .getOne();
+    return user;
+  }
 
   async create({
     fullName,
@@ -42,6 +42,10 @@ class UserRepository implements IUserRepository {
   }
   async getByNickName(nickname: string): Promise<User> {
     const user = await this.repository.findOne({ nickname });
+    return user;
+  }
+  async getById(id: string): Promise<User> {
+    const user = await this.repository.findOne(id);
     return user;
   }
 }
