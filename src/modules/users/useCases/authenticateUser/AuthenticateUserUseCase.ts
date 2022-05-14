@@ -1,7 +1,7 @@
-import { IUserRepository } from "modules/users/repositories/IUserRepository";
-import { inject } from "tsyringe";
-import { User } from "modules/users/infra/typeorm/entities/Users";
-import { AppError } from "shared/errors/AppError";
+import { IUserRepository } from "../../repositories/IUserRepository";
+import { inject, injectable } from "tsyringe";
+import { User } from "../../../users/infra/typeorm/entities/Users";
+import { AppError } from "../../../../shared/errors/AppError";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
@@ -10,6 +10,7 @@ interface ILoginDTO {
   password: string;
 }
 
+@injectable()
 class AuthenticateUserUseCase {
   constructor(
     @inject("UserRepository")
@@ -24,7 +25,11 @@ class AuthenticateUserUseCase {
     if (!user) {
       throw new AppError("Login or password incorrect.");
     }
-    const auth = await compare(password, user.password);
+    const passwordHasMatch =  await compare(password, user.password);
+    if (!passwordHasMatch) {
+      throw new AppError('Login or password incorrect.');
+    }
+  
     const token = sign({}, "74EBC35C58A5049F0F271EBF6F78CC8F", {
       subject: user.id,
       expiresIn: "1d",

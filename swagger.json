@@ -5,6 +5,19 @@
         "description": "This is an Api for RakagaK - Meme's social media",
         "version": "1.0.0"
     },
+    "components": {
+        "securitySchemes": {
+          "JWT": {
+            "description": "",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+          }
+        }
+      },
+      "security": {
+        "bearerAuth": []
+      },
     "paths": {
         "/users": {
             "post": {
@@ -57,7 +70,43 @@
                     
                 }
             }
+        },
+        "/users/login": {
+            "post": {
+                "tags":["User"],
+                "summary": "Authorization route",
+                "description":"This route is used to log in",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "login":{
+                                        "type":"string"
+                                    },
+                                    "password":{
+                                        "type":"string",
+                                        "format":"password"
+                                    }    
+                                }                    
+                                },
+                                "example":{
+                                    "login": "teste@silva.com",
+                                    "password": "yourpassword"
+                                }
+                            }
+                    }
+                },
+                "responses":{
+                    "200": {
+                        "description":"Ok"
+                    },
+                    "401":{
+                            "description":"Login or password incorrect."
+                        }
+                }
+            }
         }
-   
     }
 }

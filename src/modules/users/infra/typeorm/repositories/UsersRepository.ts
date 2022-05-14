@@ -8,9 +8,19 @@ class UserRepository implements IUserRepository {
   constructor() {
     this.repository = getRepository(User);
   }
-  getByNicknameOrEmail(login: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  async getByNicknameOrEmail(login: string): Promise<User> {
+    const user = await this.repository
+    
+    .createQueryBuilder()
+    .where("email = :email OR nickname = :nickname", {
+      email: login,
+      nickname: login
+    })
+    .getOne()
+    return user
   }
+
+
   async create({
     fullName,
     nickname,
