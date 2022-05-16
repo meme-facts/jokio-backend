@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "target": "es2016",
@@ -6,6 +5,14 @@
     "emitDecoratorMetadata": true,
     "module": "commonjs",
     "baseUrl": "./src",
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@config/*": ["config/*"],
+      "@shared/*": ["shared/*"],
+      "@errors/*": ["errors/*"],
+      "@utils/*": ["utils/*"],
+      "@middlewares/*": ["middlewares/*"]
+    },
     "resolveJsonModule": true,
     "outDir": "./dist",
     "esModuleInterop": true,
