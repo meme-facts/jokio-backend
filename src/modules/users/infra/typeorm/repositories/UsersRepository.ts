@@ -1,4 +1,4 @@
-import { IUserDTO } from "../../../dtos/IUsersDTO";
+import { IUserDTO } from "../../../dtos/ICreateUsersDTO";
 import { IUserRepository } from "../../../repositories/IUserRepository";
 import { getRepository, Repository } from "typeorm";
 import { User } from "../entities/Users";
@@ -22,13 +22,13 @@ class UserRepository implements IUserRepository {
   }
 
   async create({
-    fullName,
+    full_name,
     nickname,
     email,
     password,
   }: IUserDTO): Promise<User> {
     const user = this.repository.create({
-      full_name: fullName,
+      full_name,
       nickname,
       email,
       password,
@@ -47,6 +47,10 @@ class UserRepository implements IUserRepository {
   async getById(id: string): Promise<User> {
     const user = await this.repository.findOne(id);
     return user;
+  }
+  async update(user: User): Promise<User> {
+    const userUpdated = await this.repository.save(user);
+    return userUpdated;
   }
 }
 

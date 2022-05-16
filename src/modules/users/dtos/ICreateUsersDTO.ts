@@ -1,5 +1,6 @@
 interface IUserDTO {
-  fullName: string;
+  id?: string;
+  full_name: string;
   nickname: string;
   email: string;
   password: string;

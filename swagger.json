@@ -31,7 +31,7 @@
                             "schema":{
                                 "type":"object",
                                 "properties":{
-                                    "fullName":{
+                                    "full_name":{
                                         "type":"string"
                                     },
                                     "nickname":{
@@ -47,7 +47,7 @@
                                     }
                                 },
                                 "example":{
-                                    "fullName":"Teste da Silva",
+                                    "full_name":"Teste da Silva",
                                     "nickname":"testezin_silva",
                                     "email":"teste@silva.com",
                                     "password":"yourpassword"
@@ -106,6 +106,57 @@
                     "401":{
                             "description":"Login or password incorrect."
                         }
+                }
+            }
+        },
+        "/users/update": {
+            "put": {
+                "tags":["User"],
+                "summary": "Update User",
+                "description":"This route is used to update a user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "id":{
+                                        "type":"string"
+                                    },
+                                    "full_name":{
+                                        "type":"string"
+                                    },
+                                    "nickname":{
+                                        "type":"string"
+                                    }
+                                    },
+                                    "email":{
+                                        "type":"string"
+                                
+                                    },
+                                    "password":{
+                                        "type":"string"
+                                    }
+                                },
+                                "example":{
+                                    "id":"3123124124515",
+                                    "full_name":"Teste da Silva",
+                                    "nickname":"testezin_silva",
+                                    "email":"teste@silva.com",
+                                    "password":"yourpassword"
+                                }
+                            }
+                    }
+                },
+                "responses":{
+                    "201": {
+                        "description":"Created"
+                    },
+                    "404":
+                        {
+                            "description":"User not found."
+                        }
+                    
                 }
             }
         }

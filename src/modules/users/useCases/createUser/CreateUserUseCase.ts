@@ -1,5 +1,5 @@
 import { AppError } from "../../../../shared/errors/AppError";
-import { IUserDTO } from "../../dtos/IUsersDTO";
+import { IUserDTO } from "../../dtos/ICreateUsersDTO";
 import { User } from "../../infra/typeorm/entities/Users";
 import { IUserRepository } from "../../repositories/IUserRepository";
 import { hash } from "bcryptjs";
@@ -13,7 +13,7 @@ class CreateUserUseCase {
     private userRepository: IUserRepository
   ) {}
   async execute({
-    fullName,
+    full_name,
     nickname,
     email,
     password,
@@ -29,7 +29,7 @@ class CreateUserUseCase {
 
     const hashedPassword = await hash(password, 8);
     const user = await this.userRepository.create({
-      fullName,
+      full_name,
       nickname,
       email,
       password: hashedPassword,

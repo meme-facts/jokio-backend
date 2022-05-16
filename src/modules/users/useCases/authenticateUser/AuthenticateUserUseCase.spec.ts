@@ -14,7 +14,7 @@ describe("AuthenticateUserUseCase", () => {
     );
     createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
     await createUserUseCase.execute({
-      fullName: "Teste da Silva",
+      full_name: "Teste da Silva",
       nickname: "Silva",
       email: "silva@teste.com",
       password: "1234",
@@ -32,31 +32,29 @@ describe("AuthenticateUserUseCase", () => {
   it('should not be able to receive token when email do not exist, and need to return "login or password incorrect', async () => {
     await expect(async () => {
       await authenticateUserUseCase.execute({
-        login:'wrog_email',
-        password: 'opdiwaoidwa'
-      })
-    }).rejects.toThrowError('Login or password incorrect.')
+        login: "wrog_email",
+        password: "opdiwaoidwa",
+      });
+    }).rejects.toThrowError("Login or password incorrect.");
     await expect(async () => {
       await authenticateUserUseCase.execute({
-        login:'wrog_email',
-        password: 'opdiwaoidwa'
-      })
+        login: "wrog_email",
+        password: "opdiwaoidwa",
+      });
     }).rejects.toBeInstanceOf(AppError);
-  })
+  });
   it('should not be able to receive token when password is not correct, and need to return "login or password incorrect', async () => {
     await expect(async () => {
       await authenticateUserUseCase.execute({
-        login:'silva@teste.com',
-        password: 'opdiwaoidwa'
-      })
-    }).rejects.toThrowError('Login or password incorrect.')
-   await  expect(async () => {
+        login: "silva@teste.com",
+        password: "opdiwaoidwa",
+      });
+    }).rejects.toThrowError("Login or password incorrect.");
+    await expect(async () => {
       await authenticateUserUseCase.execute({
-        login:'silva@teste.com',
-        password: 'opdiwaoidwa'
-      })
+        login: "silva@teste.com",
+        password: "opdiwaoidwa",
+      });
     }).rejects.toBeInstanceOf(AppError);
-  })
-  
-
+  });
 });

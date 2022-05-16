@@ -15,9 +15,9 @@ class CreateUserController {
     response: Response
   ): Promise<Response<IUserResponse>> {
     const createUserUseCase = container.resolve(CreateUserUseCase);
-    const { fullName, nickname, email, password } = request.body;
+    const { full_name, nickname, email, password } = request.body;
     const { token, user } = await createUserUseCase.execute({
-      fullName,
+      full_name,
       nickname,
       email,
       password,
