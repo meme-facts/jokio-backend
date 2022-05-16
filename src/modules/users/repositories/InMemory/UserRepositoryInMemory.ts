@@ -32,6 +32,17 @@ class UserRepositoryInMemory implements IUserRepository {
       (user) => user.nickname === login || user.email === login
     );
   }
+  async getByNameOrNickName(user_reference: string): Promise<User[]> {
+    if (user_reference) {
+      const users = this.users.filter(
+        (user) =>
+          user.full_name.includes(user_reference) ||
+          user.nickname.includes(user_reference)
+      );
+      return users;
+    }
+    return this.users;
+  }
   async getById(id: string): Promise<User> {
     return this.users.find((user) => user.id === id);
   }

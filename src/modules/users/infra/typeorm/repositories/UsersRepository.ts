@@ -20,6 +20,9 @@ class UserRepository implements IUserRepository {
       .getOne();
     return user;
   }
+  async getByNameOrNickName(user_reference: string): Promise<User[]> {
+    throw new Error("Method not implemented.");
+  }
 
   async create({
     full_name,

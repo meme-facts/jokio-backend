@@ -8,6 +8,7 @@ interface IUserRepository {
   getByNicknameOrEmail(login: string): Promise<User>;
   getById(id: string): Promise<User>;
   update(user: User): Promise<User>;
+  getByNameOrNickName(user_reference?: string): Promise<User[]>;
 }
 
 export { IUserRepository };
