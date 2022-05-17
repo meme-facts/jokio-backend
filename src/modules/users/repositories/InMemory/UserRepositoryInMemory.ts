@@ -1,6 +1,8 @@
+import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
 import { IUserDTO } from "../../dtos/ICreateUsersDTO";
 import { User } from "../../infra/typeorm/entities/Users";
 import { IUserRepository } from "../IUserRepository";
+
 
 class UserRepositoryInMemory implements IUserRepository {
   users: User[] = [];
@@ -32,17 +34,27 @@ class UserRepositoryInMemory implements IUserRepository {
       (user) => user.nickname === login || user.email === login
     );
   }
-  async getByNameOrNickName(user_reference: string): Promise<User[]> {
+  async getByNameOrNickName({page,limit,user_reference}:IGetAllUsersDTO): Promise<{users:User[], count:number}> {
+    let response;
     if (user_reference) {
       const users = this.users.filter(
         (user) =>
           user.full_name.includes(user_reference) ||
           user.nickname.includes(user_reference)
       );
-      return users;
+      response =  users;
+    }else {
+      response = this.users
     }
-    return this.users;
+    const paginateValues = response.slice((page -1) * limit,page * limit)
+    const count = response.length
+    return {
+      users: paginateValues,
+      count
+    }
+
   }
+
   async getById(id: string): Promise<User> {
     return this.users.find((user) => user.id === id);
   }

@@ -2,6 +2,8 @@ import { IUserDTO } from "../../../dtos/ICreateUsersDTO";
 import { IUserRepository } from "../../../repositories/IUserRepository";
 import { getRepository, Repository } from "typeorm";
 import { User } from "../entities/Users";
+import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
+import { unwatchFile } from "fs";
 
 class UserRepository implements IUserRepository {
   repository: Repository<User>;
@@ -11,7 +13,6 @@ class UserRepository implements IUserRepository {
 
   async getByNicknameOrEmail(login: string): Promise<User> {
     const user = await this.repository
-
       .createQueryBuilder()
       .where("email = :email OR nickname = :nickname", {
         email: login,
@@ -20,8 +21,38 @@ class UserRepository implements IUserRepository {
       .getOne();
     return user;
   }
-  async getByNameOrNickName(user_reference: string): Promise<User[]> {
-    throw new Error("Method not implemented.");
+
+  async getByNameOrNickName({
+    page,
+    limit = 10,
+    user_reference,
+  }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }> {
+    const offset: number = (page - 1) * limit;
+    let users;
+  
+    if (user_reference === undefined) {
+      users = await this.repository
+        .createQueryBuilder()
+        .skip(offset)
+        .take(limit)
+        .getMany();
+    } else {
+      users = await this.repository
+        .createQueryBuilder()
+        .where("full_name ILIKE :full_name OR nickname ILIKE :nickname", {
+          full_name: `%${user_reference}%`,
+          nickname: `%${user_reference}%`,
+        })
+        .skip(offset)
+        .take(limit)
+        .getMany();
+    }
+
+    const count = users.length;
+    return {
+      users,
+      count,
+    };
   }
 
   async create({

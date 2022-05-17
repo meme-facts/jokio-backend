@@ -1,4 +1,5 @@
 import { IUserDTO } from "../dtos/ICreateUsersDTO";
+import { IGetAllUsersDTO } from "../dtos/IGetAllUsersDTO";
 import { User } from "../infra/typeorm/entities/Users";
 
 interface IUserRepository {
@@ -8,7 +9,7 @@ interface IUserRepository {
   getByNicknameOrEmail(login: string): Promise<User>;
   getById(id: string): Promise<User>;
   update(user: User): Promise<User>;
-  getByNameOrNickName(user_reference?: string): Promise<User[]>;
+  getByNameOrNickName({page, limit, user_reference}:IGetAllUsersDTO): Promise<{users:User[], count:number}>;
 }
 
 export { IUserRepository };

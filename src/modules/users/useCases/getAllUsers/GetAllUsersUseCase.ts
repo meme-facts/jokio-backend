@@ -1,3 +1,4 @@
+import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
 import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
@@ -10,15 +11,16 @@ class GetAllUsersUseCase {
     private usersRepository: IUserRepository
   ) {}
 
-  async execute(user_reference?: string): Promise<User[]> {
-    const users = await this.usersRepository.getByNameOrNickName(
+  async execute({page, limit = 10, user_reference}: IGetAllUsersDTO):  Promise<{users:User[], count:number}> {
+    const {users, count} = await this.usersRepository.getByNameOrNickName({
+      page,
+      limit,
       user_reference
-    );
-    console.log(users);
+    })
     if (users.length === 0) {
       throw new AppError("User not found.");
     }
-    return users;
+    return {users, count};
   }
 }
 
