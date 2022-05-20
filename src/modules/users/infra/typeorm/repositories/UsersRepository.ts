@@ -28,26 +28,15 @@ class UserRepository implements IUserRepository {
     user_reference,
   }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }> {
     const offset: number = (page - 1) * limit;
-    let users;
-  
-    if (user_reference === undefined) {
-      users = await this.repository
-        .createQueryBuilder()
-        .skip(offset)
-        .take(limit)
-        .getMany();
-    } else {
-      users = await this.repository
+      const users = await this.repository
         .createQueryBuilder()
         .where("full_name ILIKE :full_name OR nickname ILIKE :nickname", {
-          full_name: `%${user_reference}%`,
-          nickname: `%${user_reference}%`,
+          full_name: `%${user_reference ?? ''}%`,
+          nickname: `%${user_reference ?? ''}%`,
         })
         .skip(offset)
         .take(limit)
         .getMany();
-    }
-
     const count = users.length;
     return {
       users,

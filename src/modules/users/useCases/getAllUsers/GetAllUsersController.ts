@@ -9,7 +9,7 @@ class GetAllUsersController {
     const { users, count } = await getAllUsersUseCase.execute({
       page: Number(page),
       limit: limit ? Number(limit) : 10,
-      user_reference: String(user_reference),
+      user_reference:user_reference ? String(user_reference) : undefined,
     });
     return response.status(200).json({
       users,
