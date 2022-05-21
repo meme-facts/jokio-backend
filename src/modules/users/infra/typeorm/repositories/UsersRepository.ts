@@ -3,7 +3,6 @@ import { IUserRepository } from "../../../repositories/IUserRepository";
 import { getRepository, Repository } from "typeorm";
 import { User } from "../entities/Users";
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
-import { unwatchFile } from "fs";
 
 class UserRepository implements IUserRepository {
   repository: Repository<User>;
@@ -34,6 +33,7 @@ class UserRepository implements IUserRepository {
           full_name: `%${user_reference ?? ''}%`,
           nickname: `%${user_reference ?? ''}%`,
         })
+        .orderBy('full_name', 'ASC')
         .skip(offset)
         .take(limit)
         .getMany();

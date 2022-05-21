@@ -17,7 +17,7 @@ export class posts1652137696314 implements MigrationInterface {
                         type: 'varchar',
                     },
                     {
-                        name: 'imgUrl',
+                        name: 'img_url',
                         type: 'varchar'
                     },
                     {
@@ -25,11 +25,16 @@ export class posts1652137696314 implements MigrationInterface {
                         type: 'boolean'
                     }, 
                     {
-                        name: 'userId',
+                        name: 'user_id',
                         type: 'uuid'
                     },  
                     {
                         name: 'created_at',
+                        type: 'timestamp',
+                        default: 'now()'
+                    },
+                    {
+                        name: 'updated_at',
                         type: 'timestamp',
                         default: 'now()'
                     }
@@ -39,7 +44,7 @@ export class posts1652137696314 implements MigrationInterface {
                       name: 'FKUserPost',
                       referencedTableName: 'users',
                       referencedColumnNames: ['id'],
-                      columnNames: ['userId'],
+                      columnNames: ['user_id'],
                       onDelete: 'SET NULL',
                       onUpdate: 'SET NULL',
                     },

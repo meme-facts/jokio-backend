@@ -21,6 +21,63 @@
       }],
     "paths": {
         "/users": {
+            "get":{
+                "tags":["User"],
+                "summary": "Listing all users",
+                "description": "Listing all users paginated with options to filter by fullname or nickname",
+                "parameters": [
+                    {
+                      "name": "page",
+                      "in": "query",
+                      "type": "string",
+                      "format": "email",
+                      "required": true
+                    },
+                    {
+                      "name": "limit",
+                      "in": "query",
+                      "type": "string",
+                      "format": "email",
+                      "required": false
+                    },
+                    {
+                      "name": "user_reference",
+                      "in": "query",
+                      "type": "string",
+                      "format": "email",
+                      "required": false
+                    }
+                  ],
+                "responses": {
+                    "200": {
+                        "description":"Success",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "type":"object",
+                                        "properties":{
+                                            "id":{
+                                                "type": "string"
+                                            },
+                                            "name":{
+                                                "type": "string"
+                                            },
+                                            "description":{
+                                                "type": "string"
+                                            },
+                                            "created_at":{
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags":["User"],
                 "summary": "Create a user",
