@@ -14,7 +14,7 @@ class Post {
   img_url?: string;
 
   @Column()
-  isActive: string;
+  isActive: boolean;
 
   @Column()
   user_id: string;
@@ -32,6 +32,7 @@ class Post {
   constructor() {
     if (!this.id) {
       this.id = uuidV4();
+      this.isActive = true
     }
   }
 }
