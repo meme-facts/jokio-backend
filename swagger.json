@@ -7,67 +7,70 @@
     },
     "components": {
         "securitySchemes": {
-          "jwt": {
-            "type": "http",
-            "scheme": "bearer",
-            "in": "header",
-            "bearerFormat": "JWT"
-          }
+            "jwt": {
+                "type": "http",
+                "scheme": "bearer",
+                "in": "header",
+                "bearerFormat": "JWT"
+            }
         }
-      }
-      ,
-      "security": [{
-        "jwt": []
-      }],
+    },
+    "security": [
+        {
+            "jwt": []
+        }
+    ],
     "paths": {
         "/users": {
-            "get":{
-                "tags":["User"],
+            "get": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Listing all users",
                 "description": "Listing all users paginated with options to filter by fullname or nickname",
                 "parameters": [
                     {
-                      "name": "page",
-                      "in": "query",
-                      "type": "string",
-                      "format": "email",
-                      "required": true
+                        "name": "page",
+                        "in": "query",
+                        "type": "string",
+                        "format": "email",
+                        "required": true
                     },
                     {
-                      "name": "limit",
-                      "in": "query",
-                      "type": "string",
-                      "format": "email",
-                      "required": false
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "format": "email",
+                        "required": false
                     },
                     {
-                      "name": "user_reference",
-                      "in": "query",
-                      "type": "string",
-                      "format": "email",
-                      "required": false
+                        "name": "user_reference",
+                        "in": "query",
+                        "type": "string",
+                        "format": "email",
+                        "required": false
                     }
-                  ],
+                ],
                 "responses": {
                     "200": {
-                        "description":"Success",
+                        "description": "Success",
                         "content": {
-                            "application/json":{
-                                "schema":{
+                            "application/json": {
+                                "schema": {
                                     "type": "array",
-                                    "items":{
-                                        "type":"object",
-                                        "properties":{
-                                            "id":{
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
                                                 "type": "string"
                                             },
-                                            "name":{
+                                            "name": {
                                                 "type": "string"
                                             },
-                                            "description":{
+                                            "description": {
                                                 "type": "string"
                                             },
-                                            "created_at":{
+                                            "created_at": {
                                                 "type": "string"
                                             }
                                         }
@@ -79,141 +82,179 @@
                 }
             },
             "post": {
-                "tags":["User"],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Create a user",
-                "description":"Create a new user",
+                "description": "Create a new user",
                 "requestBody": {
                     "content": {
                         "application/json": {
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "full_name":{
-                                        "type":"string"
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string"
                                     },
-                                    "nickname":{
-                                        "type":"string"
-                                    }
-                                    },
-                                    "email":{
-                                        "type":"string"
-                                
-                                    },
-                                    "password":{
-                                        "type":"string"
+                                    "nickname": {
+                                        "type": "string"
                                     }
                                 },
-                                "example":{
-                                    "full_name":"Teste da Silva",
-                                    "nickname":"testezin_silva",
-                                    "email":"teste@silva.com",
-                                    "password":"yourpassword"
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
                                 }
+                            },
+                            "example": {
+                                "full_name": "Teste da Silva",
+                                "nickname": "testezin_silva",
+                                "email": "teste@silva.com",
+                                "password": "yourpassword"
                             }
-                        
+                        }
                     }
                 },
-                "responses":{
+                "responses": {
                     "201": {
-                        "description":"Created"
+                        "description": "Created"
                     },
-                    "400":[
+                    "400": [
                         {
-                            "description":"This email is already being used"
+                            "description": "This email is already being used"
                         },
                         {
-                            "description":"This nickname is already being used"
+                            "description": "This nickname is already being used"
                         }
                     ]
-                    
                 }
             }
         },
         "/users/login": {
             "post": {
-                "tags":["User"],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Authorization route",
-                "description":"This route is used to log in",
+                "description": "This route is used to log in",
                 "requestBody": {
                     "content": {
                         "application/json": {
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "login":{
-                                        "type":"string"
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "login": {
+                                        "type": "string"
                                     },
-                                    "password":{
-                                        "type":"string",
-                                        "format":"password"
-                                    }    
-                                }                    
-                                },
-                                "example":{
-                                    "login": "teste@silva.com",
-                                    "password": "yourpassword"
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
                                 }
+                            },
+                            "example": {
+                                "login": "teste@silva.com",
+                                "password": "yourpassword"
                             }
+                        }
                     }
                 },
-                "responses":{
+                "responses": {
                     "200": {
-                        "description":"Ok"
+                        "description": "Ok"
                     },
-                    "401":{
-                            "description":"Login or password incorrect."
-                        }
+                    "401": {
+                        "description": "Login or password incorrect."
+                    }
                 }
             }
         },
         "/users/update": {
             "put": {
-                "tags":["User"],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Update User",
-                "description":"This route is used to update a user",
+                "description": "This route is used to update a user",
                 "requestBody": {
                     "content": {
                         "application/json": {
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"string"
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
                                     },
-                                    "full_name":{
-                                        "type":"string"
+                                    "full_name": {
+                                        "type": "string"
                                     },
-                                    "nickname":{
-                                        "type":"string"
-                                    }
-                                    },
-                                    "email":{
-                                        "type":"string"
-                                
-                                    },
-                                    "password":{
-                                        "type":"string"
+                                    "nickname": {
+                                        "type": "string"
                                     }
                                 },
-                                "example":{
-                                    "id":"3123124124515",
-                                    "full_name":"Teste da Silva",
-                                    "nickname":"testezin_silva",
-                                    "email":"teste@silva.com",
-                                    "password":"yourpassword"
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
                                 }
+                            },
+                            "example": {
+                                "id": "3123124124515",
+                                "full_name": "Teste da Silva",
+                                "nickname": "testezin_silva",
+                                "email": "teste@silva.com",
+                                "password": "yourpassword"
                             }
+                        }
                     }
                 },
-                "responses":{
+                "responses": {
                     "201": {
-                        "description":"Created"
+                        "description": "Created"
                     },
-                    "404":
-                        {
-                            "description":"User not found."
+                    "404": {
+                        "description": "User not found."
+                    }
+                }
+            }
+        },
+        "/post": {
+            "post": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Create Post",
+                "description": "This route is used to create a post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "postDescription ": {
+                                        "type": "string"
+                                    },
+                                    "img_url": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "postDescription": "post description test",
+                                    "img_url": "img_url"
+                                }
+                            }
                         }
-                    
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "Created"
+                        },
+                        "404": {
+                            "description": "User not found."
+                        }
+                    }
                 }
             }
         }
