@@ -37,6 +37,11 @@ export class users1651614911454 implements MigrationInterface {
             type: "timestamp",
             default: "now()",
           },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()'
+        }
         ],
       })
     );

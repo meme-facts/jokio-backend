@@ -1,0 +1,52 @@
+import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
+import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
+import { IUserRepository } from "@modules/users/repositories/IUserRepository";
+import { AppError } from "@shared/errors/AppError";
+import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
+import { RequestUserToFollowUseCase } from "./RequestUserToFollowUseCase";
+
+let userRepositoryInMemory: IUserRepository;
+let followerRepositoryInMemory: IFollowersRepository;
+let createUserUseCase: CreateUserUseCase;
+let requestUserToFollowUseCase: RequestUserToFollowUseCase;
+let user1:User;
+let user2: User;
+describe('RequestUserToFollowUseCase', () => {
+
+beforeEach(async () => {
+    followerRepositoryInMemory = new FollowersRepositoryInMemory();
+    userRepositoryInMemory = new UserRepositoryInMemory();
+    requestUserToFollowUseCase = new RequestUserToFollowUseCase(followerRepositoryInMemory, userRepositoryInMemory);
+    createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
+   const firstUserTest = await createUserUseCase.execute({
+    full_name: `Teste da Silva`,
+    nickname: `Silvon`,
+    email: `silva@teste.com`,
+    password: "1234",
+   })
+
+   const seccondUserTest = await createUserUseCase.execute({
+    full_name: `Teste da Silva`,
+    nickname: `Silvon2`,
+    email: `silva@test2e.com`,
+    password: "1234",
+   })
+   user1 = firstUserTest.user;
+   user2 = seccondUserTest.user;
+})
+    it('should request a user to follow', async() => {
+        await requestUserToFollowUseCase.execute(user1.id, user2.id);
+        const followers = await followerRepositoryInMemory.getAll()
+       expect(followers[0]).toHaveProperty('id');
+    })
+    //should return error when some of users do not exist
+    it('should return error when user do not exist', async () => {
+        expect(async () => {
+            await requestUserToFollowUseCase.execute('wrong_user_id', user2.id);
+        }).rejects.toBeInstanceOf(AppError);
+    })
+
+    // fstatus should be P when user request 
+})

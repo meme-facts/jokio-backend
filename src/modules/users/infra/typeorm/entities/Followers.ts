@@ -1,25 +1,22 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
-@Entity("users")
-class User {
+@Entity("followers")
+class Follower {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  full_name: string;
+  fStatus: string;
 
   @Column()
-  nickname: string;
+  requestedUserId: string;
+
+  @Column()
+  requesterUserId: string;
 
   @Column()
   email: string;
-
-  @Column()
-  img_url: string;
-
-  @Column()
-  password: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -30,8 +27,9 @@ class User {
   constructor() {
     if (!this.id) {
       this.id = uuidV4();
+      this.fStatus = 'P'
     }
   }
 }
 
-export { User };
+export { Follower };

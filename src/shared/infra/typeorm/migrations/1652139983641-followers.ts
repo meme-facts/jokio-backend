@@ -29,6 +29,11 @@ export class followers1652139983641 implements MigrationInterface {
                         type: 'timestamp',
                         default: 'now()'
                     },
+                    {
+                        name: 'updated_at',
+                        type: 'timestamp',
+                        default: 'now()'
+                    }
                     
                 ],
                 foreignKeys: [
