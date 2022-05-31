@@ -15,7 +15,7 @@ class RequestUserToFollowController {
       RequestUserToFollowUseCase
     );
     await requestUserToFollowUseCase.execute(requestedUserId, requesterUserId);
-    return response.status(200).send();
+    return response.status(201).send();
   }
 }
 

@@ -6,7 +6,7 @@ import { UpdateFollowerStatusUseCase } from "./UpdateFollowerStatusUseCase";
 class UpdateFollowerStatusController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: requestedUserId } = request.user;
-    const { requesterUserId, fStatus } = request.query;
+    const { id: requesterUserId, status: fStatus } = request.query;
     const updateFollowerStatusUseCase = container.resolve(
       UpdateFollowerStatusUseCase
     );

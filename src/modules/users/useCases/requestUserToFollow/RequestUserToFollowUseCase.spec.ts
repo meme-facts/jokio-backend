@@ -47,7 +47,7 @@ describe("RequestUserToFollowUseCase", () => {
   it("should return error when user do not exist", async () => {
     await expect(
       requestUserToFollowUseCase.execute("wrong_user_id", user2.id)
-    ).rejects.toEqual(new AppError("This user does not exist!"));
+    ).rejects.toEqual(new AppError("This user does not exist!", 404));
   });
   it("fstatus should be P when user request ", async () => {
     await requestUserToFollowUseCase.execute(user1.id, user2.id);

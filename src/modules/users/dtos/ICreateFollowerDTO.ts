@@ -1,9 +1,8 @@
-import { StatusEnum } from "@shared/enums/StatusEnum";
-
 interface ICreateFollowerDTO {
   requestedUserId: string;
   requesterUserId: string;
-  fStatus?: StatusEnum;
+  fStatus?: string;
+  id?: string;
 }
 
 export { ICreateFollowerDTO };

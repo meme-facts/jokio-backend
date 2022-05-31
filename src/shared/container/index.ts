@@ -10,4 +10,7 @@ container.registerSingleton<IUserRepository>("UserRepository", UserRepository);
 
 container.registerSingleton<IPostRepository>("PostRepository", PostReposotory);
 
-container.registerSingleton<IFollowersRepository>("FollowersRepository", FollowersRepository);
+container.registerSingleton<IFollowersRepository>(
+  "FollowersRepository",
+  FollowersRepository
+);

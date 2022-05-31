@@ -19,7 +19,7 @@ class UpdateFollowerStatusUseCase {
       requesterUserId
     );
     if (!relation) {
-      throw new AppError("Relation not found", 404);
+      throw new AppError("Relation not found.", 404);
     }
     relation.fStatus = fStatus;
     await this.followerRepository.create(relation);

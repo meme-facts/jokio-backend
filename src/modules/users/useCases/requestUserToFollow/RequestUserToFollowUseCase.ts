@@ -18,7 +18,7 @@ class RequestUserToFollowUseCase {
     const requestedUser = await this.userRepository.getById(requestedUserId);
     const requesterUser = await this.userRepository.getById(requesterUserId);
     if (!requestedUser || !requesterUser) {
-      throw new AppError("This user does not exist!");
+      throw new AppError("This user does not exist!", 404);
     }
     const alreadySentSolicitation =
       await this.followerRepository.getSolicitation(

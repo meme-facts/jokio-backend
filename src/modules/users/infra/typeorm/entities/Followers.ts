@@ -14,7 +14,7 @@ class Follower {
   id: string;
 
   @Column()
-  fStatus: StatusEnum;
+  fStatus: string;
 
   @Column()
   requestedUserId: string;

@@ -84,6 +84,6 @@ describe("UpdateFollowerStatusUseCase", () => {
         requestedUserId: user1.id,
         requesterUserId: "wrong_id",
       })
-    ).rejects.toEqual(new AppError("Relation not found", 404));
+    ).rejects.toEqual(new AppError("Relation not found.", 404));
   });
 });
