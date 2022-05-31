@@ -26,6 +26,7 @@
                 "tags": [
                     "User"
                 ],
+             
                 "summary": "Listing all users",
                 "description": "Listing all users paginated with options to filter by fullname or nickname",
                 "parameters": [
@@ -175,6 +176,7 @@
                 "tags": [
                     "User"
                 ],
+            
                 "summary": "Update User",
                 "description": "This route is used to update a user",
                 "requestBody": {
@@ -225,6 +227,7 @@
                 "tags": [
                     "Posts"
                 ],
+            
                 "summary": "Create Post",
                 "description": "This route is used to create a post",
                 "requestBody": {
@@ -254,6 +257,78 @@
                         "404": {
                             "description": "User not found."
                         }
+                    }
+                }
+            }
+        },
+        "/followers/{id}": {
+            "post": {
+                "tags": [
+                    "Followers"
+                ],
+            
+                "summary": "Request to follow a user",
+                "description": "This route is used to create a request for add a user as a follower",
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"requested user id",
+                        "required":true,
+                        "schema":{
+                            "type":"string"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Users can create only one solicitation!"
+                    },
+                    "404": {
+                        "description": "This user does not exist!"
+                    }
+                }
+            }
+        },
+        "/followers": {
+            "put": {
+                "tags": [
+                    "Followers"
+                ],
+            
+                "summary": "Update a follower status",
+                "description": "This route is used to accept or block a user in follower relation",
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"query",
+                        "description":"requester user id",
+                        "required":true,
+                        "schema":{
+                            "type":"string"
+                        }
+                    },
+                    {
+                        "name":"status",
+                        "in":"query",
+                        "description":"A = Accept; B = Block",
+                        "required":true,
+                        "schema":{
+                            "type":"char"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Updated"
+                    },
+                    "404": {
+                        "description": "Relation not found."
                     }
                 }
             }
