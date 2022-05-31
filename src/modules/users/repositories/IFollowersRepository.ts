@@ -6,6 +6,7 @@ interface IFollowersRepository {
     requestedUserId,
     requesterUserId,
     fStatus,
+    id,
   }: ICreateFollowerDTO): Promise<void>;
   getAll(): Promise<Follower[]>;
   getSolicitation(
