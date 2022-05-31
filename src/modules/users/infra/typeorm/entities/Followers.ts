@@ -15,9 +15,6 @@ class Follower {
   @Column()
   requesterUserId: string;
 
-  @Column()
-  email: string;
-
   @CreateDateColumn()
   created_at: Date;
 
@@ -27,6 +24,8 @@ class Follower {
   constructor() {
     if (!this.id) {
       this.id = uuidV4();
+    }
+    if(!this.fStatus){
       this.fStatus = 'P'
     }
   }

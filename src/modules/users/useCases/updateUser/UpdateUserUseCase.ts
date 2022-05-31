@@ -3,7 +3,7 @@ import { IUserRepository } from "../../repositories/IUserRepository";
 import { inject, injectable } from "tsyringe";
 import { IUserDTO } from "../../dtos/ICreateUsersDTO";
 import { AppError } from "../../../../shared/errors/AppError";
-import { IUpdateUserDTO } from "modules/users/dtos/IUpdateUsersDT";
+import { IUpdateUserDTO } from "@modules/users/dtos/IUpdateUsersDTO";
 
 @injectable()
 class UpdateUserUseCase {

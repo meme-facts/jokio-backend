@@ -41,12 +41,19 @@ beforeEach(async () => {
         const followers = await followerRepositoryInMemory.getAll()
        expect(followers[0]).toHaveProperty('id');
     })
-    //should return error when some of users do not exist
+    // should return error when some of users do not exist
     it('should return error when user do not exist', async () => {
-        expect(async () => {
-            await requestUserToFollowUseCase.execute('wrong_user_id', user2.id);
-        }).rejects.toBeInstanceOf(AppError);
+        await expect(requestUserToFollowUseCase.execute('wrong_user_id', user2.id)
+        ).rejects.toEqual(new AppError('This user does not exist!'))
     })
-
-    // fstatus should be P when user request 
+    it('fstatus should be P when user request ', async() => {
+        await requestUserToFollowUseCase.execute(user1.id, user2.id);
+        const followers = await followerRepositoryInMemory.getAll()
+       expect(followers[0].fStatus).toBe('P');
+    })
+    it('should not be able to create a solicitation if the users has already send a solicitation.', async () => {
+        await requestUserToFollowUseCase.execute(user1.id, user2.id);
+        await expect(requestUserToFollowUseCase.execute(user1.id, user2.id)
+        ).rejects.toEqual(new AppError('Users can create only one solicitation!'))
+    })
 })

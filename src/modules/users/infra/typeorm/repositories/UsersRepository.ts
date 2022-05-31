@@ -5,7 +5,7 @@ import { User } from "../entities/Users";
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
 
 class UserRepository implements IUserRepository {
-  repository: Repository<User>;
+  private repository: Repository<User>;
   constructor() {
     this.repository = getRepository(User);
   }
