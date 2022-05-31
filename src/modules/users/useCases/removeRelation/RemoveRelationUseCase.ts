@@ -4,26 +4,24 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class UpdateFollowerStatusUseCase {
+class RemoveRelationUseCase {
   constructor(
     @inject("FollowersRepository")
-    private followerRepository: IFollowersRepository
+    private followersRepository: IFollowersRepository
   ) {}
   async execute({
-    fStatus,
     requestedUserId,
     requesterUserId,
-  }: IFollowerDTO): Promise<void> {
-    const relation = await this.followerRepository.getSolicitation(
+  }: Omit<IFollowerDTO, "id" | "fStatus">): Promise<void> {
+    const relation = await this.followersRepository.getSolicitation(
       requestedUserId,
       requesterUserId
     );
     if (!relation) {
       throw new AppError("Relation not found.", 404);
     }
-    relation.fStatus = fStatus;
-    await this.followerRepository.create(relation);
+    await this.followersRepository.delete(relation);
   }
 }
 
-export { UpdateFollowerStatusUseCase };
+export { RemoveRelationUseCase };

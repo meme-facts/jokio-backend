@@ -1,4 +1,4 @@
-import { ICreateFollowerDTO } from "../dtos/ICreateFollowerDTO";
+import { IFollowerDTO } from "../dtos/ICreateFollowerDTO";
 import { Follower } from "../infra/typeorm/entities/Followers";
 
 interface IFollowersRepository {
@@ -7,12 +7,13 @@ interface IFollowersRepository {
     requesterUserId,
     fStatus,
     id,
-  }: ICreateFollowerDTO): Promise<void>;
+  }: IFollowerDTO): Promise<void>;
   getAll(): Promise<Follower[]>;
   getSolicitation(
     requestedUserId: string,
     requesterUserId: string
   ): Promise<Follower>;
+  delete({ requestedUserId, requesterUserId }: IFollowerDTO): Promise<void>;
 }
 
 export { IFollowersRepository };

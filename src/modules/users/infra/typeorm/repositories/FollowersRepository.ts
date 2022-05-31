@@ -1,4 +1,4 @@
-import { ICreateFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
+import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { getRepository, Repository } from "typeorm";
 import { Follower } from "../entities/Followers";
@@ -15,7 +15,7 @@ class FollowersRepository implements IFollowersRepository {
     requesterUserId,
     fStatus,
     id,
-  }: ICreateFollowerDTO): Promise<void> {
+  }: IFollowerDTO): Promise<void> {
     const followerRelation = this.repository.create({
       requestedUserId,
       requesterUserId,
@@ -37,6 +37,15 @@ class FollowersRepository implements IFollowersRepository {
       requesterUserId,
     });
     return relation;
+  }
+  async delete({
+    requestedUserId,
+    requesterUserId,
+  }: IFollowerDTO): Promise<void> {
+    await this.repository.delete({
+      requestedUserId,
+      requesterUserId,
+    });
   }
 }
 
