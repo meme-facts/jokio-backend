@@ -9,5 +9,6 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/src",
   }),
+  testMatch: ["**/*.spec.ts"],
   preset: "ts-jest",
 };

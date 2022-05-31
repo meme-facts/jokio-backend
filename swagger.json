@@ -292,8 +292,73 @@
                         "description": "This user does not exist!"
                     }
                 }
-            }
+            
         },
+        "delete": {
+            "tags": [
+                "Followers"
+            ],
+        
+            "summary": "Request to delete a follower relation",
+            "description": "This route is used to when user wants to refuse a follow request, remove a follower or unblock some user",
+            "parameters":[
+                {
+                    "name":"id",
+                    "in":"path",
+                    "description":"requester user id",
+                    "required":true,
+                    "schema":{
+                        "type":"string"
+                    }
+                }
+
+            ],
+            "responses": {
+                "201": {
+                    "description": "Created"
+                },
+                "400": {
+                    "description": "Users can create only one solicitation!"
+                },
+                "404": {
+                    "description": "This user does not exist!"
+                }
+            }
+        }
+    },
+    "/followers/{id}/unfollow": {
+    "delete": {
+        "tags": [
+            "Followers"
+        ],
+    
+        "summary": "Request to delete a follower relation",
+        "description": "This route is used to unfollow some one ",
+        "parameters":[
+            {
+                "name":"id",
+                "in":"path",
+                "description":"requester user id",
+                "required":true,
+                "schema":{
+                    "type":"string"
+                }
+            }
+
+        ],
+        "responses": {
+            "201": {
+                "description": "Created"
+            },
+            "400": {
+                "description": "Users can create only one solicitation!"
+            },
+            "404": {
+                "description": "This user does not exist!"
+            }
+        }
+    }
+},
         "/followers": {
             "put": {
                 "tags": [
