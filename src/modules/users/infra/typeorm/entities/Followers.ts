@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { StatusEnum } from "@shared/enums/StatusEnum";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
 @Entity("followers")
@@ -7,7 +14,7 @@ class Follower {
   id: string;
 
   @Column()
-  fStatus: string;
+  fStatus: StatusEnum;
 
   @Column()
   requestedUserId: string;
@@ -25,8 +32,8 @@ class Follower {
     if (!this.id) {
       this.id = uuidV4();
     }
-    if(!this.fStatus){
-      this.fStatus = 'P'
+    if (!this.fStatus) {
+      this.fStatus = StatusEnum.Pending;
     }
   }
 }

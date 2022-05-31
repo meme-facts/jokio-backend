@@ -1,9 +1,9 @@
 import { StatusEnum } from "@shared/enums/StatusEnum";
 
-interface IUpdateRelationDTO {
+interface ICreateFollowerDTO {
   requestedUserId: string;
   requesterUserId: string;
-  fStatus: StatusEnum;
+  fStatus?: StatusEnum;
 }
 
-export { IUpdateRelationDTO };
+export { ICreateFollowerDTO };

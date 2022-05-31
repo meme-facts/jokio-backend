@@ -3,19 +3,20 @@ import { container } from "tsyringe";
 import { RequestUserToFollowUseCase } from "./RequestUserToFollowUseCase";
 
 interface IRequest {
-    requestedUserId: string;
-    requesterUserId:string;
+  requestedUserId: string;
+  requesterUserId: string;
 }
 
 class RequestUserToFollowController {
-
-    async handle(request:Request, response:Response): Promise<Response> {
-        const { requestedUserId } = request.query
-        const {id: requesterUserId} = request.user
-        const requestUserToFollowUseCase = container.resolve(RequestUserToFollowUseCase);
-        await requestUserToFollowUseCase.execute(requestedUserId as string,requesterUserId as string) 
-        return response.status(200).send();
-    }
+  async handle(request: Request, response: Response): Promise<Response> {
+    const { id: requestedUserId } = request.params;
+    const { id: requesterUserId } = request.user;
+    const requestUserToFollowUseCase = container.resolve(
+      RequestUserToFollowUseCase
+    );
+    await requestUserToFollowUseCase.execute(requestedUserId, requesterUserId);
+    return response.status(200).send();
+  }
 }
 
-export { RequestUserToFollowController }
+export { RequestUserToFollowController };
