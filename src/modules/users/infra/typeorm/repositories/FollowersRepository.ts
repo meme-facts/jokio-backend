@@ -1,3 +1,4 @@
+import { ICreateFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { getRepository, Repository } from "typeorm";
 import { Follower } from "../entities/Followers";
@@ -9,13 +10,17 @@ class FollowersRepository implements IFollowersRepository {
     this.repository = getRepository(Follower);
   }
 
-  async create(
-    requestedUserId: string,
-    requesterUserId: string
-  ): Promise<void> {
+  async create({
+    requestedUserId,
+    requesterUserId,
+    fStatus,
+    id,
+  }: ICreateFollowerDTO): Promise<void> {
     const followerRelation = this.repository.create({
       requestedUserId,
       requesterUserId,
+      fStatus,
+      id,
     });
     await this.repository.save(followerRelation);
   }
