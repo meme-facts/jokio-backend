@@ -1,5 +1,6 @@
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
+import { StatusEnum } from "@shared/enums/StatusEnum";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
@@ -20,6 +21,7 @@ class RequestUserToFollowUseCase {
     if (!requestedUser || !requesterUser) {
       throw new AppError("This user does not exist!", 404);
     }
+
     const alreadySentSolicitation =
       await this.followerRepository.getSolicitation(
         requestedUserId,
@@ -31,6 +33,9 @@ class RequestUserToFollowUseCase {
     await this.followerRepository.create({
       requestedUserId,
       requesterUserId,
+      fStatus: requestedUser.isPrivate
+        ? StatusEnum.Pending
+        : StatusEnum.Accepted,
     });
   }
 }

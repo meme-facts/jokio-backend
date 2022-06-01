@@ -33,7 +33,7 @@ class Follower {
       this.id = uuidV4();
     }
     if (!this.fStatus) {
-      this.fStatus = StatusEnum.Pending;
+      this.fStatus = StatusEnum.Accepted;
     }
   }
 }

@@ -27,6 +27,7 @@ describe("RequestUserToFollowUseCase", () => {
       nickname: `Silvon`,
       email: `silva@teste.com`,
       password: "1234",
+      isPrivate: true,
     });
 
     const seccondUserTest = await createUserUseCase.execute({
@@ -49,10 +50,15 @@ describe("RequestUserToFollowUseCase", () => {
       requestUserToFollowUseCase.execute("wrong_user_id", user2.id)
     ).rejects.toEqual(new AppError("This user does not exist!", 404));
   });
-  it("fstatus should be P when user request ", async () => {
+  it("fstatus should be P when user request a relation for a private user ", async () => {
     await requestUserToFollowUseCase.execute(user1.id, user2.id);
     const followers = await followerRepositoryInMemory.getAll();
     expect(followers[0].fStatus).toBe("P");
+  });
+  it("fstatus should be A when user request a relation for a non private user ", async () => {
+    await requestUserToFollowUseCase.execute(user2.id, user1.id);
+    const followers = await followerRepositoryInMemory.getAll();
+    expect(followers[0].fStatus).toBe("A");
   });
   it("should not be able to create a solicitation if the users has already send a solicitation.", async () => {
     await requestUserToFollowUseCase.execute(user1.id, user2.id);

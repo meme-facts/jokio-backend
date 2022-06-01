@@ -15,10 +15,10 @@ const authenticateUserController = new AuthenticateUserController();
 
 const updateUserController = new UpdateUserController();
 
-userRouter.get('/', ensureAuthenticated, getAllUsersController.handle)
+userRouter.get("/", ensureAuthenticated, getAllUsersController.handle);
 
 userRouter.post("/", createUserController.handle);
 
 userRouter.post("/login", authenticateUserController.handle);
 
-userRouter.put("/update", updateUserController.handle);
+userRouter.put("/update", ensureAuthenticated, updateUserController.handle);

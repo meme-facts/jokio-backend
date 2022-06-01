@@ -17,6 +17,7 @@ class CreateUserUseCase {
     nickname,
     email,
     password,
+    isPrivate,
   }: IUserDTO): Promise<{ user: User; token: string }> {
     const userByEmail = await this.userRepository.getByEmail(email);
     if (userByEmail) {
@@ -33,6 +34,7 @@ class CreateUserUseCase {
       nickname,
       email,
       password: hashedPassword,
+      isPrivate,
     });
     const token = sign({}, process.env.JWT_SECRET, {
       subject: user.id,

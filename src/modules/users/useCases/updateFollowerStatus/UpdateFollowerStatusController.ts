@@ -11,7 +11,7 @@ class UpdateFollowerStatusController {
       UpdateFollowerStatusUseCase
     );
     await updateFollowerStatusUseCase.execute({
-      fStatus: fStatus as StatusEnum,
+      fStatus: (fStatus as StatusEnum) ?? StatusEnum.Accepted,
       requestedUserId,
       requesterUserId: requesterUserId as string,
     });

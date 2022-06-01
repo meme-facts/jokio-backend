@@ -33,15 +33,20 @@ export class users1651614911454 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: "isPrivate",
+            type: "boolean",
+            isNullable: false,
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()'
-        }
+            name: "updated_at",
+            type: "timestamp",
+            default: "now()",
+          },
         ],
       })
     );

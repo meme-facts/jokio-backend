@@ -26,7 +26,6 @@
                 "tags": [
                     "User"
                 ],
-             
                 "summary": "Listing all users",
                 "description": "Listing all users paginated with options to filter by fullname or nickname",
                 "parameters": [
@@ -34,21 +33,18 @@
                         "name": "page",
                         "in": "query",
                         "type": "string",
-                        "format": "email",
                         "required": true
                     },
                     {
                         "name": "limit",
                         "in": "query",
                         "type": "string",
-                        "format": "email",
                         "required": false
                     },
                     {
                         "name": "user_reference",
                         "in": "query",
                         "type": "string",
-                        "format": "email",
                         "required": false
                     }
                 ],
@@ -193,13 +189,16 @@
                                     },
                                     "nickname": {
                                         "type": "string"
+                                    },                                  
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "isPrivate": {
+                                        "type": "boolean"
                                     }
-                                },
-                                "email": {
-                                    "type": "string"
-                                },
-                                "password": {
-                                    "type": "string"
                                 }
                             },
                             "example": {
@@ -207,7 +206,8 @@
                                 "full_name": "Teste da Silva",
                                 "nickname": "testezin_silva",
                                 "email": "teste@silva.com",
-                                "password": "yourpassword"
+                                "password": "yourpassword",
+                                "isPrivate": "boolean"
                             }
                         }
                     }
@@ -360,6 +360,65 @@
     }
 },
         "/followers": {
+            "get": {
+                "tags": [
+                    "Followers"
+                ],
+                "summary": "List Pending Requests",
+                "description": "Listing all pending requests paginated by user",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "requestedUserId": {
+                                                "type": "string"
+                                            },
+                                            "requesterUserId": {
+                                                "type": "string"
+                                            },
+                                            "fStatus": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Public users do not receive friend request."
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Followers"
@@ -380,8 +439,8 @@
                     {
                         "name":"status",
                         "in":"query",
-                        "description":"A = Accept; B = Block",
-                        "required":true,
+                        "description":"A = Accept; B = Block // Default = A",
+                        "required":false,
                         "schema":{
                             "type":"char"
                         }

@@ -3,5 +3,6 @@ interface IUpdateUserDTO {
   full_name: string;
   nickname: string;
   email: string;
+  isPrivate: boolean;
 }
 export { IUpdateUserDTO };

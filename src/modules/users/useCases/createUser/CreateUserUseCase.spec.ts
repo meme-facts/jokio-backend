@@ -27,6 +27,16 @@ describe("CreateUserUseCase", () => {
     expect(user).toHaveProperty("token");
   });
 
+  it("should create a non private user by default", async () => {
+    const user = await createUserUseCase.execute({
+      full_name: "opateste",
+      nickname: "tes",
+      email: "test@teste.com",
+      password: "1234",
+    });
+    expect(user.user.isPrivate).toBe(false);
+  });
+
   it("should not be able to create an user with a existent email", async () => {
     expect(async () => {
       await createUserUseCase.execute({

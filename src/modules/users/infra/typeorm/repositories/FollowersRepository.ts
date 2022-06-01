@@ -1,5 +1,7 @@
 import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
+import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import { StatusEnum } from "@shared/enums/StatusEnum";
 import { getRepository, Repository } from "typeorm";
 import { Follower } from "../entities/Followers";
 
@@ -46,6 +48,26 @@ class FollowersRepository implements IFollowersRepository {
       requestedUserId,
       requesterUserId,
     });
+  }
+  async getPendingRequestsById({
+    page,
+    limit,
+    userId,
+  }: IGetRequestsDTO): Promise<{ requests: Follower[]; count: number }> {
+    const offset: number = (page - 1) * limit;
+    const requests = await this.repository.find({
+      where: {
+        fStatus: StatusEnum.Pending,
+        requestedUserId: userId,
+      },
+      skip: offset,
+      take: limit,
+    });
+    const count = requests.length;
+    return {
+      requests,
+      count,
+    };
   }
 }
 
