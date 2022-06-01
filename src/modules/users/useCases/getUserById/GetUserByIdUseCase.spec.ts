@@ -1,44 +1,62 @@
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import { User } from "@modules/users/infra/typeorm/entities/Users";
-import { UserRepository } from "@modules/users/infra/typeorm/repositories/UsersRepository";
+import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
-import { GetAllUsersUseCase } from "../getAllUsers/GetAllUsersUseCase";
+import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
 import { GetUserByIdUseCase } from "./GetUserByIdUseCase";
 
-let userRepository: IUserRepository;
+let userRepositoryInMemory: IUserRepository;
+let followerRepositoryInMemory: IFollowersRepository;
 let createUserUseCase: CreateUserUseCase;
-let getAllUsersByIdUseCase: GetUserByIdUseCase;
-let user: User;
-describe("GetAllUsersByIdUseCase", () => {
+let requestUserToFollowUseCase: RequestUserToFollowUseCase;
+let getUserByIdUseCase: GetUserByIdUseCase;
+let user1: User;
+let user2: User;
+describe("GetUserByIdUseCase", () => {
   beforeEach(async () => {
-    // userRepository = new UserRepositoryInMemory();
-    createUserUseCase = new CreateUserUseCase(userRepository);
+    followerRepositoryInMemory = new FollowersRepositoryInMemory();
+    userRepositoryInMemory = new UserRepositoryInMemory();
+    requestUserToFollowUseCase = new RequestUserToFollowUseCase(
+      followerRepositoryInMemory,
+      userRepositoryInMemory
+    );
+    createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
+    const firstUserTest = await createUserUseCase.execute({
+      full_name: `Teste da Silva`,
+      nickname: `Silvon`,
+      email: `silva@teste.com`,
+      password: "1234",
+      isPrivate: true,
+    });
 
-    const createdUser = await createUserUseCase.execute({
-      full_name: "opateste",
-      nickname: "teste2",
-      email: "silva@teste.com",
+    const seccondUserTest = await createUserUseCase.execute({
+      full_name: `Teste da Silva`,
+      nickname: `Silvon2`,
+      email: `silva@test2e.com`,
       password: "1234",
     });
-    user = createdUser.user;
-    const post = new Post();
-
-    Object.assign(post, {
-      postDescription: "teste123",
-      img_url: "img_url_test",
-      user_id: user.id,
-    });
-
-    getAllUsersByIdUseCase = new GetUserByIdUseCase(userRepository);
+    user1 = firstUserTest.user;
+    user2 = seccondUserTest.user;
+    await requestUserToFollowUseCase.execute(user2.id, user1.id);
+    getUserByIdUseCase = new GetUserByIdUseCase(userRepositoryInMemory);
   });
 
-  it("should return a user with their posts", async () => {
-    const returnedUser = await getAllUsersByIdUseCase.execute({
-      loggedUserId: "1",
-      requestUserId: user.id,
+  it("should be able to get user results by id", async () => {
+    const user = await getUserByIdUseCase.execute({
+      loggedUserId: user1.id,
+      requestUserId: user2.id,
     });
-    console.log(returnedUser);
+    expect(user).toHaveProperty("id");
   });
+
+  it("should be able to get users followers and following quantity", async () => {
+    const user = await getUserByIdUseCase.execute({
+      loggedUserId: user1.id,
+      requestUserId: user2.id,
+    });
+    expect(user).toHaveProperty("id");
+  });
+  //
 });

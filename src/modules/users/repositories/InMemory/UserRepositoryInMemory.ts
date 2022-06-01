@@ -4,10 +4,6 @@ import { IUserDTO } from "../../dtos/ICreateUsersDTO";
 import { User } from "../../infra/typeorm/entities/Users";
 import { IUserRepository } from "../IUserRepository";
 
-interface UserWithPost extends User {
-  posts: Post[];
-}
-
 class UserRepositoryInMemory implements IUserRepository {
   post: Post[] = [];
   users: User[] = [];
@@ -73,15 +69,9 @@ class UserRepositoryInMemory implements IUserRepository {
     Object.assign(user, data);
     return user;
   }
-  async getAllById(id: string): Promise<UserWithPost> {
+  async getAllById(id: string): Promise<User> {
     const user = await this.users.find((user) => user.id === id);
-    const userPosts = await this.post.filter(
-      (post) => post.user_id === user.id
-    );
-    return {
-      ...user,
-      posts: userPosts,
-    };
+    return user;
   }
 }
 

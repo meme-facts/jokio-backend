@@ -6,6 +6,7 @@ class GetUserByIdController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: loggedUserId } = request.user;
     const { id: requestUserId } = request.params;
+    console.log(loggedUserId, requestUserId);
     const getUserByIDUseCase = container.resolve(GetUserByIdUseCase);
     const user = await getUserByIDUseCase.execute({
       loggedUserId,

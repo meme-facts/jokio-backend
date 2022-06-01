@@ -1,7 +1,9 @@
+import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -35,6 +37,9 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany((type) => Post, (post) => post.user)
+  post: Post[];
 
   constructor() {
     if (!this.id) {

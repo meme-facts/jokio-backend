@@ -27,8 +27,8 @@ class Post {
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id" })
+  @ManyToOne((type) => User)
+  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user: User;
 
   @CreateDateColumn()
