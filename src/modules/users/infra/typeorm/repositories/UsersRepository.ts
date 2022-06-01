@@ -73,6 +73,15 @@ class UserRepository implements IUserRepository {
     const user = await this.repository.findOne(id);
     return user;
   }
+  async getAllById(id: string): Promise<User> {
+    const user = await this.repository.findOne({
+      where: {
+        id,
+      },
+      relations: ["post"],
+    });
+    return user;
+  }
   async update(user: User): Promise<User> {
     const userUpdated = await this.repository.save(user);
     return userUpdated;

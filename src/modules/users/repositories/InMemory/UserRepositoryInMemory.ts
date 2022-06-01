@@ -1,9 +1,15 @@
+import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
 import { IUserDTO } from "../../dtos/ICreateUsersDTO";
 import { User } from "../../infra/typeorm/entities/Users";
 import { IUserRepository } from "../IUserRepository";
 
+interface UserWithPost extends User {
+  posts: Post[];
+}
+
 class UserRepositoryInMemory implements IUserRepository {
+  post: Post[] = [];
   users: User[] = [];
   async create({
     full_name,
@@ -66,6 +72,16 @@ class UserRepositoryInMemory implements IUserRepository {
     const user = await this.users.find((user) => user.id === data.id);
     Object.assign(user, data);
     return user;
+  }
+  async getAllById(id: string): Promise<UserWithPost> {
+    const user = await this.users.find((user) => user.id === id);
+    const userPosts = await this.post.filter(
+      (post) => post.user_id === user.id
+    );
+    return {
+      ...user,
+      posts: userPosts,
+    };
   }
 }
 

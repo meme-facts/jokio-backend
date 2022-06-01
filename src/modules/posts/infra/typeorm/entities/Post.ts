@@ -1,5 +1,13 @@
 import { User } from "@modules/users/infra/typeorm/entities/Users";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
 @Entity("posts")
@@ -20,7 +28,7 @@ class Post {
   user_id: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: "user_id" })
   user: User;
 
   @CreateDateColumn()
@@ -32,7 +40,7 @@ class Post {
   constructor() {
     if (!this.id) {
       this.id = uuidV4();
-      this.isActive = true
+      this.isActive = true;
     }
   }
 }
