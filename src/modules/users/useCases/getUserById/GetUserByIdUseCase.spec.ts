@@ -40,7 +40,10 @@ describe("GetUserByIdUseCase", () => {
     user1 = firstUserTest.user;
     user2 = seccondUserTest.user;
     await requestUserToFollowUseCase.execute(user2.id, user1.id);
-    getUserByIdUseCase = new GetUserByIdUseCase(userRepositoryInMemory);
+    getUserByIdUseCase = new GetUserByIdUseCase(
+      userRepositoryInMemory,
+      followerRepositoryInMemory
+    );
   });
 
   it("should be able to get user results by id", async () => {
@@ -56,7 +59,16 @@ describe("GetUserByIdUseCase", () => {
       loggedUserId: user1.id,
       requestUserId: user2.id,
     });
-    expect(user).toHaveProperty("id");
+    expect(user).toHaveProperty("followersQuantity");
+    expect(user).toHaveProperty("followingQuantity");
+  });
+
+  it("should return follower relation when logged user is different of requested user", async () => {
+    const user = await getUserByIdUseCase.execute({
+      loggedUserId: user1.id,
+      requestUserId: user2.id,
+    });
+    expect(user).toHaveProperty("");
   });
   //
 });
