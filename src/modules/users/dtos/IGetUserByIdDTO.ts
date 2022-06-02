@@ -1,8 +1,6 @@
-
-
 interface IGetUserByIdDTO {
-    loggedUserId:string;
-    requestUserId:string;
+  loggedUserId: string;
+  requestedUserId: string;
 }
 
-export { IGetUserByIdDTO }
+export { IGetUserByIdDTO };

@@ -5,6 +5,7 @@ import { RequestUserToFollowController } from "@modules/users/useCases/requestUs
 import { UpdateFollowerStatusController } from "@modules/users/useCases/updateFollowerStatus/UpdateFollowerStatusController";
 import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { UpdateFollowersStatusValidator } from "../middlewares/helpers/validators/followers/UpdateFollowersStatusValidator";
 
 export const followerRouter = Router();
 
@@ -29,6 +30,7 @@ followerRouter.post(
 followerRouter.put(
   "/",
   ensureAuthenticated,
+  UpdateFollowersStatusValidator,
   updateFollowerStatusController.handle
 );
 followerRouter.delete(

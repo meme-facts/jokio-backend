@@ -3,6 +3,8 @@ import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepo
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
+import { ResponseStatus } from "@shared/enums/StatusEnum";
+import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
 import { GetUserByIdUseCase } from "./GetUserByIdUseCase";
@@ -49,7 +51,7 @@ describe("GetUserByIdUseCase", () => {
   it("should be able to get user results by id", async () => {
     const user = await getUserByIdUseCase.execute({
       loggedUserId: user1.id,
-      requestUserId: user2.id,
+      requestedUserId: user2.id,
     });
     expect(user).toHaveProperty("id");
   });
@@ -57,7 +59,7 @@ describe("GetUserByIdUseCase", () => {
   it("should be able to get users followers and following quantity", async () => {
     const user = await getUserByIdUseCase.execute({
       loggedUserId: user1.id,
-      requestUserId: user2.id,
+      requestedUserId: user2.id,
     });
     expect(user).toHaveProperty("followersQuantity");
     expect(user).toHaveProperty("followingQuantity");
@@ -66,9 +68,31 @@ describe("GetUserByIdUseCase", () => {
   it("should return follower relation when logged user is different of requested user", async () => {
     const user = await getUserByIdUseCase.execute({
       loggedUserId: user1.id,
-      requestUserId: user2.id,
+      requestedUserId: user2.id,
     });
-    expect(user).toHaveProperty("");
+    expect(user).toHaveProperty("relationStatus");
+  });
+  it("should return follower relation as 'UNKNOWN' when logged users do not follow requestedUser", async () => {
+    const user = await getUserByIdUseCase.execute({
+      loggedUserId: user2.id,
+      requestedUserId: user1.id,
+    });
+    expect(user.relationStatus).toBe(ResponseStatus.UNKNOWN);
+  });
+  it("should return follower relation as 'OWNER' when logged users is same as requestedUser", async () => {
+    const user = await getUserByIdUseCase.execute({
+      loggedUserId: user1.id,
+      requestedUserId: user1.id,
+    });
+    expect(user.relationStatus).toBe(ResponseStatus.OWNER);
+  });
+  it("should return error when requested user does not exist", async () => {
+    await expect(
+      getUserByIdUseCase.execute({
+        loggedUserId: user1.id,
+        requestedUserId: "wrong_user_id",
+      })
+    ).rejects.toEqual(new AppError("This users does not exist"));
   });
   //
 });

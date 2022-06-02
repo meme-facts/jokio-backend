@@ -1,6 +1,9 @@
 import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
-import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import {
+  IFollowersRepository,
+  IRelation,
+} from "@modules/users/repositories/IFollowersRepository";
 import { StatusEnum } from "@shared/enums/StatusEnum";
 import { getRepository, Repository } from "typeorm";
 import { Follower } from "../entities/Followers";
@@ -67,6 +70,18 @@ class FollowersRepository implements IFollowersRepository {
     return {
       requests,
       count,
+    };
+  }
+  async getRelationsQuantityByUser(userId: string): Promise<IRelation> {
+    const followersQuantity = await this.repository.count({
+      requestedUserId: userId,
+    });
+    const followingQuantity = await this.repository.count({
+      requesterUserId: userId,
+    });
+    return {
+      followersQuantity,
+      followingQuantity,
     };
   }
 }
