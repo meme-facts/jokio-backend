@@ -178,7 +178,7 @@
         "/users/login": {
             "post": {
                 "tags": [
-                    "User"
+                    "Authentication"
                 ],
                 "summary": "Authorization route",
                 "description": "This route is used to log in",
