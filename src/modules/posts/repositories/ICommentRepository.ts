@@ -1,4 +1,4 @@
-import { ICommentaryDTO } from "../dtos/ICommentaryDTO";
+import { ICommentaryDTO } from "../dtos/ICommentDTO";
 import { Comments } from "../infra/typeorm/entities/Comment";
 
 interface ICommentaryRepository {

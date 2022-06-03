@@ -1,5 +1,5 @@
-import { ICommentaryDTO } from "@modules/posts/dtos/ICommentaryDTO";
-import { ICommentaryRepository } from "@modules/posts/repositories/ICommentaryRepository";
+import { ICommentaryDTO } from "@modules/posts/dtos/ICommentDTO";
+import { ICommentaryRepository } from "@modules/posts/repositories/ICommentRepository";
 import { getRepository, Repository } from "typeorm";
 import { Comments } from "../entities/Comment";
 

@@ -1,5 +1,5 @@
-import { ICommentaryDTO } from "@modules/posts/dtos/ICommentaryDTO";
-import { ICommentaryRepository } from "@modules/posts/repositories/ICommentaryRepository";
+import { ICommentaryDTO } from "@modules/posts/dtos/ICommentDTO";
+import { ICommentaryRepository } from "@modules/posts/repositories/ICommentRepository";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";

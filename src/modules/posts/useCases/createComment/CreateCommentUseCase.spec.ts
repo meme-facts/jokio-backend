@@ -1,13 +1,13 @@
 import { Post } from "@modules/posts/infra/typeorm/entities/Post";
-import { ICommentaryRepository } from "@modules/posts/repositories/ICommentaryRepository";
-import { CommentaryRepositoryInMemory } from "@modules/posts/repositories/inMemory/CommentaryRepositoryInMemory";
+import { ICommentaryRepository } from "@modules/posts/repositories/ICommentRepository";
+import { CommentaryRepositoryInMemory } from "@modules/posts/repositories/inMemory/CommentRepositoryInMemory";
 import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
 import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
 import { AppError } from "@shared/errors/AppError";
 import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
-import { CreateCommentaryUseCase } from "./CreateCommentaryUseCase";
+import { CreateCommentaryUseCase } from "./CreateCommentUseCase";
 
 let commentaryRepositoryInMemory: ICommentaryRepository;
 let userRepositoryInMemory: UserRepositoryInMemory;

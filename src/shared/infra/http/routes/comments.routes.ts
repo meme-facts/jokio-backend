@@ -1,4 +1,4 @@
-import { CreateCommentaryController } from "@modules/posts/useCases/createCommentary/CreateCommentaryController";
+import { CreateCommentaryController } from "@modules/posts/useCases/createComment/CreateCommentController";
 import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 

@@ -1,6 +1,6 @@
-import { ICommentaryDTO } from "@modules/posts/dtos/ICommentaryDTO";
+import { ICommentaryDTO } from "@modules/posts/dtos/ICommentDTO";
 import { Comments } from "@modules/posts/infra/typeorm/entities/Comment";
-import { ICommentaryRepository } from "../ICommentaryRepository";
+import { ICommentaryRepository } from "../ICommentRepository";
 
 class CommentaryRepositoryInMemory implements ICommentaryRepository {
   private commentaries: Comments[] = [];

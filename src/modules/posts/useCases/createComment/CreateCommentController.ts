@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { CreateCommentaryUseCase } from "./CreateCommentaryUseCase";
+import { CreateCommentaryUseCase } from "./CreateCommentUseCase";
 
 class CreateCommentaryController {
   async handle(request: Request, response: Response): Promise<Response> {

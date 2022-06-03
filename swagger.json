@@ -141,7 +141,7 @@
                         "in": "path",
                         "type": "string",
                         "required": true,
-                        "description":"uuid"
+                        "description": "uuid"
                     }
                 ],
                 "responses": {
@@ -219,7 +219,6 @@
                 "tags": [
                     "User"
                 ],
-            
                 "summary": "Update User",
                 "description": "This route is used to update a user",
                 "requestBody": {
@@ -236,7 +235,7 @@
                                     },
                                     "nickname": {
                                         "type": "string"
-                                    },                                  
+                                    },
                                     "email": {
                                         "type": "string"
                                     },
@@ -274,7 +273,6 @@
                 "tags": [
                     "Posts"
                 ],
-            
                 "summary": "Create Post",
                 "description": "This route is used to create a post",
                 "requestBody": {
@@ -313,19 +311,18 @@
                 "tags": [
                     "Comments"
                 ],
-                "parameters":[
+                "parameters": [
                     {
-                        "name":"id",
-                        "in":"path",
-                        "description":"post id",
-                        "required":true,
-                        "schema":{
-                            "type":"string"
+                        "name": "id",
+                        "in": "path",
+                        "description": "post id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
-
                 ],
-                "summary": "Create Commentary",
+                "summary": "Create Comment",
                 "description": "This route is used to add a commentary to a post",
                 "requestBody": {
                     "content": {
@@ -353,27 +350,24 @@
                     }
                 }
             }
-
-    },
+        },
         "/followers/{id}": {
             "post": {
                 "tags": [
                     "Followers"
                 ],
-            
                 "summary": "Request to follow a user",
                 "description": "This route is used to create a request for add a user as a follower",
-                "parameters":[
+                "parameters": [
                     {
-                        "name":"id",
-                        "in":"path",
-                        "description":"requested user id",
-                        "required":true,
-                        "schema":{
-                            "type":"string"
+                        "name": "id",
+                        "in": "path",
+                        "description": "requested user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
-
                 ],
                 "responses": {
                     "201": {
@@ -386,73 +380,68 @@
                         "description": "This user does not exist!"
                     }
                 }
-            
-        },
-        "delete": {
-            "tags": [
-                "Followers"
-            ],
-        
-            "summary": "Request to delete a follower relation",
-            "description": "This route is used to when user wants to refuse a follow request, remove a follower or unblock some user",
-            "parameters":[
-                {
-                    "name":"id",
-                    "in":"path",
-                    "description":"requester user id",
-                    "required":true,
-                    "schema":{
-                        "type":"string"
+            },
+            "delete": {
+                "tags": [
+                    "Followers"
+                ],
+                "summary": "Request to delete a follower relation",
+                "description": "This route is used to when user wants to refuse a follow request, remove a follower or unblock some user",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "requester user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Users can create only one solicitation!"
+                    },
+                    "404": {
+                        "description": "This user does not exist!"
                     }
                 }
-
-            ],
-            "responses": {
-                "201": {
-                    "description": "Created"
-                },
-                "400": {
-                    "description": "Users can create only one solicitation!"
-                },
-                "404": {
-                    "description": "This user does not exist!"
+            }
+        },
+        "/followers/{id}/unfollow": {
+            "delete": {
+                "tags": [
+                    "Followers"
+                ],
+                "summary": "Request to delete a follower relation",
+                "description": "This route is used to unfollow some one ",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "requester user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Users can create only one solicitation!"
+                    },
+                    "404": {
+                        "description": "This user does not exist!"
+                    }
                 }
             }
-        }
-    },
-    "/followers/{id}/unfollow": {
-    "delete": {
-        "tags": [
-            "Followers"
-        ],
-    
-        "summary": "Request to delete a follower relation",
-        "description": "This route is used to unfollow some one ",
-        "parameters":[
-            {
-                "name":"id",
-                "in":"path",
-                "description":"requester user id",
-                "required":true,
-                "schema":{
-                    "type":"string"
-                }
-            }
-
-        ],
-        "responses": {
-            "201": {
-                "description": "Created"
-            },
-            "400": {
-                "description": "Users can create only one solicitation!"
-            },
-            "404": {
-                "description": "This user does not exist!"
-            }
-        }
-    }
-},
+        },
         "/followers": {
             "get": {
                 "tags": [
@@ -517,29 +506,27 @@
                 "tags": [
                     "Followers"
                 ],
-            
                 "summary": "Update a follower status",
                 "description": "This route is used to accept or block a user in follower relation",
-                "parameters":[
+                "parameters": [
                     {
-                        "name":"id",
-                        "in":"query",
-                        "description":"requester user id",
-                        "required":true,
-                        "schema":{
-                            "type":"string"
+                        "name": "id",
+                        "in": "query",
+                        "description": "requester user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
-                        "name":"status",
-                        "in":"query",
-                        "description":"A = Accept; B = Block // Default = A",
-                        "required":false,
-                        "schema":{
-                            "type":"char"
+                        "name": "status",
+                        "in": "query",
+                        "description": "A = Accept; B = Block // Default = A",
+                        "required": false,
+                        "schema": {
+                            "type": "char"
                         }
                     }
-
                 ],
                 "responses": {
                     "204": {
