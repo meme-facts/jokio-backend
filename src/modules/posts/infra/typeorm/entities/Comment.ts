@@ -5,6 +5,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { v4 as uuidV4 } from "uuid";
 
 @Entity("comments")
 class Comments {
@@ -25,6 +26,12 @@ class Comments {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuidV4();
+    }
+  }
 }
 
 export { Comments };

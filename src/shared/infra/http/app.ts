@@ -6,7 +6,8 @@ import swaggerUi from "swagger-ui-express";
 import { router } from "./routes";
 import { errorHandler } from "./middlewares/helpers/exceptions/errorHandler";
 import cors from "cors";
-import "../../container";
+import "../../container/users";
+import "../../container/posts";
 
 import createConnection from "../../infra/typeorm";
 import { errors } from "celebrate";

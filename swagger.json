@@ -308,6 +308,53 @@
                 }
             }
         },
+        "/comments/{id}": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "description":"post id",
+                        "required":true,
+                        "schema":{
+                            "type":"string"
+                        }
+                    }
+
+                ],
+                "summary": "Create Commentary",
+                "description": "This route is used to add a commentary to a post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message ": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "message": "this is a test commentary"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "Created"
+                        },
+                        "404": {
+                            "description": "User not found."
+                        }
+                    }
+                }
+            }
+
+    },
         "/followers/{id}": {
             "post": {
                 "tags": [
