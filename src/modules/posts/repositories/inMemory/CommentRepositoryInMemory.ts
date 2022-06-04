@@ -1,10 +1,10 @@
-import { ICommentaryDTO } from "@modules/posts/dtos/ICommentDTO";
+import { ICommentDTO } from "@modules/posts/dtos/ICommentDTO";
 import { Comments } from "@modules/posts/infra/typeorm/entities/Comment";
-import { ICommentaryRepository } from "../ICommentRepository";
+import { ICommentRepository } from "../ICommentRepository";
 
-class CommentaryRepositoryInMemory implements ICommentaryRepository {
+class CommentRepositoryInMemory implements ICommentRepository {
   private commentaries: Comments[] = [];
-  async create({ userId, postId, message }: ICommentaryDTO): Promise<void> {
+  async create({ userId, postId, message }: ICommentDTO): Promise<void> {
     const commentary = new Comments();
     Object.assign(commentary, {
       userId,
@@ -16,6 +16,19 @@ class CommentaryRepositoryInMemory implements ICommentaryRepository {
   async getAll(): Promise<Comments[]> {
     return this.commentaries;
   }
+  async delete(commentId: string): Promise<void> {
+    const commentIndex = await this.commentaries.findIndex(
+      (comment) => comment.id === commentId
+    );
+    this.commentaries.splice(commentIndex, 1);
+  }
+  async getById(commentId: string): Promise<Comments> {
+    const comment = this.commentaries.find(
+      (comment) => comment.id === commentId
+    );
+    console.log(this.commentaries);
+    return comment;
+  }
 }
 
-export { CommentaryRepositoryInMemory };
+export { CommentRepositoryInMemory };

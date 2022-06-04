@@ -349,6 +349,32 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Request to delete a comment",
+                "description": "This route is used to delete a comment by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "requester user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "This user does not exist!"
+                    }
+                }
             }
         },
         "/followers/{id}": {

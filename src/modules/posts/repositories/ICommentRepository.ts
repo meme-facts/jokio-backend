@@ -1,9 +1,11 @@
-import { ICommentaryDTO } from "../dtos/ICommentDTO";
+import { ICommentDTO } from "../dtos/ICommentDTO";
 import { Comments } from "../infra/typeorm/entities/Comment";
 
-interface ICommentaryRepository {
-  create({ userId, postId, message }: ICommentaryDTO): Promise<void>;
+interface ICommentRepository {
+  create({ userId, postId, message }: ICommentDTO): Promise<void>;
   getAll(): Promise<Comments[]>;
+  delete(commentId: string): Promise<void>;
+  getById(commentId: string): Promise<Comments>;
 }
 
-export { ICommentaryRepository };
+export { ICommentRepository };

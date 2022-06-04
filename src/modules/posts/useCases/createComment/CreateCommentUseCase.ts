@@ -1,18 +1,18 @@
-import { ICommentaryDTO } from "@modules/posts/dtos/ICommentDTO";
-import { ICommentaryRepository } from "@modules/posts/repositories/ICommentRepository";
+import { ICommentDTO } from "@modules/posts/dtos/ICommentDTO";
+import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class CreateCommentaryUseCase {
+class CreateCommentUseCase {
   constructor(
-    @inject("CommentaryRepository")
-    private commentaryRepository: ICommentaryRepository,
+    @inject("CommentRepository")
+    private commentaryRepository: ICommentRepository,
     @inject("PostRepository")
     private postRepository: IPostRepository
   ) {}
-  async execute({ userId, postId, message }: ICommentaryDTO): Promise<void> {
+  async execute({ userId, postId, message }: ICommentDTO): Promise<void> {
     const post = await this.postRepository.getById(postId);
 
     if (!post) {
@@ -26,4 +26,4 @@ class CreateCommentaryUseCase {
   }
 }
 
-export { CreateCommentaryUseCase };
+export { CreateCommentUseCase };

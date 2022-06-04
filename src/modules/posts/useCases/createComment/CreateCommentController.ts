@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { CreateCommentaryUseCase } from "./CreateCommentUseCase";
+import { CreateCommentUseCase } from "./CreateCommentUseCase";
 
-class CreateCommentaryController {
+class CreateCommentController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: userId } = request.user;
     const { id: postId } = request.params;
     const { message } = request.body;
     console.log(userId, postId, message);
-    const createCommentaryUseCase = container.resolve(CreateCommentaryUseCase);
+    const createCommentaryUseCase = container.resolve(CreateCommentUseCase);
     await createCommentaryUseCase.execute({
       userId,
       postId,
@@ -18,4 +18,4 @@ class CreateCommentaryController {
   }
 }
 
-export { CreateCommentaryController };
+export { CreateCommentController };
