@@ -22,7 +22,6 @@ let user1: User;
 let user2: User;
 let user3: User;
 let post: Post;
-let commentaries: Comments[];
 let commentId: string;
 describe("DeleteCommentaryUseCase", () => {
   beforeEach(async () => {
@@ -78,22 +77,38 @@ describe("DeleteCommentaryUseCase", () => {
   });
 
   it("should delete a comment", async () => {
-    console.log;
     await deleteCommentUseCase.execute(commentId, user1.id);
+    const commentaries = await commentaryRepositoryInMemory.getAll();
     expect(commentaries.length).toBe(0);
   });
 
-  //   it("should not be able to create a comment on a non existent comment", async () => {
-  //     await expect(
-  //       deleteCommentUseCase.execute("wrong_id", user1.id)
-  //     ).rejects.toEqual(new AppError("This comment does not exist", 404));
-  //   });
+  it("should not be able to create a comment on a non existent comment", async () => {
+    const commentary = await commentaryRepositoryInMemory.getAll();
+    commentId = commentary[0].id;
+    await expect(
+      deleteCommentUseCase.execute("wrong_id", user1.id)
+    ).rejects.toEqual(new AppError("This comment does not exist", 404));
+  });
 
-  //   it("should not be able to create a comment on a non existent comment", async () => {
-  //     await expect(
-  //       deleteCommentUseCase.execute(commentId, user3.id)
-  //     ).rejects.toEqual(
-  //       new AppError("Comment can only be deleted by owner or by post owner", 401)
-  //     );
-  //   });
+  it("should be able to delete a comment when logged user is who wrote the commentary", async () => {
+    await deleteCommentUseCase.execute(commentId, user2.id);
+    const commentaries = await commentaryRepositoryInMemory.getAll();
+    expect(commentaries.length).toBe(0);
+  });
+
+  it("should be able to delete a comment when logged user is the post owner", async () => {
+    await deleteCommentUseCase.execute(commentId, user1.id);
+    const commentaries = await commentaryRepositoryInMemory.getAll();
+    expect(commentaries.length).toBe(0);
+  });
+
+  it("should not be able to create a comment on a non existent comment", async () => {
+    const commentary = await commentaryRepositoryInMemory.getAll();
+    commentId = commentary[0].id;
+    await expect(
+      deleteCommentUseCase.execute(commentId, user3.id)
+    ).rejects.toEqual(
+      new AppError("Comment can only be deleted by owner or by post owner", 401)
+    );
+  });
 });

@@ -26,7 +26,6 @@ class CommentRepositoryInMemory implements ICommentRepository {
     const comment = this.commentaries.find(
       (comment) => comment.id === commentId
     );
-    console.log(this.commentaries);
     return comment;
   }
 }

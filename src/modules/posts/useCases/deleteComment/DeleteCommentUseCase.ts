@@ -13,13 +13,13 @@ class DeleteCommentUseCase {
   ) {}
   async execute(commentId: string, userId: string): Promise<void> {
     const comment = await this.commentRepository.getById(commentId);
-    console.log(comment);
+
     if (!comment) throw new AppError("This comment does not exist", 404);
     const { user_id: postOwnerId } = await this.postRepository.getById(
       comment.postId
     );
-    console.log(postOwnerId, comment.userId);
-    if (comment.userId !== userId && comment.userId !== postOwnerId) {
+
+    if (userId !== comment.userId && userId !== postOwnerId) {
       throw new AppError(
         "Comment can only be deleted by owner or by post owner",
         401
