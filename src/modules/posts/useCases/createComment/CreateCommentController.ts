@@ -7,7 +7,6 @@ class CreateCommentController {
     const { id: userId } = request.user;
     const { id: postId } = request.params;
     const { message } = request.body;
-    console.log(userId, postId, message);
     const createCommentaryUseCase = container.resolve(CreateCommentUseCase);
     await createCommentaryUseCase.execute({
       userId,
