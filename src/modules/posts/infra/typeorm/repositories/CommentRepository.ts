@@ -9,11 +9,12 @@ class CommentRepository implements ICommentRepository {
     this.repository = getRepository(Comments);
   }
 
-  async create({ userId, postId, message }: ICommentDTO): Promise<void> {
+  async create({ userId, postId, message, id }: ICommentDTO): Promise<void> {
     const commentary = this.repository.create({
       userId,
       postId,
       message,
+      id,
     });
     await this.repository.save(commentary);
   }

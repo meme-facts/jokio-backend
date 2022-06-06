@@ -6,17 +6,17 @@ import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
 import { AppError } from "@shared/errors/AppError";
-import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
 import { CreateCommentUseCase } from "../createComment/CreateCommentUseCase";
-import { DeleteCommentUseCase } from "./DeleteCommentUseCase";
+import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
+import { UpdateCommentUseCase } from "./UpdateCommentUseCase";
 
+let updateCommentUseCase: UpdateCommentUseCase;
 let commentaryRepositoryInMemory: ICommentRepository;
 let userRepositoryInMemory: UserRepositoryInMemory;
 let postRepositoryInMemory: PostRepositoryInMemory;
 let createUserUseCase: CreateUserUseCase;
 let createPostUseCase: CreatePostUseCase;
 let createCommentaryUseCase: CreateCommentUseCase;
-let deleteCommentUseCase: DeleteCommentUseCase;
 let user1: User;
 let user2: User;
 let user3: User;
@@ -37,6 +37,9 @@ describe("DeleteCommentaryUseCase", () => {
     createCommentaryUseCase = new CreateCommentUseCase(
       commentaryRepositoryInMemory,
       postRepositoryInMemory
+    );
+    updateCommentUseCase = new UpdateCommentUseCase(
+      commentaryRepositoryInMemory
     );
 
     const firstUserTest = await createUserUseCase.execute({
@@ -71,47 +74,40 @@ describe("DeleteCommentaryUseCase", () => {
       message: "Olha um teste de comentário chegando",
       postId: post.id,
     });
-    deleteCommentUseCase = new DeleteCommentUseCase(
-      commentaryRepositoryInMemory,
-      postRepositoryInMemory
+
+    const commentary = await commentaryRepositoryInMemory.getAll();
+    commentId = commentary[0].id;
+  });
+
+  it("should update an comment by id", async () => {
+    await updateCommentUseCase.execute({
+      id: commentId,
+      message: "meeeh, essa foi boa hein!!!",
+      userId: user2.id,
+    });
+    const updatedComment = await commentaryRepositoryInMemory.getById(
+      commentId
     );
-    const commentary = await commentaryRepositoryInMemory.getAll();
-    commentId = commentary[0].id;
+    expect(updatedComment.message).toEqual("meeeh, essa foi boa hein!!!");
   });
-
-  it("should delete a comment", async () => {
-    await deleteCommentUseCase.execute(commentId, user1.id);
-    const commentaries = await commentaryRepositoryInMemory.getAll();
-    expect(commentaries.length).toBe(0);
-  });
-
-  it("should not be able to create a comment on a non existent comment", async () => {
-    const commentary = await commentaryRepositoryInMemory.getAll();
-    commentId = commentary[0].id;
+  it("should not be able to create a comment when comment is not found", async () => {
     await expect(
-      deleteCommentUseCase.execute("wrong_id", user1.id)
-    ).rejects.toEqual(new AppError("This comment does not exist", 404));
+      updateCommentUseCase.execute({
+        id: "wrong_id",
+        message: "meeeh, essa foi boa hein!!!",
+        userId: user2.id,
+      })
+    ).rejects.toEqual(new AppError("Comment not found!", 404));
   });
-
-  it("should be able to delete a comment when logged user is who wrote the commentary", async () => {
-    await deleteCommentUseCase.execute(commentId, user2.id);
-    const commentaries = await commentaryRepositoryInMemory.getAll();
-    expect(commentaries.length).toBe(0);
-  });
-
-  it("should be able to delete a comment when logged user is the post owner", async () => {
-    await deleteCommentUseCase.execute(commentId, user1.id);
-    const commentaries = await commentaryRepositoryInMemory.getAll();
-    expect(commentaries.length).toBe(0);
-  });
-
-  it("should not be able to create a comment on a non existent comment", async () => {
-    const commentary = await commentaryRepositoryInMemory.getAll();
-    commentId = commentary[0].id;
+  it("should not be able to create a comment when logged user is not the comment author", async () => {
     await expect(
-      deleteCommentUseCase.execute(commentId, user3.id)
+      updateCommentUseCase.execute({
+        id: commentId,
+        message: "meeeh, essa foi boa hein!!!",
+        userId: user1.id,
+      })
     ).rejects.toEqual(
-      new AppError("Comment can only be deleted by owner or by post owner", 401)
+      new AppError("Only comment author is allowed to update it!", 401)
     );
   });
 });

@@ -350,6 +350,49 @@
                     }
                 }
             },
+            "put": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Update a comment",
+                "description": "This route is used to update a comment passing comment id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "comment id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message ": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "message": "this is a test commentary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Updated"
+                    },
+                    "404": {
+                        "description": "Relation not found."
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Comments"

@@ -4,14 +4,19 @@ import { ICommentRepository } from "../ICommentRepository";
 
 class CommentRepositoryInMemory implements ICommentRepository {
   private commentaries: Comments[] = [];
-  async create({ userId, postId, message }: ICommentDTO): Promise<void> {
-    const commentary = new Comments();
-    Object.assign(commentary, {
-      userId,
-      postId,
-      message,
-    });
-    this.commentaries.push(commentary);
+  async create({ userId, postId, message, id }: ICommentDTO): Promise<void> {
+    const comment = await this.getById(id);
+    if (comment) {
+      comment.message = message;
+    } else {
+      const commentary = new Comments();
+      Object.assign(commentary, {
+        userId,
+        postId,
+        message,
+      });
+      this.commentaries.push(commentary);
+    }
   }
   async getAll(): Promise<Comments[]> {
     return this.commentaries;
