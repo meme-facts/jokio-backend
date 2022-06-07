@@ -1,6 +1,7 @@
+import { StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
-import { StatusEnum } from "@shared/enums/StatusEnum";
+
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 

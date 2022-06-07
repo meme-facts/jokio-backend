@@ -1,4 +1,3 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
 import {
   Column,
   CreateDateColumn,
@@ -8,19 +7,19 @@ import {
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
-@Entity("followers")
-class Follower {
+@Entity("postReactions")
+class PostReaction {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  fStatus: string;
+  reactionType: string;
 
   @Column()
-  requestedUserId: string;
+  userId: string;
 
   @Column()
-  requesterUserId: string;
+  postId: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -32,10 +31,7 @@ class Follower {
     if (!this.id) {
       this.id = uuidV4();
     }
-    if (!this.fStatus) {
-      this.fStatus = StatusEnum.Accepted;
-    }
   }
 }
 
-export { Follower };
+export { PostReaction };

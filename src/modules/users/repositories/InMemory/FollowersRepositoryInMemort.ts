@@ -1,7 +1,8 @@
+import { StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
 import { Follower } from "@modules/users/infra/typeorm/entities/Followers";
-import { StatusEnum } from "@shared/enums/StatusEnum";
+
 import { IFollowersRepository, IRelation } from "../IFollowersRepository";
 
 class FollowersRepositoryInMemory implements IFollowersRepository {

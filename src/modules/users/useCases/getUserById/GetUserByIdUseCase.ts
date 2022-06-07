@@ -1,8 +1,9 @@
+import { ResponseStatus, StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IGetUserByIdDTO } from "@modules/users/dtos/IGetUserByIdDTO";
 import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
-import { ResponseStatus, StatusEnum } from "@shared/enums/StatusEnum";
+
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 

@@ -30,14 +30,14 @@ describe("RequestUserToFollowUseCase", () => {
       isPrivate: true,
     });
 
-    const seccondUserTest = await createUserUseCase.execute({
+    const secondUserTest = await createUserUseCase.execute({
       full_name: `Teste da Silva`,
       nickname: `Silvon2`,
       email: `silva@test2e.com`,
       password: "1234",
     });
     user1 = firstUserTest.user;
-    user2 = seccondUserTest.user;
+    user2 = secondUserTest.user;
   });
   it("should request a user to follow", async () => {
     await requestUserToFollowUseCase.execute(user1.id, user2.id);

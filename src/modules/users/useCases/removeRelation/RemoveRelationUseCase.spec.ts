@@ -32,17 +32,17 @@ describe("RemoveRelationUseCase", () => {
       password: "1234",
     });
 
-    const seccondUserTest = await createUserUseCase.execute({
+    const secondUserTest = await createUserUseCase.execute({
       full_name: `Teste da Silva`,
       nickname: `Silvon2`,
       email: `silva@test2e.com`,
       password: "1234",
     });
     user1 = firstUserTest.user;
-    user2 = seccondUserTest.user;
+    user2 = secondUserTest.user;
     await requestUserToFollowUseCase.execute(
       firstUserTest.user.id,
-      seccondUserTest.user.id
+      secondUserTest.user.id
     );
     removeRelationUseCase = new RemoveRelationUseCase(followerRepository);
   });

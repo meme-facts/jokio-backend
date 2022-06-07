@@ -1,27 +1,29 @@
+import { ReactionTypeEnum } from "@modules/posts/enums/ReactionTypeEnum";
 import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
 import { CommentRepositoryInMemory } from "@modules/posts/repositories/inMemory/CommentRepositoryInMemory";
+import { PostReactionsRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostReactionsRepositoryInMemory";
 import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
+import { IPostReactionRepository } from "@modules/posts/repositories/IPostReactionRepository";
 import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
-import { AppError } from "@shared/errors/AppError";
+import { CreateCommentUseCase } from "../createComment/CreateCommentUseCase";
 import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
-import { CreateCommentUseCase } from "./CreateCommentUseCase";
+import { CreateReactionUseCase } from "./createReactionUseCase";
 
-let commentaryRepositoryInMemory: ICommentRepository;
 let userRepositoryInMemory: UserRepositoryInMemory;
 let postRepositoryInMemory: PostRepositoryInMemory;
 let createUserUseCase: CreateUserUseCase;
 let createPostUseCase: CreatePostUseCase;
-let createCommentaryUseCase: CreateCommentUseCase;
+let createReactionUseCase: CreateReactionUseCase;
+let reactionRepository: IPostReactionRepository;
 let user1: User;
 let user2: User;
 let post: Post;
 
 describe("CreateCommentaryUseCase", () => {
   beforeEach(async () => {
-    commentaryRepositoryInMemory = new CommentRepositoryInMemory();
     userRepositoryInMemory = new UserRepositoryInMemory();
     postRepositoryInMemory = new PostRepositoryInMemory();
     createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
@@ -29,10 +31,7 @@ describe("CreateCommentaryUseCase", () => {
       postRepositoryInMemory,
       userRepositoryInMemory
     );
-    createCommentaryUseCase = new CreateCommentUseCase(
-      commentaryRepositoryInMemory,
-      postRepositoryInMemory
-    );
+    reactionRepository = new PostReactionsRepositoryInMemory();
     const firstUserTest = await createUserUseCase.execute({
       full_name: "opateste",
       nickname: "teste",
@@ -52,27 +51,19 @@ describe("CreateCommentaryUseCase", () => {
       user_id: user1.id,
       img_url: "https://i.ytimg.com/vi/C_73egXn3bs/maxresdefault.jpg",
     });
-  });
-
-  it("should add a commentary", async () => {
-    await createCommentaryUseCase.execute({
-      userId: user2.id,
-      message: "Olha um teste de comentário chegando",
-      postId: post.id,
-    });
-    const commentary = await commentaryRepositoryInMemory.getAll();
-    expect(commentary[0].message).toEqual(
-      "Olha um teste de comentário chegando"
+    createReactionUseCase = new CreateReactionUseCase(
+      reactionRepository,
+      postRepositoryInMemory
     );
   });
-
-  it("should not be able to add a commentary on a non existent post", async () => {
-    await expect(
-      createCommentaryUseCase.execute({
-        userId: user2.id,
-        message: "Olha um teste de comentário chegando",
-        postId: "wrong_post_id",
-      })
-    ).rejects.toEqual(new AppError("This post does not exist"));
+  it("should add a reaction type L(Like)", async () => {
+    await createReactionUseCase.execute({
+      postId: post.id,
+      userId: user1.id,
+      reactionType: ReactionTypeEnum.Like,
+    });
   });
+  // it
+  // it should add a reaction type D(Dislike)
+  // it should not be able to add a reaction when post do not exist
 });

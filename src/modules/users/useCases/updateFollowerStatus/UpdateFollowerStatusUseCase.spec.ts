@@ -1,9 +1,10 @@
+import { StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
-import { StatusEnum } from "@shared/enums/StatusEnum";
+
 import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
@@ -35,17 +36,17 @@ describe("UpdateFollowerStatusUseCase", () => {
       password: "1234",
     });
 
-    const seccondUserTest = await createUserUseCase.execute({
+    const secondUserTest = await createUserUseCase.execute({
       full_name: `Teste da Silva`,
       nickname: `Silvon2`,
       email: `silva@test2e.com`,
       password: "1234",
     });
     user1 = firstUserTest.user;
-    user2 = seccondUserTest.user;
+    user2 = secondUserTest.user;
     await requestUserToFollowUseCase.execute(
       firstUserTest.user.id,
-      seccondUserTest.user.id
+      secondUserTest.user.id
     );
   });
 
