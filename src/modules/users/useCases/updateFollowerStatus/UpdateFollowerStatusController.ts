@@ -1,4 +1,4 @@
-import { StatusEnum } from "@shared/enums/StatusEnum";
+import { StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { UpdateFollowerStatusUseCase } from "./UpdateFollowerStatusUseCase";

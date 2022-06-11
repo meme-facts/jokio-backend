@@ -1,4 +1,4 @@
-import { StatusEnum } from "@shared/enums/StatusEnum";
+import { StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { celebrate, Joi, Segments } from "celebrate";
 
 const UpdateFollowersStatusValidator = celebrate({

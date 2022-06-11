@@ -12,6 +12,21 @@ class PostReactionsRepositoryInMemory implements IPostReactionRepository {
     });
     this.postReactions.push(postReaction);
   }
+  async getAll(): Promise<PostReaction[]> {
+    return this.postReactions;
+  }
+  async getReaction(id: string): Promise<PostReaction> {
+    const reaction = await this.postReactions.find(
+      (reaction) => reaction.id === id
+    );
+    return reaction;
+  }
+  async delete(id: string): Promise<void> {
+    const reactionIndex = this.postReactions.findIndex(
+      (reaction) => reaction.id === id
+    );
+    this.postReactions.splice(reactionIndex, 1);
+  }
 }
 
 export { PostReactionsRepositoryInMemory };

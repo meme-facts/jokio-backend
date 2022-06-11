@@ -6,6 +6,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 class CreateReactionUseCase {
   constructor(
+    @inject("PostReactionRepository ")
     private reactionsRepository: IPostReactionRepository,
     @inject("PostRepository")
     private postRepository: IPostRepository

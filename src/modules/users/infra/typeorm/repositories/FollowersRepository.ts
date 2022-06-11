@@ -1,10 +1,11 @@
+import { StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
 import {
   IFollowersRepository,
   IRelation,
 } from "@modules/users/repositories/IFollowersRepository";
-import { StatusEnum } from "@shared/enums/StatusEnum";
+
 import { getRepository, Repository } from "typeorm";
 import { Follower } from "../entities/Followers";
 

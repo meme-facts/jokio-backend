@@ -420,6 +420,55 @@
                 }
             }
         },
+        "/reactions/{id}": {
+            "post": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Add reaction",
+                "description": "This route is used to add a reaction to a post",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "post id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message ": {
+                                        "type": "string"
+                                    }
+                                },
+                                "enum": [
+                                    "L",
+                                    "D"
+                                ],
+                                "example": {
+                                    "message": "L"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "Created"
+                        },
+                        "404": {
+                            "description": "Post not found."
+                        }
+                    }
+                }
+            }
+        },
         "/followers/{id}": {
             "post": {
                 "tags": [

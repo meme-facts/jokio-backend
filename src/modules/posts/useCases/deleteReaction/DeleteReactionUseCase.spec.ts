@@ -1,7 +1,6 @@
 import { ReactionTypeEnum } from "@modules/posts/enums/ReactionTypeEnum";
 import { Post } from "@modules/posts/infra/typeorm/entities/Post";
-import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
-import { CommentRepositoryInMemory } from "@modules/posts/repositories/inMemory/CommentRepositoryInMemory";
+import { PostReaction } from "@modules/posts/infra/typeorm/entities/PostReactions";
 import { PostReactionsRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostReactionsRepositoryInMemory";
 import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
 import { IPostReactionRepository } from "@modules/posts/repositories/IPostReactionRepository";
@@ -9,9 +8,9 @@ import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
 import { AppError } from "@shared/errors/AppError";
-import { CreateCommentUseCase } from "../createComment/CreateCommentUseCase";
 import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
-import { CreateReactionUseCase } from "./CreateReactionUseCase";
+import { CreateReactionUseCase } from "../createReaction/CreateReactionUseCase";
+import { DeleteReactionUseCase } from "./DeleteReactionUseCase";
 
 let userRepositoryInMemory: UserRepositoryInMemory;
 let postRepositoryInMemory: PostRepositoryInMemory;
@@ -19,9 +18,12 @@ let createUserUseCase: CreateUserUseCase;
 let createPostUseCase: CreatePostUseCase;
 let createReactionUseCase: CreateReactionUseCase;
 let reactionRepository: IPostReactionRepository;
+let deleteReaction: DeleteReactionUseCase;
 let user1: User;
 let user2: User;
 let post: Post;
+let reactionOne: PostReaction;
+let reactionTwo: PostReaction;
 
 describe("CreateCommentaryUseCase", () => {
   beforeEach(async () => {
@@ -33,6 +35,7 @@ describe("CreateCommentaryUseCase", () => {
       userRepositoryInMemory
     );
     reactionRepository = new PostReactionsRepositoryInMemory();
+    deleteReaction = new DeleteReactionUseCase(reactionRepository);
     const firstUserTest = await createUserUseCase.execute({
       full_name: "opateste",
       nickname: "teste",
@@ -56,34 +59,35 @@ describe("CreateCommentaryUseCase", () => {
       reactionRepository,
       postRepositoryInMemory
     );
-  });
-  it("should add a reaction type L(Like)", async () => {
     await createReactionUseCase.execute({
       postId: post.id,
       userId: user1.id,
       reactionType: ReactionTypeEnum.Like,
     });
-    const postReaction = await reactionRepository.getAll();
-    expect(postReaction[0].reactionType).toEqual(ReactionTypeEnum.Like);
-  });
-
-  it("it should add a reaction type D(Dislike)", async () => {
     await createReactionUseCase.execute({
       postId: post.id,
       userId: user1.id,
       reactionType: ReactionTypeEnum.Dislike,
     });
-    const postReaction = await reactionRepository.getAll();
-    expect(postReaction[0].reactionType).toEqual(ReactionTypeEnum.Dislike);
+    const reactions = await reactionRepository.getAll();
+    reactionOne = reactions[0];
+    reactionTwo = reactions[1];
   });
 
-  it("it should not be able to add a reaction when post do not exist", async () => {
-    await expect(
-      createReactionUseCase.execute({
-        postId: "wrong_post_id",
-        userId: user1.id,
-        reactionType: ReactionTypeEnum.Dislike,
-      })
-    ).rejects.toEqual(new AppError("This post does not exist", 404));
+  it("should be able to delete a reaction type like", async () => {
+    await deleteReaction.execute(reactionOne.id);
+    const reactions = await reactionRepository.getAll();
+    expect(reactions.length).toBe(1);
+  });
+  it("should be able to delete a reaction type dislike", async () => {
+    await deleteReaction.execute(reactionTwo.id);
+    const reactions = await reactionRepository.getAll();
+    expect(reactions.length).toBe(1);
+  });
+
+  it("should return error when try to delete a reaction that does not exists", async () => {
+    await expect(deleteReaction.execute("wrong_id")).rejects.toEqual(
+      new AppError("Reaction not found", 404)
+    );
   });
 });
