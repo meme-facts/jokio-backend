@@ -467,6 +467,53 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Remove reaction",
+                "description": "This route is used to remove a reaction to a post",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "post id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message ": {
+                                        "type": "string"
+                                    }
+                                },
+                                "enum": [
+                                    "L",
+                                    "D"
+                                ],
+                                "example": {
+                                    "message": "L"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "204": {
+                            "description": "Removed"
+                        },
+                        "404": {
+                            "description": "Post not found."
+                        }
+                    }
+                }
             }
         },
         "/followers/{id}": {

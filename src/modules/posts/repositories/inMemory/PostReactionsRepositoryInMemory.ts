@@ -15,9 +15,16 @@ class PostReactionsRepositoryInMemory implements IPostReactionRepository {
   async getAll(): Promise<PostReaction[]> {
     return this.postReactions;
   }
-  async getReaction(id: string): Promise<PostReaction> {
+  async getReaction({
+    postId,
+    reactionType,
+    userId,
+  }: IReactionsDTO): Promise<PostReaction> {
     const reaction = await this.postReactions.find(
-      (reaction) => reaction.id === id
+      (reaction) =>
+        reaction.postId === postId &&
+        reaction.reactionType === reactionType &&
+        reaction.userId === userId
     );
     return reaction;
   }

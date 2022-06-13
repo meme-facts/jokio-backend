@@ -14,11 +14,17 @@ class DeleteReactionUseCase {
     reactionType,
     userId,
   }: IReactionsDTO): Promise<void> {
-    const reaction = await this.reactionRepository.getReaction(id);
+    const reaction = await this.reactionRepository.getReaction({
+      postId,
+      reactionType,
+      userId,
+    });
+    console.log(postId, userId, reactionType);
     if (!reaction) {
       throw new AppError("Reaction not found", 404);
     }
-    await this.reactionRepository.delete(id);
+
+    await this.reactionRepository.delete(reaction.id);
   }
 }
 

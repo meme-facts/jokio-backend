@@ -75,19 +75,31 @@ describe("CreateCommentaryUseCase", () => {
   });
 
   it("should be able to delete a reaction type like", async () => {
-    await deleteReaction.execute(reactionOne.id);
+    await deleteReaction.execute({
+      postId: post.id,
+      reactionType: ReactionTypeEnum.Like,
+      userId: user1.id,
+    });
     const reactions = await reactionRepository.getAll();
     expect(reactions.length).toBe(1);
   });
   it("should be able to delete a reaction type dislike", async () => {
-    await deleteReaction.execute(reactionTwo.id);
+    await deleteReaction.execute({
+      postId: post.id,
+      reactionType: ReactionTypeEnum.Dislike,
+      userId: user1.id,
+    });
     const reactions = await reactionRepository.getAll();
     expect(reactions.length).toBe(1);
   });
 
   it("should return error when try to delete a reaction that does not exists", async () => {
-    await expect(deleteReaction.execute("wrong_id")).rejects.toEqual(
-      new AppError("Reaction not found", 404)
-    );
+    await expect(
+      deleteReaction.execute({
+        postId: "wrong_id",
+        reactionType: ReactionTypeEnum.Dislike,
+        userId: user1.id,
+      })
+    ).rejects.toEqual(new AppError("Reaction not found", 404));
   });
 });

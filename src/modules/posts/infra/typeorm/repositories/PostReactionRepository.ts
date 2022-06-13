@@ -20,12 +20,22 @@ class PostReactionRepository implements IPostReactionRepository {
   async getAll(): Promise<PostReaction[]> {
     throw new Error("Method not implemented.");
   }
-  async getReaction(id: string): Promise<PostReaction> {
-    const reaction = await this.repository.findOne(id);
-    return reaction;
-  }
+
   async delete(id: string): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async getReaction({
+    postId,
+    reactionType,
+    userId,
+  }: IReactionsDTO): Promise<PostReaction> {
+    const reaction = await this.repository.findOne({
+      postId,
+      reactionType,
+      userId,
+    });
+    return reaction;
   }
 }
 
