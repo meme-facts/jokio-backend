@@ -5,10 +5,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
+import { PostReaction } from "./PostReactions";
 
 @Entity("posts")
 class Post {
@@ -30,6 +32,9 @@ class Post {
   @ManyToOne((type) => User)
   @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user: User;
+
+  @OneToMany((type) => PostReaction, (postReaction) => postReaction.post)
+  postReaction: PostReaction[];
 
   @CreateDateColumn()
   created_at: Date;

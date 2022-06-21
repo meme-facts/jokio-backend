@@ -19,7 +19,7 @@ class DeleteReactionUseCase {
       reactionType,
       userId,
     });
-    console.log(postId, userId, reactionType);
+
     if (!reaction) {
       throw new AppError("Reaction not found", 404);
     }

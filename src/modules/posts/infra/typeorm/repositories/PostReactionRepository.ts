@@ -14,7 +14,6 @@ class PostReactionRepository implements IPostReactionRepository {
       userId,
       reactionType,
     });
-    console.log(postReaction);
     await this.repository.save(postReaction);
   }
   async getAll(): Promise<PostReaction[]> {

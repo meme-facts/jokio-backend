@@ -7,7 +7,7 @@ class DeleteReactionController {
     const { id: postId } = request.params;
     const { reactionType } = request.body;
     const { id: userId } = request.user;
-    console.log(postId);
+
     const deleteReactionUseCase = container.resolve(DeleteReactionUseCase);
     await deleteReactionUseCase.execute({ postId, reactionType, userId });
     return response.status(204).send();
