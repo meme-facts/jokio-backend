@@ -7,12 +7,15 @@ class CreateReactionController {
     const { id: userId } = request.user;
     const { id: postId } = request.params;
     const { reactionType } = request.body;
+
     const createReactionUseCase = container.resolve(CreateReactionUseCase);
+
     await createReactionUseCase.execute({
       postId,
       reactionType,
       userId,
     });
+
     return response.status(201).send();
   }
 }

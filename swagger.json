@@ -444,7 +444,7 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "message ": {
+                                    "reactionType ": {
                                         "type": "string"
                                     }
                                 },
@@ -453,7 +453,7 @@
                                     "D"
                                 ],
                                 "example": {
-                                    "message": "L"
+                                    "reactionType": "L"
                                 }
                             }
                         }

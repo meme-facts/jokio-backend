@@ -39,10 +39,7 @@ describe("CreatePostUseCase", () => {
       postRepositoryInMemory,
       userRepositoryInMemory
     );
-    returnPostUseCase = new ReturnPostsUseCase(
-      postRepositoryInMemory,
-      userRepositoryInMemory
-    );
+    returnPostUseCase = new ReturnPostsUseCase(postRepositoryInMemory);
     user = await createUserUseCase.execute({
       full_name: "opateste",
       nickname: "teste2",
@@ -122,5 +119,11 @@ describe("CreatePostUseCase", () => {
   });
   //
   //
-  //it should return reactions quantity per post
+  it("should return posts with their users owner informations", async () => {
+    const posts = await returnPostUseCase.execute({
+      page: 1,
+      limit: 10,
+    });
+    expect(posts[0].user.id).toEqual(user.user.id);
+  });
 });

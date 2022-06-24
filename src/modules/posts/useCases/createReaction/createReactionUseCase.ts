@@ -6,7 +6,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 class CreateReactionUseCase {
   constructor(
-    @inject("PostReactionRepository ")
+    @inject("PostReactionRepository")
     private reactionsRepository: IPostReactionRepository,
     @inject("PostRepository")
     private postRepository: IPostRepository
@@ -20,6 +20,7 @@ class CreateReactionUseCase {
     if (!post) {
       throw new AppError("This post does not exist", 404);
     }
+
     await this.reactionsRepository.create({
       postId,
       userId,

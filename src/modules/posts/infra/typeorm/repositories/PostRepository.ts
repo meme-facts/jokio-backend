@@ -1,3 +1,4 @@
+import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
 import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { getRepository, Repository } from "typeorm";
@@ -21,6 +22,18 @@ class PostRepository implements IPostRepository {
   async getById(postId: string): Promise<Post> {
     const post = await this.repository.findOne(postId);
     return post;
+  }
+  async getAll({ page, limit, user_id }: IGetPostsDTO): Promise<Post[]> {
+    const offset: number = (page - 1) * limit;
+    const posts = await this.repository.find({
+      skip: offset,
+      take: limit,
+      relations: ["users"],
+      order: {
+        updated_at: "DESC",
+      },
+    });
+    return posts;
   }
 }
 

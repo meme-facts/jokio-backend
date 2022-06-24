@@ -14,15 +14,9 @@ interface IReactionsQuantity {
 class ReturnPostsUseCase {
   constructor(
     @inject("PostRepository")
-    private postRepository: IPostRepository,
-    @inject("UserRepository")
-    private userRepository: IUserRepository
+    private postRepository: IPostRepository
   ) {}
-  async execute({
-    page,
-    limit,
-    user_id,
-  }: IGetPostsDTO): Promise<{ posts: Post[]; reactions: IReactionsQuantity }> {
+  async execute({ page, limit, user_id }: IGetPostsDTO): Promise<Post[]> {
     const posts = await this.postRepository.getAll({ page, limit, user_id });
 
     return posts;

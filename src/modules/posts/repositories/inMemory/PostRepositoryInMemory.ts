@@ -5,8 +5,6 @@ import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import { PostReaction } from "@modules/posts/infra/typeorm/entities/PostReactions";
 import { IPostRepository } from "../IPostRepository";
 
-interface;
-
 class PostRepositoryInMemory implements IPostRepository {
   posts: Post[] = [];
   async create({ postDescription, user_id, img_url }: IPostDTO): Promise<Post> {
@@ -23,35 +21,16 @@ class PostRepositoryInMemory implements IPostRepository {
     return this.posts.find((post) => post.id === postId);
   }
   async getAll({ page, limit, user_id }: IGetPostsDTO): Promise<Post[]> {
-    let response;
+    let response = this.posts;
     if (user_id) {
       response = this.posts.filter((post) => post.user_id === user_id);
-    } else {
-      response = this.posts;
     }
     const paginatedValues: Post[] = response.slice(
       (page - 1) * limit,
       page * limit
     );
 
-    const finalValue: {
-      post: Post;
-      reactionsQuantity: { likes: number; dislikes: number };
-    } = paginatedValues.map((post) => {
-      let reactionsQuantity: { likes: number; dislikes: number };
-      post.postReaction.map((reaction) => {
-        if (reaction.reactionType === ReactionTypeEnum.Like) {
-          reactionsQuantity.likes += 1;
-        } else {
-          reactionsQuantity.dislikes += 1;
-        }
-        return {
-          ...post,
-          reactionsQuantity,
-        };
-      });
-    });
-    return finalValue;
+    return paginatedValues;
   }
   async insertReaction(
     postId: string,
