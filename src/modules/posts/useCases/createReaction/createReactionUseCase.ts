@@ -20,7 +20,6 @@ class CreateReactionUseCase {
     if (!post) {
       throw new AppError("This post does not exist", 404);
     }
-
     await this.reactionsRepository.create({
       postId,
       userId,
