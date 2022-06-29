@@ -1,4 +1,5 @@
-// import { Post } from "@modules/posts/infra/typeorm/entities/Post";
+import { Post } from "@modules/posts/infra/typeorm/entities/Post";
+
 import {
   Column,
   CreateDateColumn,
@@ -38,8 +39,8 @@ class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // @OneToMany((type) => Post, (post) => post.user)
-  // post: Post[];
+  @OneToMany((type) => Post, (post) => post.user)
+  post: Post[];
 
   constructor() {
     if (!this.id) {

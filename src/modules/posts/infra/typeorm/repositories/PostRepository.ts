@@ -33,7 +33,7 @@ class PostRepository implements IPostRepository {
       },
       skip: offset,
       take: limit,
-      relations: ["users"],
+      relations: ["user"],
       order: {
         updated_at: "DESC",
       },
