@@ -16,8 +16,8 @@ class ReturnPostsUseCase {
     @inject("PostRepository")
     private postRepository: IPostRepository
   ) {}
-  async execute({ page, limit, user_id }: IGetPostsDTO): Promise<Post[]> {
-    const posts = await this.postRepository.getAll({ page, limit, user_id });
+  async execute({ page, limit }: IGetPostsDTO): Promise<Post[]> {
+    const posts = await this.postRepository.getAll({ page, limit });
 
     return posts;
   }

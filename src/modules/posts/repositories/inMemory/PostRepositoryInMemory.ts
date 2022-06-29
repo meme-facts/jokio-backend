@@ -32,18 +32,18 @@ class PostRepositoryInMemory implements IPostRepository {
 
     return paginatedValues;
   }
-  async insertReaction(
-    postId: string,
-    userId: string,
-    reactionType: string
-  ): Promise<void> {
-    const postReactions = new PostReaction();
-    postReactions.reactionType = reactionType;
-    postReactions.userId = userId;
-    postReactions.postId = postId;
-    const post = this.posts.find((post) => post.id === postId);
-    post.postReaction.push(postReactions);
-  }
+  // async insertReaction(
+  //   postId: string,
+  //   userId: string,
+  //   reactionType: string
+  // ): Promise<void> {
+  //   const postReactions = new PostReaction();
+  //   postReactions.reactionType = reactionType;
+  //   postReactions.userId = userId;
+  //   postReactions.postId = postId;
+  //   const post = this.posts.find((post) => post.id === postId);
+  //   post.postReaction.push(postReactions);
+  // }
 }
 
 export { PostRepositoryInMemory };

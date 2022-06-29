@@ -23,9 +23,14 @@ class PostRepository implements IPostRepository {
     const post = await this.repository.findOne(postId);
     return post;
   }
-  async getAll({ page, limit, user_id }: IGetPostsDTO): Promise<Post[]> {
+  async getAll({ page, limit }: IGetPostsDTO): Promise<Post[]> {
     const offset: number = (page - 1) * limit;
     const posts = await this.repository.find({
+      where: {
+        user: {
+          isPrivate: false,
+        },
+      },
       skip: offset,
       take: limit,
       relations: ["users"],
