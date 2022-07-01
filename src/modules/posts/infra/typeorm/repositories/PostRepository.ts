@@ -31,7 +31,7 @@ class PostRepository implements IPostRepository {
     const count = await this.repository.count({
       join: {
         alias: "post",
-        leftJoin: {
+        innerJoin: {
           user: "post.user",
         },
       },
@@ -44,7 +44,7 @@ class PostRepository implements IPostRepository {
     const posts = await this.repository.find({
       join: {
         alias: "post",
-        leftJoin: {
+        innerJoin: {
           user: "post.user",
         },
       },
