@@ -61,6 +61,45 @@ class PostRepository implements IPostRepository {
     });
     return { posts, count };
   }
+  async getAllByUserId({
+    page,
+    limit,
+    user_id,
+  }: IGetPostsDTO): Promise<{ posts: Post[]; count: number }> {
+    const offset: number = (page - 1) * limit;
+    const count = await this.repository.count({
+      join: {
+        alias: "post",
+        innerJoin: {
+          user: "post.user",
+        },
+      },
+      where: {
+        user: {
+          id: user_id,
+        },
+      },
+    });
+    const posts = await this.repository.find({
+      join: {
+        alias: "post",
+        innerJoin: {
+          user: "post.user",
+        },
+      },
+      where: {
+        user: {
+          id: user_id,
+        },
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        updated_at: "DESC",
+      },
+    });
+    return { posts, count };
+  }
 
   async getByUser({
     page,

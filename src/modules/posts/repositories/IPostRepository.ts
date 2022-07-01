@@ -14,6 +14,11 @@ interface IPostRepository {
     limit,
     user_id,
   }: IGetPostsDTO): Promise<{ posts: Post[]; count: number }>;
+  getAllByUserId({
+    page,
+    limit,
+    user_id,
+  }: IGetPostsDTO): Promise<{ posts: Post[]; count: number }>;
 }
 
 export { IPostRepository };

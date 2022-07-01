@@ -371,6 +371,67 @@
                     "Posts"
                 ],
                 "summary": "List Posts",
+                "description": "Listing all posts from the logged user's following accounts && paginated",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "requestedUserId": {
+                                                "type": "string"
+                                            },
+                                            "requesterUserId": {
+                                                "type": "string"
+                                            },
+                                            "fStatus": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Public users do not receive friend request."
+                    }
+                }
+            }
+        },
+        "/post/{id}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "List Posts by user Id",
                 "description": "Listing all posts paginated",
                 "parameters": [
                     {
@@ -384,6 +445,15 @@
                         "in": "query",
                         "type": "string",
                         "required": false
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
