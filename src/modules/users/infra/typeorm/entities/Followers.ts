@@ -3,10 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
+import { User } from "./Users";
 
 @Entity("followers")
 class Follower {
@@ -27,6 +30,14 @@ class Follower {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  // @ManyToOne((type) => User)
+  // @JoinColumn({ name: "requestedUserId", referencedColumnName: "id" })
+  // user: User;
+
+  // @ManyToOne((type) => User)
+  // @JoinColumn({ name: "requesterUserId", referencedColumnName: "id" })
+  // following: User;
 
   constructor() {
     if (!this.id) {

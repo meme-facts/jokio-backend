@@ -40,6 +40,24 @@ class PostRepository implements IPostRepository {
     });
     return posts;
   }
+
+  async getByUser({ page, limit, user_id }: IGetPostsDTO) {
+    const offset: number = (page - 1) * limit;
+    const posts = await this.repository.find({
+      where: {
+        user: {
+          following: user_id,
+        },
+      },
+      skip: offset,
+      take: limit,
+      relations: ["user"],
+      order: {
+        updated_at: "DESC",
+      },
+    });
+    return posts;
+  }
 }
 
 export { PostRepository };

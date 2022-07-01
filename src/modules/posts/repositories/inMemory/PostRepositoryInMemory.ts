@@ -20,30 +20,18 @@ class PostRepositoryInMemory implements IPostRepository {
   async getById(postId: string): Promise<Post> {
     return this.posts.find((post) => post.id === postId);
   }
-  async getAll({ page, limit, user_id }: IGetPostsDTO): Promise<Post[]> {
-    let response = this.posts;
-    if (user_id) {
-      response = this.posts.filter((post) => post.user_id === user_id);
-    }
-    const paginatedValues: Post[] = response.slice(
+  async getAll({ page, limit }: IGetPostsDTO): Promise<Post[]> {
+    const paginatedValues: Post[] = this.posts.slice(
       (page - 1) * limit,
       page * limit
     );
 
     return paginatedValues;
   }
-  // async insertReaction(
-  //   postId: string,
-  //   userId: string,
-  //   reactionType: string
-  // ): Promise<void> {
-  //   const postReactions = new PostReaction();
-  //   postReactions.reactionType = reactionType;
-  //   postReactions.userId = userId;
-  //   postReactions.postId = postId;
-  //   const post = this.posts.find((post) => post.id === postId);
-  //   post.postReaction.push(postReactions);
-  // }
+
+  async getByUser({ page, limit, user_id }: IGetPostsDTO) {
+    throw new Error("Method not implemented.");
+  }
 }
 
 export { PostRepositoryInMemory };

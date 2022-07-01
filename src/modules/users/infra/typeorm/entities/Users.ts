@@ -4,11 +4,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
+import { Follower } from "./Followers";
 
 @Entity("users")
 class User {
@@ -41,6 +43,12 @@ class User {
 
   @OneToMany((type) => Post, (post) => post.user)
   post: Post[];
+
+  @ManyToMany((type) => Follower, (follower) => follower.requestedUserId)
+  followers: Follower[];
+
+  @ManyToMany((type) => Follower, (follower) => follower.requesterUserId)
+  following: Follower[];
 
   constructor() {
     if (!this.id) {

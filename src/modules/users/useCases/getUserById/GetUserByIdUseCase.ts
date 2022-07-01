@@ -8,7 +8,10 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IUserResponse
-  extends Omit<User, "password" | "updated_at" | "email"> {
+  extends Omit<
+    User,
+    "password" | "updated_at" | "email" | "post" | "follower"
+  > {
   followersQuantity: number;
   followingQuantity: number;
   relationStatus: StatusEnum | ResponseStatus;

@@ -365,6 +365,67 @@
                 }
             }
         },
+        "/post/following": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "List Posts",
+                "description": "Listing all posts paginated",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "requestedUserId": {
+                                                "type": "string"
+                                            },
+                                            "requesterUserId": {
+                                                "type": "string"
+                                            },
+                                            "fStatus": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Public users do not receive friend request."
+                    }
+                }
+            }
+        },
         "/comments/{id}": {
             "post": {
                 "tags": [
