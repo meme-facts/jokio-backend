@@ -5,7 +5,7 @@ import { ReturnPostByUsersUseCase } from "./ReturnPostByUsersUseCase";
 class ReturnPostByUserController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { page, limit } = request.query;
-    console.log(page);
+
     const { id: user_id } = request.user;
     const returnPostUseCase = container.resolve(ReturnPostByUsersUseCase);
     const posts = await returnPostUseCase.execute({

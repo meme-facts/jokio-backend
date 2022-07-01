@@ -8,10 +8,7 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IUserResponse
-  extends Omit<
-    User,
-    "password" | "updated_at" | "email" | "post" | "follower"
-  > {
+  extends Omit<User, "password" | "updated_at" | "email" | "post"> {
   followersQuantity: number;
   followingQuantity: number;
   relationStatus: StatusEnum | ResponseStatus;
@@ -30,6 +27,7 @@ class GetUserByIdUseCase {
     requestedUserId,
   }: IGetUserByIdDTO): Promise<IUserResponse> {
     const user = await this.userRepository.getAllById(requestedUserId);
+
     if (!user) {
       throw new AppError("This users does not exist");
     }
@@ -49,7 +47,16 @@ class GetUserByIdUseCase {
     }
     const { followersQuantity, followingQuantity } =
       await this.followerRepository.getRelationsQuantityByUser(requestedUserId);
-    const { id, full_name, nickname, isPrivate, created_at, img_url } = user;
+    const {
+      id,
+      full_name,
+      nickname,
+      isPrivate,
+      created_at,
+      img_url,
+      following,
+      followers,
+    } = user;
     const response = {
       id,
       full_name,
@@ -60,7 +67,10 @@ class GetUserByIdUseCase {
       followersQuantity,
       followingQuantity,
       relationStatus,
+      followers,
+      following,
     };
+
     return response;
   }
 }

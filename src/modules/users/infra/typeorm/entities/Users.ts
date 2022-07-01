@@ -44,10 +44,10 @@ class User {
   @OneToMany((type) => Post, (post) => post.user)
   post: Post[];
 
-  @ManyToMany((type) => Follower, (follower) => follower.requestedUserId)
+  @OneToMany((type) => Follower, (follower) => follower.followers)
   followers: Follower[];
 
-  @ManyToMany((type) => Follower, (follower) => follower.requesterUserId)
+  @OneToMany((type) => Follower, (follower) => follower.following)
   following: Follower[];
 
   constructor() {

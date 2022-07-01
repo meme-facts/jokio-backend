@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -31,13 +32,13 @@ class Follower {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // @ManyToOne((type) => User)
-  // @JoinColumn({ name: "requestedUserId", referencedColumnName: "id" })
-  // user: User;
+  @ManyToOne((type) => User)
+  @JoinColumn({ name: "requestedUserId", referencedColumnName: "id" })
+  followers: User;
 
-  // @ManyToOne((type) => User)
-  // @JoinColumn({ name: "requesterUserId", referencedColumnName: "id" })
-  // following: User;
+  @ManyToOne((type) => User)
+  @JoinColumn({ name: "requesterUserId", referencedColumnName: "id" })
+  following: User;
 
   constructor() {
     if (!this.id) {

@@ -139,9 +139,9 @@ describe("UpdateFollowerStatusUseCase", () => {
       limit: 2,
       userId: user2.id,
     });
-    expect(page1.count).toBe(2);
+    expect(page1.count).toBe(3);
     expect(page1.requests.length).toBe(2);
-    expect(page2.count).toBe(1);
+    expect(page2.count).toBe(3);
     expect(page2.requests.length).toBe(1);
   });
 });

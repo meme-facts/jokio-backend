@@ -27,6 +27,13 @@ class UserRepository implements IUserRepository {
     user_reference,
   }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }> {
     const offset: number = (page - 1) * limit;
+    const count = await this.repository
+      .createQueryBuilder()
+      .where("full_name ILIKE :full_name OR nickname ILIKE :nickname", {
+        full_name: `%${user_reference ?? ""}%`,
+        nickname: `%${user_reference ?? ""}%`,
+      })
+      .getCount();
     const users = await this.repository
       .createQueryBuilder()
       .where("full_name ILIKE :full_name OR nickname ILIKE :nickname", {
@@ -37,7 +44,6 @@ class UserRepository implements IUserRepository {
       .skip(offset)
       .take(limit)
       .getMany();
-    const count = users.length;
     return {
       users,
       count,
@@ -70,11 +76,18 @@ class UserRepository implements IUserRepository {
     return user;
   }
   async getById(id: string): Promise<User> {
-    const user = await this.repository.findOne(id);
+    const user = await this.repository.findOne({
+      where: {
+        id,
+      },
+      relations: ["following", "followers"],
+    });
     return user;
   }
   async getAllById(id: string): Promise<User> {
-    const user = await this.repository.findOne(id);
+    const user = await this.repository.findOne(id, {
+      relations: ["following", "followers"],
+    });
     return user;
   }
   async update(user: User): Promise<User> {

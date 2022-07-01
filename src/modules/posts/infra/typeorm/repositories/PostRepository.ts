@@ -1,7 +1,7 @@
 import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
 import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
-import { getRepository, Repository } from "typeorm";
+import { getRepository, In, Repository } from "typeorm";
 import { Post } from "../entities/Post";
 
 class PostRepository implements IPostRepository {
@@ -23,9 +23,31 @@ class PostRepository implements IPostRepository {
     const post = await this.repository.findOne(postId);
     return post;
   }
-  async getAll({ page, limit }: IGetPostsDTO): Promise<Post[]> {
+  async getAll({
+    page,
+    limit,
+  }: IGetPostsDTO): Promise<{ posts: Post[]; count: number }> {
     const offset: number = (page - 1) * limit;
+    const count = await this.repository.count({
+      join: {
+        alias: "post",
+        leftJoin: {
+          user: "post.user",
+        },
+      },
+      where: {
+        user: {
+          isPrivate: false,
+        },
+      },
+    });
     const posts = await this.repository.find({
+      join: {
+        alias: "post",
+        leftJoin: {
+          user: "post.user",
+        },
+      },
       where: {
         user: {
           isPrivate: false,
@@ -33,30 +55,40 @@ class PostRepository implements IPostRepository {
       },
       skip: offset,
       take: limit,
-      relations: ["user"],
       order: {
         updated_at: "DESC",
       },
     });
-    return posts;
+    return { posts, count };
   }
 
-  async getByUser({ page, limit, user_id }: IGetPostsDTO) {
+  async getByUser({
+    page,
+    limit,
+    user_id,
+  }: IGetPostsDTO): Promise<{ posts: Post[]; count: number }> {
     const offset: number = (page - 1) * limit;
-    const posts = await this.repository.find({
-      where: {
-        user: {
-          following: user_id,
-        },
-      },
-      skip: offset,
-      take: limit,
-      relations: ["user"],
-      order: {
-        updated_at: "DESC",
-      },
-    });
-    return posts;
+
+    const count = await this.repository
+      .createQueryBuilder("post")
+      .innerJoin("post.user", "user")
+      .innerJoin("user.followers", "followers")
+      .where("followers.requesterUserId = :id", { id: user_id })
+      .getCount();
+
+    const posts = await this.repository
+      .createQueryBuilder("post")
+      .innerJoin("post.user", "user")
+      .innerJoin("user.followers", "followers")
+      .where("followers.requesterUserId = :id", { id: user_id })
+      .skip(offset)
+      .take(limit)
+      .orderBy("post.updated_at", "DESC")
+      .getMany();
+    return {
+      posts,
+      count,
+    };
   }
 }
 

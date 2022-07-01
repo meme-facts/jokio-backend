@@ -16,10 +16,18 @@ class ReturnPostByUsersUseCase {
     @inject("PostRepository")
     private postRepository: IPostRepository
   ) {}
-  async execute({ page, limit, user_id }: IGetPostsDTO): Promise<Post[]> {
-    const posts = await this.postRepository.getByUser({ page, limit, user_id });
+  async execute({
+    page,
+    limit,
+    user_id,
+  }: IGetPostsDTO): Promise<{ posts: Post[]; count: number }> {
+    const { posts, count } = await this.postRepository.getByUser({
+      page,
+      limit,
+      user_id,
+    });
 
-    return posts;
+    return { posts, count };
   }
 }
 

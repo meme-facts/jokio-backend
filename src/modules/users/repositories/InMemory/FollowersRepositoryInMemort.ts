@@ -64,11 +64,12 @@ class FollowersRepositoryInMemory implements IFollowersRepository {
         follower.fStatus === StatusEnum.Pending &&
         follower.requestedUserId === userId
     );
+    const count = followers.length;
     const paginatedFollowers = followers.slice(
       (page - 1) * limit,
       page * limit
     );
-    const count = paginatedFollowers.length;
+
     return {
       requests: paginatedFollowers,
       count,

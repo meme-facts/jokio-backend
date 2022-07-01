@@ -1,8 +1,10 @@
 import { User } from "@modules/users/infra/typeorm/entities/Users";
 import {
+  AfterLoad,
   Column,
   CreateDateColumn,
   Entity,
+  getRepository,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -42,6 +44,34 @@ class Post {
   @UpdateDateColumn()
   updated_at: Date;
 
+  likesCount: number;
+
+  dislikeCount: number;
+
+  @AfterLoad()
+  async countLikes() {
+    const { count } = await getRepository(PostReaction)
+      .createQueryBuilder("reaction")
+      .where("reaction.postId = :id and reaction.reactionType = 'L' ", {
+        id: this.id,
+      })
+      .select("COUNT(*)", "count")
+      .getRawOne();
+
+    this.likesCount = count;
+  }
+  @AfterLoad()
+  async countDislikesLikes() {
+    const { count } = await getRepository(PostReaction)
+      .createQueryBuilder("reaction")
+      .where("reaction.postId = :id and reaction.reactionType = 'D' ", {
+        id: this.id,
+      })
+      .select("COUNT(*)", "count")
+      .getRawOne();
+
+    this.dislikeCount = count;
+  }
   constructor() {
     if (!this.id) {
       this.id = uuidV4();

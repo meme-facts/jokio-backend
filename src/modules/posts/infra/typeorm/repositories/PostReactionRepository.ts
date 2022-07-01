@@ -9,12 +9,18 @@ class PostReactionRepository implements IPostReactionRepository {
   }
 
   async create({ postId, userId, reactionType }: IReactionsDTO): Promise<void> {
-    const postReaction = this.repository.create({
+    console.log(postId);
+    const postReaction = await this.repository.create({
       postId,
       userId,
       reactionType,
     });
-    await this.repository.save(postReaction);
+    console.log(postReaction);
+    try {
+      await this.repository.save(postReaction);
+    } catch (err) {
+      console.log(err);
+    }
   }
   async getAll(): Promise<PostReaction[]> {
     throw new Error("Method not implemented.");

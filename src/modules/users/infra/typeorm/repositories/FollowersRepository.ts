@@ -59,6 +59,12 @@ class FollowersRepository implements IFollowersRepository {
     userId,
   }: IGetRequestsDTO): Promise<{ requests: Follower[]; count: number }> {
     const offset: number = (page - 1) * limit;
+    const count = await this.repository.count({
+      where: {
+        fStatus: StatusEnum.Pending,
+        requestedUserId: userId,
+      },
+    });
     const requests = await this.repository.find({
       where: {
         fStatus: StatusEnum.Pending,
@@ -67,7 +73,6 @@ class FollowersRepository implements IFollowersRepository {
       skip: offset,
       take: limit,
     });
-    const count = requests.length;
     return {
       requests,
       count,
