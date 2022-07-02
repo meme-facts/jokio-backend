@@ -22,7 +22,6 @@ class RequestUserToFollowUseCase {
     if (!requestedUser || !requesterUser) {
       throw new AppError("This user does not exist!", 404);
     }
-
     const alreadySentSolicitation =
       await this.followerRepository.getSolicitation(
         requestedUserId,
