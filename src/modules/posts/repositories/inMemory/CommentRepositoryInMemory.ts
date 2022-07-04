@@ -1,4 +1,5 @@
 import { ICommentDTO } from "@modules/posts/dtos/ICommentDTO";
+import { IReturnCommentRequestDTO } from "@modules/posts/dtos/IReturnCommentRequestDTO";
 import { Comments } from "@modules/posts/infra/typeorm/entities/Comment";
 import { ICommentRepository } from "../ICommentRepository";
 
@@ -32,6 +33,22 @@ class CommentRepositoryInMemory implements ICommentRepository {
       (comment) => comment.id === commentId
     );
     return comment;
+  }
+
+  async getAllPaginated({
+    page,
+    limit,
+    postId,
+  }: IReturnCommentRequestDTO): Promise<{
+    comments: Comments[];
+    count: number;
+  }> {
+    const comments = this.commentaries.filter(
+      (comment) => comment.postId === postId
+    );
+    const count = comments.length;
+    const commentsPaginated = comments.slice((page - 1) * limit, page * limit);
+    return { comments: commentsPaginated, count };
   }
 }
 

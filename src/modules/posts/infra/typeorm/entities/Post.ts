@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
+import { Comments } from "./Comment";
 import { PostReaction } from "./PostReactions";
 
 @Entity("posts")
@@ -38,6 +39,9 @@ class Post {
   @OneToMany((type) => PostReaction, (postReaction) => postReaction.post)
   postReaction: PostReaction[];
 
+  // @OneToMany((type) => Comments, (comment) => comment.post)
+  // comment: Comment[];
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -47,6 +51,8 @@ class Post {
   likesCount: number;
 
   dislikeCount: number;
+
+  commentsCount: number;
 
   @AfterLoad()
   async countLikes() {
@@ -71,6 +77,18 @@ class Post {
       .getRawOne();
 
     this.dislikeCount = count;
+  }
+  @AfterLoad()
+  async countComments() {
+    const { count } = await getRepository(Comments)
+      .createQueryBuilder("comment")
+      .where("comment.postId = :id", {
+        id: this.id,
+      })
+      .select("COUNT(*)", "count")
+      .getRawOne();
+
+    this.commentsCount = count;
   }
   constructor() {
     if (!this.id) {
