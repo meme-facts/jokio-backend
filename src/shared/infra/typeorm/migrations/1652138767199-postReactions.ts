@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class postReactions1652138767199 implements MigrationInterface {
 
@@ -8,9 +8,9 @@ export class postReactions1652138767199 implements MigrationInterface {
                 name: 'postReactions',
                 columns: [
                     {
-                        name:'id',
+                        name: 'id',
                         type: 'uuid',
-                        isPrimary:true
+                        isPrimary: true
                     },
                     {
                         name: 'reactionType',
@@ -23,32 +23,37 @@ export class postReactions1652138767199 implements MigrationInterface {
                     {
                         name: 'postId',
                         type: 'uuid'
-                    }, 
+                    },
                     {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()'
                     },
-                    
+                    {
+                        name: 'updated_at',
+                        type: 'timestamp',
+                        default: 'now()'
+                    },
+
                 ],
                 foreignKeys: [
                     {
-                      name: 'FKUserPostReaction',
-                      referencedTableName: 'users',
-                      referencedColumnNames: ['id'],
-                      columnNames: ['userId'],
-                      onDelete: 'SET NULL',
-                      onUpdate: 'SET NULL',
+                        name: 'FKUserPostReaction',
+                        referencedTableName: 'users',
+                        referencedColumnNames: ['id'],
+                        columnNames: ['userId'],
+                        onDelete: 'SET NULL',
+                        onUpdate: 'SET NULL',
                     },
                     {
-                      name: 'FKPostPostReaction',
-                      referencedTableName: 'posts',
-                      referencedColumnNames: ['id'],
-                      columnNames: ['postId'],
-                      onDelete: 'SET NULL',
-                      onUpdate: 'SET NULL',
+                        name: 'FKPostPostReaction',
+                        referencedTableName: 'posts',
+                        referencedColumnNames: ['id'],
+                        columnNames: ['postId'],
+                        onDelete: 'SET NULL',
+                        onUpdate: 'SET NULL',
                     },
-                  ],
+                ],
             })
         )
     }
