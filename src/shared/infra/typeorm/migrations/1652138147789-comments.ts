@@ -29,6 +29,11 @@ export class comments1652138147789 implements MigrationInterface {
                         type: 'timestamp',
                         default: 'now()'
                     },
+                    {
+                        name: 'updated_at',
+                        type: 'timestamp',
+                        default: 'now()'
+                    },
                     
                 ],
                 foreignKeys: [
