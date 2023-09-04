@@ -1,5 +1,3 @@
-yarn run v1.22.11
-$ /Users/gabrikf/Documents/meme-fact/jokio-backend/node_modules/.bin/prisma migrate diff --from-empty --to-schema-datamodel src/shared/infra/prisma/schema.prisma --script
 -- CreateTable
 CREATE TABLE "comments" (
     "id" UUID NOT NULL,
@@ -149,5 +147,3 @@ ALTER TABLE "postReactions" ADD CONSTRAINT "FKUserPostReaction" FOREIGN KEY ("us
 
 -- AddForeignKey
 ALTER TABLE "posts" ADD CONSTRAINT "FKUserPost" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
-
-Done in 1.11s.

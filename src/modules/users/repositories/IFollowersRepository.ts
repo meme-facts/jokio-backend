@@ -1,6 +1,6 @@
+import { followers } from "@prisma/client";
 import { IFollowerDTO } from "../dtos/ICreateFollowerDTO";
 import { IGetRequestsDTO } from "../dtos/IGetRequestsDTO";
-import { Follower } from "../infra/typeorm/entities/Followers";
 
 export interface IRelation {
   followersQuantity: number;
@@ -14,18 +14,18 @@ interface IFollowersRepository {
     fStatus,
     id,
   }: IFollowerDTO): Promise<void>;
-  getAll(): Promise<Follower[]>;
+  getAll(): Promise<followers[]>;
   getSolicitation(
     requestedUserId: string,
     requesterUserId: string
-  ): Promise<Follower>;
+  ): Promise<followers>;
   delete({ requestedUserId, requesterUserId }: IFollowerDTO): Promise<void>;
   getRelationsQuantityByUser(userId: string): Promise<IRelation>;
   getPendingRequestsById({
     page,
     limit,
     userId,
-  }: IGetRequestsDTO): Promise<{ requests: Follower[]; count: number }>;
+  }: IGetRequestsDTO): Promise<{ requests: followers[]; count: number }>;
 }
 
 export { IFollowersRepository };

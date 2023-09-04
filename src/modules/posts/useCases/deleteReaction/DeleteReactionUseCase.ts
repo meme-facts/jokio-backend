@@ -1,4 +1,4 @@
-import { PostReactionRepository } from "@modules/posts/infra/typeorm/repositories/PostReactionRepository";
+import { PostReactionRepository } from "@modules/posts/infra/prisma/repositories/PostReactionRepository";
 import { IPostReactionRepository } from "@modules/posts/repositories/IPostReactionRepository";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";

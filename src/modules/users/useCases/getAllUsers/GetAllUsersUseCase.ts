@@ -11,16 +11,20 @@ class GetAllUsersUseCase {
     private usersRepository: IUserRepository
   ) {}
 
-  async execute({page, limit = 10, user_reference}: IGetAllUsersDTO):  Promise<{users:User[], count:number}> {
-    const {users, count} = await this.usersRepository.getByNameOrNickName({
+  async execute({
+    page,
+    limit = 10,
+    user_reference,
+  }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }> {
+    const { users, count } = await this.usersRepository.getByNameOrNickName({
       page,
       limit,
-      user_reference
-    })
+      user_reference,
+    });
     if (users.length === 0) {
       throw new AppError("User not found.");
     }
-    return {users, count};
+    return { users, count };
   }
 }
 

@@ -8,7 +8,7 @@ datasource db {
 }
 
 model comments {
-  id         String   @id(map: "PK_8bf68bc960f2b69e818bdb90dcb") @db.Uuid
+  id         String   @id(map: "PK_8bf68bc960f2b69e818bdb90dcb") @default(uuid()) @db.Uuid
   message    String   @db.VarChar
   userId     String   @db.Uuid
   postId     String   @db.Uuid
@@ -19,7 +19,7 @@ model comments {
 }
 
 model followers {
-  id                                     String   @id(map: "PK_c90cfc5b18edd29bd15ba95c1a4") @db.Uuid
+  id                                     String   @id(map: "PK_c90cfc5b18edd29bd15ba95c1a4") @default(uuid()) @db.Uuid
   fStatus                                String   @db.Char(1)
   requestedUserId                        String   @db.Uuid
   requesterUserId                        String   @db.Uuid
@@ -30,7 +30,7 @@ model followers {
 }
 
 model messages {
-  id                             String   @id(map: "PK_18325f38ae6de43878487eff986") @db.Uuid
+  id                             String   @id(map: "PK_18325f38ae6de43878487eff986") @default(uuid()) @db.Uuid
   message                        String   @db.VarChar
   isRead                         Boolean
   fromUser                       String   @db.Uuid
@@ -47,7 +47,7 @@ model migrations {
 }
 
 model notifications {
-  id         String   @id(map: "PK_6a72c3c0f683f6462415e653c3a") @db.Uuid
+  id         String   @id(map: "PK_6a72c3c0f683f6462415e653c3a") @default(uuid()) @db.Uuid
   type       String   @db.Char(1)
   userId     String   @db.Uuid
   postId     String   @db.Uuid
@@ -57,7 +57,7 @@ model notifications {
 }
 
 model postReactions {
-  id           String   @id(map: "PK_b524cbc038425198b8a12cc2e13") @db.Uuid
+  id           String   @id(map: "PK_b524cbc038425198b8a12cc2e13") @default(uuid()) @db.Uuid
   reactionType String   @db.Char(1)
   userId       String   @db.Uuid
   postId       String   @db.Uuid
@@ -68,7 +68,7 @@ model postReactions {
 }
 
 model posts {
-  id              String          @id(map: "PK_2829ac61eff60fcec60d7274b9e") @db.Uuid
+  id              String          @id(map: "PK_2829ac61eff60fcec60d7274b9e") @default(uuid()) @db.Uuid
   postDescription String          @db.VarChar
   img_url         String          @db.VarChar
   isActive        Boolean
@@ -82,7 +82,7 @@ model posts {
 }
 
 model templates {
-  id                  String   @id(map: "PK_515948649ce0bbbe391de702ae5") @db.Uuid
+  id                  String   @id(map: "PK_515948649ce0bbbe391de702ae5") @default(uuid()) @db.Uuid
   title               String   @db.VarChar
   templateDescription String   @db.VarChar
   imgUrl              String   @db.VarChar
@@ -102,13 +102,13 @@ model typeorm_metadata {
 }
 
 model users {
-  id                                         String          @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @db.Uuid
+  id                                         String          @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(uuid()) @db.Uuid
   full_name                                  String?         @db.VarChar
   nickname                                   String          @db.VarChar
   email                                      String          @db.VarChar
   password                                   String          @db.VarChar
   img_url                                    String?         @db.VarChar
-  isPrivate                                  Boolean
+  isPrivate                                  Boolean         @default(false)
   created_at                                 DateTime        @default(now()) @db.Timestamp(6)
   updated_at                                 DateTime        @default(now()) @db.Timestamp(6)
   comments                                   comments[]
