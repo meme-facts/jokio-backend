@@ -9,13 +9,11 @@ class PostReactionRepository implements IPostReactionRepository {
   }
 
   async create({ postId, userId, reactionType }: IReactionsDTO): Promise<void> {
-    console.log(postId);
     const postReaction = await this.repository.create({
       postId,
       userId,
       reactionType,
     });
-    console.log(postReaction);
     try {
       await this.repository.save(postReaction);
     } catch (err) {
