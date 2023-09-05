@@ -46,7 +46,6 @@ class AuthenticateUserUseCase {
   async google(tokenId: string) {
     try {
       const decodedToken = await admin.auth().verifyIdToken(tokenId);
-      console.log(decodedToken);
       const { uid, email, name, picture } = decodedToken;
 
       let user = await this.userRepository.getByNicknameOrEmail(email);

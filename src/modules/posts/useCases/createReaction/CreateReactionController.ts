@@ -8,7 +8,6 @@ class CreateReactionController {
     const { id: postId } = request.params;
     const { reactionType } = request.body;
 
-    console.log(userId);
     const createReactionUseCase = container.resolve(CreateReactionUseCase);
 
     await createReactionUseCase.execute({
