@@ -52,7 +52,8 @@ class AuthenticateUserUseCase {
       if (!user) {
         const createdUser = await this.createUser.execute({
           email,
-          nickname: name,
+          full_name: name,
+          nickname: email.split("@")[0],
           password: uid,
           image_url: picture,
         });

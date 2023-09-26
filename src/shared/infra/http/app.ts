@@ -26,8 +26,6 @@ app.use(cors());
 
 app.use(express.json());
 
-createConnection();
-
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(setupSwagger));
 
 app.use(router);
