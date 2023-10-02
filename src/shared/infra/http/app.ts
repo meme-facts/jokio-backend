@@ -8,8 +8,6 @@ import { errorHandler } from "./middlewares/helpers/exceptions/errorHandler";
 import cors from "cors";
 import "../../container/users";
 import "../../container/posts";
-
-import createConnection from "../../infra/typeorm";
 import { errors } from "celebrate";
 
 import * as admin from "firebase-admin";

@@ -1,0 +1,72 @@
+version: "3.7"
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: gabrikf/nginx
+    container_name: nginx
+    networks:
+      - jokio
+    ports:
+      - "80:80"
+    depends_on:
+      - jokio-backend
+  jokio-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gabrikf/jokio-backend
+    container_name: jokio-backend
+    networks:
+      - jokio
+    volumes:
+      - .:/usr/app
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - database_rakagak
+    command: ["npm", "run", "dev"]
+
+  migration:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - jokio
+    command:
+      [
+        "./wait-for-it/wait-for-it.sh",
+        "database_rakagak:5432",
+        "--",
+        "npx",
+        "prisma",
+        "migrate",
+        "dev",
+      ]
+    links:
+      - database_rakagak
+    depends_on:
+      - database_rakagak
+
+  database_rakagak:
+    image: postgres
+    container_name: database_rakagak
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=rakagak123
+      - POSTGRES_DB=rakagak
+    volumes:
+      - pgdata:/data/postgres
+    networks:
+      - jokio
+volumes:
+  pgdata:
+    driver: local
+networks:
+  jokio:
+    driver: bridge
