@@ -1,21 +1,26 @@
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
+import { users } from "@prisma/client";
 import { IUserDTO } from "../dtos/ICreateUsersDTO";
 import { IGetAllUsersDTO } from "../dtos/IGetAllUsersDTO";
-import { User } from "../infra/typeorm/entities/Users";
 
 interface IUserRepository {
-  create({ full_name, nickname, email, password, id }: IUserDTO): Promise<User>;
-  getByEmail(email: string): Promise<User>;
-  getByNickName(nickname: string): Promise<User>;
-  getByNicknameOrEmail(login: string): Promise<User>;
-  getById(id: string): Promise<User>;
-  getAllById(id: string): Promise<User>;
-  update(user: User): Promise<User>;
+  create({
+    full_name,
+    nickname,
+    email,
+    password,
+    id,
+  }: IUserDTO): Promise<users>;
+  getByEmail(email: string): Promise<users>;
+  getByNickName(nickname: string): Promise<users>;
+  getByNicknameOrEmail(login: string): Promise<users>;
+  getById(id: string): Promise<users>;
+  getAllById(id: string): Promise<users>;
+  update(user: users): Promise<users>;
   getByNameOrNickName({
     page,
     limit,
     user_reference,
-  }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }>;
+  }: IGetAllUsersDTO): Promise<{ users: users[]; count: number }>;
 }
 
 export { IUserRepository };

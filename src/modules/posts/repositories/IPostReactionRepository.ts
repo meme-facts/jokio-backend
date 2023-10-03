@@ -1,13 +1,13 @@
-import { PostReaction } from "../infra/typeorm/entities/PostReactions";
+import { postReactions } from "@prisma/client";
 
 interface IPostReactionRepository {
   create({ postId, userId, reactionType }: IReactionsDTO): Promise<void>;
-  getAll(): Promise<PostReaction[]>;
+  getAll(): Promise<postReactions[]>;
   getReaction({
     postId,
     reactionType,
     userId,
-  }: IReactionsDTO): Promise<PostReaction>;
+  }: IReactionsDTO): Promise<postReactions>;
   delete(id: string): Promise<void>;
 }
 

@@ -1,6 +1,6 @@
-import { CommentRepository } from "@modules/posts/infra/typeorm/repositories/CommentRepository";
-import { PostReactionRepository } from "@modules/posts/infra/typeorm/repositories/PostReactionRepository";
-import { PostRepository } from "@modules/posts/infra/typeorm/repositories/PostRepository";
+import { CommentRepository } from "@modules/posts/infra/prisma/repositories/CommentRepository";
+import { PostReactionRepository } from "@modules/posts/infra/prisma/repositories/PostReactionRepository";
+import { PostRepository } from "@modules/posts/infra/prisma/repositories/PostRepository";
 import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
 import { IPostReactionRepository } from "@modules/posts/repositories/IPostReactionRepository";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";

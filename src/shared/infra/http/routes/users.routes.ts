@@ -26,4 +26,6 @@ userRouter.post("/", createUserController.handle);
 
 userRouter.post("/login", authenticateUserController.handle);
 
+userRouter.post("/google", authenticateUserController.google);
+
 userRouter.put("/update", ensureAuthenticated, updateUserController.handle);

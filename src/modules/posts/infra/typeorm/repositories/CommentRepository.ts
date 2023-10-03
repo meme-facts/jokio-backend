@@ -2,11 +2,22 @@ import { ICommentDTO } from "@modules/posts/dtos/ICommentDTO";
 import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
 import { getRepository, Repository } from "typeorm";
 import { Comments } from "../entities/Comment";
+import { IReturnCommentRequestDTO } from "@modules/posts/dtos/IReturnCommentRequestDTO";
 
 class CommentRepository implements ICommentRepository {
   private repository: Repository<Comments>;
   constructor() {
     this.repository = getRepository(Comments);
+  }
+  getAllPaginated({
+    page,
+    limit,
+    postId,
+  }: IReturnCommentRequestDTO): Promise<{
+    comments: Comments[];
+    count: number;
+  }> {
+    throw new Error("Method not implemented.");
   }
 
   async create({ userId, postId, message, id }: ICommentDTO): Promise<void> {

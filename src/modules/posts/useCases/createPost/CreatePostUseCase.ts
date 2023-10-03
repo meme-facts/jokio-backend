@@ -7,25 +7,28 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 class CreatePostUseCase {
-    constructor(
-        @inject('PostRepository')
-        private postRepository: IPostRepository,
-        @inject('UserRepository')
-        private userRepository: IUserRepository
-    ){}
-    async execute({postDescription, user_id, img_url}:IPostDTO):Promise<Post>{
-        const user = await this.userRepository.getById(user_id);
-        if(!user) {
-            throw new AppError('This users do not exists.');
-        }
-        const post = await this.postRepository.create({
-            postDescription,
-            user_id,
-            img_url
-        });
-        return post
+  constructor(
+    @inject("PostRepository")
+    private postRepository: IPostRepository,
+    @inject("UserRepository")
+    private userRepository: IUserRepository
+  ) {}
+  async execute({
+    postDescription,
+    user_id,
+    img_url,
+  }: IPostDTO): Promise<Post> {
+    const user = await this.userRepository.getById(user_id);
+    if (!user) {
+      throw new AppError("This users do not exists.");
     }
-
+    const post = await this.postRepository.create({
+      postDescription,
+      user_id,
+      img_url,
+    });
+    return post;
+  }
 }
 
-export { CreatePostUseCase }
+export { CreatePostUseCase };
