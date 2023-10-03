@@ -24,7 +24,7 @@ services:
     volumes:
       - .:/usr/app
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
     depends_on:
       - database_rakagak
     command: ["npm", "run", "dev"]

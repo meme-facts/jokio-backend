@@ -13,6 +13,16 @@ import { errors } from "celebrate";
 import * as admin from "firebase-admin";
 import * as serviceAccount from "../../../../firebase-config.json";
 
+import * as dotenv from "dotenv";
+
+if (process.env.NODE_ENV === "production") {
+  dotenv.config({ path: ".env.docker.production" });
+} else if (process.env.NODE_ENV === "development") {
+  dotenv.config({ path: ".env.docker.development" });
+} else {
+  dotenv.config(); // Load the default .env file for local development
+}
+
 const app = express();
 
 admin.initializeApp({
