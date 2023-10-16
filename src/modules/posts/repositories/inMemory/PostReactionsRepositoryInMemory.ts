@@ -1,5 +1,5 @@
 import { PostReaction } from "@modules/posts/infra/typeorm/entities/PostReactions";
-import { IPostReactionRepository } from "../IPostReactionRepository";
+import { IPostReactionRepository } from "../IPostDislikeRepository";
 
 class PostReactionsRepositoryInMemory implements IPostReactionRepository {
   private postReactions: PostReaction[] = [];

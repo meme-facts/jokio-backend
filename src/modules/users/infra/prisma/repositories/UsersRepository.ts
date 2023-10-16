@@ -1,16 +1,16 @@
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
-import { Prisma, PrismaClient, users } from "@prisma/client";
+import { Prisma, PrismaClient, Users } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import { IUserDTO } from "../../../dtos/ICreateUsersDTO";
 import { IUserRepository } from "../../../repositories/IUserRepository";
 
 class UserRepository implements IUserRepository {
-  private repository: Prisma.usersDelegate<DefaultArgs>;
+  private repository: Prisma.UsersDelegate<DefaultArgs>;
   constructor() {
     this.repository = new PrismaClient().users;
   }
 
-  async getByNicknameOrEmail(login: string): Promise<users> {
+  async getByNicknameOrEmail(login: string): Promise<Users> {
     const user = await this.repository.findFirst({
       where: {
         OR: [
@@ -31,7 +31,7 @@ class UserRepository implements IUserRepository {
     page,
     limit = 10,
     user_reference,
-  }: IGetAllUsersDTO): Promise<{ users: users[]; count: number }> {
+  }: IGetAllUsersDTO): Promise<{ users: Users[]; count: number }> {
     const offset: number = (page - 1) * limit;
 
     const [count, users] = await Promise.all([
@@ -89,7 +89,7 @@ class UserRepository implements IUserRepository {
     email,
     password,
     isPrivate,
-  }: IUserDTO): Promise<users> {
+  }: IUserDTO): Promise<Users> {
     const user = this.repository.create({
       data: {
         full_name,
@@ -101,7 +101,7 @@ class UserRepository implements IUserRepository {
     });
     return user;
   }
-  async getByEmail(email: string): Promise<users> {
+  async getByEmail(email: string): Promise<Users> {
     const user = await this.repository.findFirst({
       where: {
         email,
@@ -109,7 +109,7 @@ class UserRepository implements IUserRepository {
     });
     return user;
   }
-  async getByNickName(nickname: string): Promise<users> {
+  async getByNickName(nickname: string): Promise<Users> {
     const user = await this.repository.findFirst({
       where: {
         nickname,
@@ -117,7 +117,7 @@ class UserRepository implements IUserRepository {
     });
     return user;
   }
-  async getById(id: string): Promise<users> {
+  async getById(id: string): Promise<Users> {
     const user = await this.repository.findFirst({
       where: {
         id,
@@ -125,7 +125,7 @@ class UserRepository implements IUserRepository {
     });
     return user;
   }
-  async getAllById(id: string): Promise<users> {
+  async getAllById(id: string): Promise<Users> {
     const user = await this.repository.findFirst({
       where: {
         id,
@@ -133,7 +133,7 @@ class UserRepository implements IUserRepository {
     });
     return user;
   }
-  async update(user: users): Promise<users> {
+  async update(user: Users): Promise<Users> {
     const { id, ...rest } = user;
     const userUpdated = await this.repository.update({
       where: {

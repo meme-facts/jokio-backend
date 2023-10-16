@@ -610,13 +610,13 @@
                 }
             }
         },
-        "/reactions/{id}": {
+        "/like/{id}": {
             "post": {
                 "tags": [
                     "Reaction"
                 ],
-                "summary": "Add reaction",
-                "description": "This route is used to add a reaction to a post",
+                "summary": "Add like",
+                "description": "This route is used to add a like to a post",
                 "parameters": [
                     {
                         "name": "id",
@@ -637,13 +637,6 @@
                                     "reactionType ": {
                                         "type": "string"
                                     }
-                                },
-                                "enum": [
-                                    "L",
-                                    "D"
-                                ],
-                                "example": {
-                                    "reactionType": "L"
                                 }
                             }
                         }
@@ -653,7 +646,7 @@
                             "description": "Created"
                         },
                         "404": {
-                            "description": "Post not found."
+                            "description": "Reaction not found."
                         }
                     }
                 }
@@ -662,8 +655,8 @@
                 "tags": [
                     "Reaction"
                 ],
-                "summary": "Remove reaction",
-                "description": "This route is used to remove a reaction to a post",
+                "summary": "Remove like",
+                "description": "This route is used to remove a like to a post",
                 "parameters": [
                     {
                         "name": "id",
@@ -684,13 +677,6 @@
                                     "message ": {
                                         "type": "string"
                                     }
-                                },
-                                "enum": [
-                                    "L",
-                                    "D"
-                                ],
-                                "example": {
-                                    "message": "L"
                                 }
                             }
                         }
@@ -700,7 +686,89 @@
                             "description": "Removed"
                         },
                         "404": {
-                            "description": "Post not found."
+                            "description": "Reaction not found."
+                        }
+                    }
+                }
+            }
+        },
+        "/dislike/{id}": {
+            "post": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Add Dislike",
+                "description": "This route is used to add a dislike to a post",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "post id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reactionType ": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "Created"
+                        },
+                        "404": {
+                            "description": "Reaction not found."
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Remove dislike",
+                "description": "This route is used to remove a like from a post",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "post id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message ": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "204": {
+                            "description": "Removed"
+                        },
+                        "404": {
+                            "description": "Reaction not found."
                         }
                     }
                 }

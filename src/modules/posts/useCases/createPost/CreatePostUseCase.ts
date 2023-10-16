@@ -1,5 +1,5 @@
 import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
+import { PostEntity } from "@modules/posts/entities/Post";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
@@ -17,7 +17,7 @@ class CreatePostUseCase {
     postDescription,
     user_id,
     img_url,
-  }: IPostDTO): Promise<Post> {
+  }: IPostDTO): Promise<PostEntity> {
     const user = await this.userRepository.getById(user_id);
     if (!user) {
       throw new AppError("This users do not exists.");

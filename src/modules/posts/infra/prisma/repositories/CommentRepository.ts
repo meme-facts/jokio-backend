@@ -1,12 +1,12 @@
 import { ICommentDTO } from "@modules/posts/dtos/ICommentDTO";
-import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
-import { getRepository, Repository } from "typeorm";
 import { IReturnCommentRequestDTO } from "@modules/posts/dtos/IReturnCommentRequestDTO";
-import { comments, Prisma, PrismaClient } from "@prisma/client";
+import { CommentEntity } from "@modules/posts/entities/Comments";
+import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
 class CommentRepository implements ICommentRepository {
-  private repository: Prisma.commentsDelegate<DefaultArgs>;
+  private repository: Prisma.CommentsDelegate<DefaultArgs>;
   constructor() {
     this.repository = new PrismaClient().comments;
   }
@@ -15,7 +15,7 @@ class CommentRepository implements ICommentRepository {
     limit = 10,
     postId,
   }: IReturnCommentRequestDTO): Promise<{
-    comments: comments[];
+    comments: CommentEntity[];
     count: number;
   }> {
     const offset: number = (page - 1) * limit;
@@ -51,7 +51,7 @@ class CommentRepository implements ICommentRepository {
       },
     });
   }
-  async getAll(): Promise<comments[]> {
+  async getAll(): Promise<CommentEntity[]> {
     const comments = await this.repository.findMany();
     return comments;
   }
@@ -63,7 +63,7 @@ class CommentRepository implements ICommentRepository {
     });
   }
 
-  async getById(commentId: string): Promise<comments> {
+  async getById(commentId: string): Promise<CommentEntity> {
     const comment = await this.repository.findFirst({
       where: {
         id: commentId,

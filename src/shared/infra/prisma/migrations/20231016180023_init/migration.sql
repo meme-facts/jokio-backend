@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "comments" (
+CREATE TABLE "Comments" (
     "id" UUID NOT NULL,
     "message" VARCHAR NOT NULL,
     "userId" UUID NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "comments" (
 );
 
 -- CreateTable
-CREATE TABLE "followers" (
+CREATE TABLE "Followers" (
     "id" UUID NOT NULL,
     "fStatus" CHAR(1) NOT NULL,
     "requestedUserId" UUID NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE "followers" (
 );
 
 -- CreateTable
-CREATE TABLE "messages" (
+CREATE TABLE "Messages" (
     "id" UUID NOT NULL,
     "message" VARCHAR NOT NULL,
     "isRead" BOOLEAN NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE "messages" (
 );
 
 -- CreateTable
-CREATE TABLE "migrations" (
+CREATE TABLE "Migrations" (
     "id" SERIAL NOT NULL,
     "timestamp" BIGINT NOT NULL,
     "name" VARCHAR NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE "migrations" (
 );
 
 -- CreateTable
-CREATE TABLE "notifications" (
+CREATE TABLE "Notifications" (
     "id" UUID NOT NULL,
     "type" CHAR(1) NOT NULL,
     "userId" UUID NOT NULL,
@@ -55,9 +55,8 @@ CREATE TABLE "notifications" (
 );
 
 -- CreateTable
-CREATE TABLE "postReactions" (
+CREATE TABLE "PostLikes" (
     "id" UUID NOT NULL,
-    "reactionType" CHAR(1) NOT NULL,
     "userId" UUID NOT NULL,
     "postId" UUID NOT NULL,
     "created_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -67,20 +66,33 @@ CREATE TABLE "postReactions" (
 );
 
 -- CreateTable
-CREATE TABLE "posts" (
+CREATE TABLE "PostDislikes" (
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "postId" UUID NOT NULL,
+    "created_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "PK_b524cbc038425198b8a12cc2e14" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Posts" (
     "id" UUID NOT NULL,
     "postDescription" VARCHAR NOT NULL,
-    "img_url" VARCHAR NOT NULL,
+    "img_url" VARCHAR,
     "isActive" BOOLEAN NOT NULL,
     "user_id" UUID NOT NULL,
     "created_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "likeCount" INTEGER NOT NULL DEFAULT 0,
+    "dislikeCount" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "PK_2829ac61eff60fcec60d7274b9e" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "templates" (
+CREATE TABLE "Templates" (
     "id" UUID NOT NULL,
     "title" VARCHAR NOT NULL,
     "templateDescription" VARCHAR NOT NULL,
@@ -101,14 +113,14 @@ CREATE TABLE "typeorm_metadata" (
 );
 
 -- CreateTable
-CREATE TABLE "users" (
+CREATE TABLE "Users" (
     "id" UUID NOT NULL,
     "full_name" VARCHAR,
     "nickname" VARCHAR NOT NULL,
     "email" VARCHAR NOT NULL,
     "password" VARCHAR NOT NULL,
     "img_url" VARCHAR,
-    "isPrivate" BOOLEAN NOT NULL,
+    "isPrivate" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -116,34 +128,40 @@ CREATE TABLE "users" (
 );
 
 -- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "FKPostComment" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Comments" ADD CONSTRAINT "FKPostComment" FOREIGN KEY ("postId") REFERENCES "Posts"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "FKUserComment" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Comments" ADD CONSTRAINT "FKUserComment" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "followers" ADD CONSTRAINT "FKUserFollowerRequested" FOREIGN KEY ("requestedUserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Followers" ADD CONSTRAINT "FKUserFollowerRequested" FOREIGN KEY ("requestedUserId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "followers" ADD CONSTRAINT "FKUserFollowerRequester" FOREIGN KEY ("requesterUserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Followers" ADD CONSTRAINT "FKUserFollowerRequester" FOREIGN KEY ("requesterUserId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "messages" ADD CONSTRAINT "FKUserFollowerRequested" FOREIGN KEY ("fromUser") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Messages" ADD CONSTRAINT "FKUserFollowerRequested" FOREIGN KEY ("fromUser") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "messages" ADD CONSTRAINT "FKUserFollowerRequester" FOREIGN KEY ("toUser") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Messages" ADD CONSTRAINT "FKUserFollowerRequester" FOREIGN KEY ("toUser") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "notifications" ADD CONSTRAINT "FKPostComment" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Notifications" ADD CONSTRAINT "FKPostComment" FOREIGN KEY ("postId") REFERENCES "Posts"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "notifications" ADD CONSTRAINT "FKUserComment" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "Notifications" ADD CONSTRAINT "FKUserComment" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "postReactions" ADD CONSTRAINT "FKPostPostReaction" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "PostLikes" ADD CONSTRAINT "FKPostPostReaction" FOREIGN KEY ("postId") REFERENCES "Posts"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "postReactions" ADD CONSTRAINT "FKUserPostReaction" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "PostLikes" ADD CONSTRAINT "FKUserPostReaction" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
 
 -- AddForeignKey
-ALTER TABLE "posts" ADD CONSTRAINT "FKUserPost" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE "PostDislikes" ADD CONSTRAINT "FKPostPostReaction" FOREIGN KEY ("postId") REFERENCES "Posts"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+
+-- AddForeignKey
+ALTER TABLE "PostDislikes" ADD CONSTRAINT "FKUserPostReaction" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;
+
+-- AddForeignKey
+ALTER TABLE "Posts" ADD CONSTRAINT "FKUserPost" FOREIGN KEY ("user_id") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE SET NULL;

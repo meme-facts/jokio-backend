@@ -6,11 +6,11 @@ import {
   IRelation,
 } from "@modules/users/repositories/IFollowersRepository";
 
-import { followers, Prisma, PrismaClient } from "@prisma/client";
+import { Followers, Prisma, PrismaClient } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
 class FollowersRepository implements IFollowersRepository {
-  private repository: Prisma.followersDelegate<DefaultArgs>;
+  private repository: Prisma.FollowersDelegate<DefaultArgs>;
   constructor() {
     this.repository = new PrismaClient().followers;
   }
@@ -30,14 +30,14 @@ class FollowersRepository implements IFollowersRepository {
       },
     });
   }
-  async getAll(): Promise<followers[]> {
+  async getAll(): Promise<Followers[]> {
     return this.repository.findMany();
   }
 
   async getSolicitation(
     requestedUserId: string,
     requesterUserId: string
-  ): Promise<followers> {
+  ): Promise<Followers> {
     const relation = await this.repository.findFirst({
       where: {
         requestedUserId,
@@ -66,7 +66,7 @@ class FollowersRepository implements IFollowersRepository {
     page,
     limit,
     userId,
-  }: IGetRequestsDTO): Promise<{ requests: followers[]; count: number }> {
+  }: IGetRequestsDTO): Promise<{ requests: Followers[]; count: number }> {
     const offset: number = (page - 1) * limit;
 
     const [count, requests] = await Promise.all([

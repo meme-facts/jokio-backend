@@ -4,7 +4,7 @@ import { ICommentRepository } from "@modules/posts/repositories/ICommentReposito
 import { CommentRepositoryInMemory } from "@modules/posts/repositories/inMemory/CommentRepositoryInMemory";
 import { PostReactionsRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostReactionsRepositoryInMemory";
 import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
-import { IPostReactionRepository } from "@modules/posts/repositories/IPostReactionRepository";
+import { IPostReactionRepository } from "@modules/posts/repositories/IPostDislikeRepository";
 import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";

@@ -1,31 +1,27 @@
-import { IPostReactionRepository } from "@modules/posts/repositories/IPostReactionRepository";
+import { IPostDislikeRepository } from "@modules/posts/repositories/IPostDislikeRepository";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class CreateReactionUseCase {
+class CreateDislikeUseCase {
   constructor(
-    @inject("PostReactionRepository")
-    private reactionsRepository: IPostReactionRepository,
+    @inject("PostDislikesRepository")
+    private reactionsRepository: IPostDislikeRepository,
     @inject("PostRepository")
     private postRepository: IPostRepository
   ) {}
-  async execute({
-    postId,
-    userId,
-    reactionType,
-  }: IReactionsDTO): Promise<void> {
+  async execute({ postId, userId }: IReactionsDTO): Promise<void> {
     const post = await this.postRepository.getById(postId);
     if (!post) {
       throw new AppError("This post does not exist", 404);
     }
-    await this.reactionsRepository.create({
+    await this.reactionsRepository.createLike({
       postId,
       userId,
-      reactionType,
     });
+    await this.postRepository.incrementDislike(postId);
   }
 }
 
-export { CreateReactionUseCase };
+export { CreateDislikeUseCase };

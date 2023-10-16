@@ -1,18 +1,15 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { CreateReactionUseCase } from "./createReactionUseCase";
+import { CreateLikeUseCase } from "./CreateReactionUseCase";
 
-class CreateReactionController {
+class CreateLikeController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: userId } = request.user;
     const { id: postId } = request.params;
-    const { reactionType } = request.body;
-
-    const createReactionUseCase = container.resolve(CreateReactionUseCase);
+    const createReactionUseCase = container.resolve(CreateLikeUseCase);
 
     await createReactionUseCase.execute({
       postId,
-      reactionType,
       userId,
     });
 
@@ -20,4 +17,4 @@ class CreateReactionController {
   }
 }
 
-export { CreateReactionController };
+export { CreateLikeController };

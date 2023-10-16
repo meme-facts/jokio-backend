@@ -1,4 +1,4 @@
-import { IPostReactionRepository } from "@modules/posts/repositories/IPostReactionRepository";
+import { IPostReactionRepository } from "@modules/posts/repositories/IPostDislikeRepository";
 import { getRepository, Repository } from "typeorm";
 import { PostReaction } from "../entities/PostReactions";
 
@@ -8,11 +8,10 @@ class PostReactionRepository implements IPostReactionRepository {
     this.repository = getRepository(PostReaction);
   }
 
-  async create({ postId, userId, reactionType }: IReactionsDTO): Promise<void> {
+  async create({ postId, userId }: IReactionsDTO): Promise<void> {
     const postReaction = await this.repository.create({
       postId,
       userId,
-      reactionType,
     });
     try {
       await this.repository.save(postReaction);
@@ -28,14 +27,9 @@ class PostReactionRepository implements IPostReactionRepository {
     await this.repository.delete(id);
   }
 
-  async getReaction({
-    postId,
-    reactionType,
-    userId,
-  }: IReactionsDTO): Promise<PostReaction> {
+  async getReaction({ postId, userId }: IReactionsDTO): Promise<PostReaction> {
     const reaction = await this.repository.findOne({
       postId,
-      reactionType,
       userId,
     });
     return reaction;

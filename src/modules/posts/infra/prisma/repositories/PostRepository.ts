@@ -1,11 +1,11 @@
 import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
 import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
-import { Prisma, PrismaClient, posts } from "@prisma/client";
+import { Prisma, PrismaClient, Posts } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
 class PostRepository implements IPostRepository {
-  private repository: Prisma.postsDelegate<DefaultArgs>;
+  private repository: Prisma.PostsDelegate<DefaultArgs>;
   constructor() {
     this.repository = new PrismaClient().posts;
   }
@@ -14,7 +14,7 @@ class PostRepository implements IPostRepository {
     postDescription,
     user_id,
     img_url,
-  }: IPostDTO): Promise<posts> {
+  }: IPostDTO): Promise<Posts> {
     return this.repository.create({
       data: {
         postDescription,
@@ -24,8 +24,9 @@ class PostRepository implements IPostRepository {
       },
     });
   }
-  async getById(id: string): Promise<posts> {
-    const post = await this.repository.findFirst({
+  async getById(id: string, tx?: Prisma.TransactionClient): Promise<Posts> {
+    const instance = tx ? tx.posts : this.repository;
+    const post = await instance.findFirst({
       where: {
         id,
       },
@@ -35,7 +36,7 @@ class PostRepository implements IPostRepository {
   async getAll({
     page,
     limit,
-  }: IGetPostsDTO): Promise<{ posts: posts[]; count: number }> {
+  }: IGetPostsDTO): Promise<{ posts: Posts[]; count: number }> {
     const offset: number = (page - 1) * limit;
     const count = await this.repository.count({
       where: {
@@ -65,7 +66,7 @@ class PostRepository implements IPostRepository {
     page,
     limit,
     user_id,
-  }: IGetPostsDTO): Promise<{ posts: posts[]; count: number }> {
+  }: IGetPostsDTO): Promise<{ posts: Posts[]; count: number }> {
     const offset: number = (page - 1) * limit;
     const count = await this.repository.count({
       where: {
@@ -96,7 +97,7 @@ class PostRepository implements IPostRepository {
     page,
     limit,
     user_id,
-  }: IGetPostsDTO): Promise<{ posts: posts[]; count: number }> {
+  }: IGetPostsDTO): Promise<{ posts: Posts[]; count: number }> {
     const offset: number = (page - 1) * limit;
 
     const [count, posts] = await Promise.all([
@@ -132,6 +133,70 @@ class PostRepository implements IPostRepository {
       posts,
       count,
     };
+  }
+  async incrementLike(
+    postId: string,
+    tx?: Prisma.TransactionClient
+  ): Promise<void> {
+    const instance = tx ? tx.posts : this.repository;
+    await instance.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        likeCount: {
+          increment: 1,
+        },
+      },
+    });
+  }
+  async decrementLike(
+    postId: string,
+    tx?: Prisma.TransactionClient
+  ): Promise<void> {
+    const instance = tx ? tx.posts : this.repository;
+    await instance.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        likeCount: {
+          decrement: 1,
+        },
+      },
+    });
+  }
+  async incrementDislike(
+    postId: string,
+    tx?: Prisma.TransactionClient
+  ): Promise<void> {
+    const instance = tx ? tx.posts : this.repository;
+    await instance.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        dislikeCount: {
+          increment: 1,
+        },
+      },
+    });
+  }
+  async decrementDislike(
+    postId: string,
+    tx?: Prisma.TransactionClient
+  ): Promise<void> {
+    const instance = tx ? tx.posts : this.repository;
+    await instance.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        dislikeCount: {
+          decrement: 1,
+        },
+      },
+    });
   }
 }
 
