@@ -4,6 +4,7 @@ import { ReturnPostByUserController } from "@modules/posts/useCases/returnPostsB
 import { ReturnPostByUserIdController } from "@modules/posts/useCases/returnPostsByUserId/ReturnPostByUserIdController";
 import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { ReturnPostByIdController } from "@modules/posts/useCases/returnPostById/ReturnPostByIdController";
 
 export const postRouter = Router();
 
@@ -12,6 +13,8 @@ const createPostController = new CreatePostController();
 const returnPostsByUserController = new ReturnPostByUserController();
 
 const returnPostByUserIdController = new ReturnPostByUserIdController();
+
+const returnPostByUserId = new ReturnPostByIdController();
 
 const returnPosts = new ReturnPostController();
 
@@ -30,3 +33,5 @@ postRouter.get(
   ensureAuthenticated,
   returnPostByUserIdController.handle
 );
+
+postRouter.get("/detail/:id", ensureAuthenticated, returnPostByUserId.handle);

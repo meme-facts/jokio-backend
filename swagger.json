@@ -365,6 +365,71 @@
                 }
             }
         },
+        "/post/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post by Id",
+                "description": "Return post detailed by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "description": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "postDescription": {
+                                                "type": "string"
+                                            },
+                                            "img_url": {
+                                                "type": "string"
+                                            },
+                                            "isActive": {
+                                                "type": "string"
+                                            },
+                                            "user_id": {
+                                                "type": "string"
+                                            },
+                                            "likeCount": {
+                                                "type": "string"
+                                            },
+                                            "dislikeCount": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Public users do not receive friend request."
+                    }
+                }
+            }
+        },
         "/post/following": {
             "get": {
                 "tags": [
@@ -608,7 +673,75 @@
                         "description": "This user does not exist!"
                     }
                 }
-            }
+            },
+                "get": {
+                    "tags": [
+                        "Comments"
+                    ],
+                    "summary": "List Comments by post Id",
+                    "description": "Listing all comments paginated",
+                    "parameters": [
+                        {
+                            "name": "page",
+                            "in": "query",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "type": "string",
+                            "required": false
+                        },
+                        {
+                            "name": "id",
+                            "in": "path",
+                            "description": "post id",
+                            "required": true,
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Success",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "userId": {
+                                                    "type": "string"
+                                                },
+                                                "postId": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "This post does not exist."
+                        }
+                    }
+                }
         },
         "/like/{id}": {
             "post": {
