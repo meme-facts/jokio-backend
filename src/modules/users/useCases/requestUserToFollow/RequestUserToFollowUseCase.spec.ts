@@ -6,13 +6,14 @@ import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "./RequestUserToFollowUseCase";
+import { UserEntity } from "@modules/users/entities/User";
 
 let userRepositoryInMemory: IUserRepository;
 let followerRepositoryInMemory: IFollowersRepository;
 let createUserUseCase: CreateUserUseCase;
 let requestUserToFollowUseCase: RequestUserToFollowUseCase;
-let user1: User;
-let user2: User;
+let user1: UserEntity;
+let user2: UserEntity;
 describe("RequestUserToFollowUseCase", () => {
   beforeEach(async () => {
     followerRepositoryInMemory = new FollowersRepositoryInMemory();

@@ -1,6 +1,6 @@
 import { ResponseStatus, StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IGetUserByIdDTO } from "@modules/users/dtos/IGetUserByIdDTO";
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { UserEntity } from "@modules/users/entities/User";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 
@@ -8,7 +8,7 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IUserResponse
-  extends Omit<User, "password" | "updated_at" | "email" | "post"> {
+  extends Omit<UserEntity, "password" | "updated_at" | "email" | "post"> {
   followersQuantity: number;
   followingQuantity: number;
   relationStatus: StatusEnum | ResponseStatus;
@@ -47,16 +47,7 @@ class GetUserByIdUseCase {
     }
     const { followersQuantity, followingQuantity } =
       await this.followerRepository.getRelationsQuantityByUser(requestedUserId);
-    const {
-      id,
-      full_name,
-      nickname,
-      isPrivate,
-      created_at,
-      img_url,
-      following,
-      followers,
-    } = user;
+    const { id, full_name, nickname, isPrivate, created_at, img_url } = user;
     const response = {
       id,
       full_name,
@@ -67,8 +58,6 @@ class GetUserByIdUseCase {
       followersQuantity,
       followingQuantity,
       relationStatus,
-      followers,
-      following,
     };
 
     return response;

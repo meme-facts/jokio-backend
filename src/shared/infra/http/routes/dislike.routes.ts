@@ -3,7 +3,7 @@ import { DeleteLikeController } from "@modules/posts/useCases/deleteLike/DeleteR
 import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { CreateDislikeController } from "@modules/posts/useCases/createDislike/CreateReactionController";
-import { DeleteDislikeController } from "@modules/posts/useCases/deleteDislike /DeleteReactionController";
+import { DeleteDislikeController } from "@modules/posts/useCases/deleteDislike/DeleteReactionController";
 
 export const dislikesRouter = Router();
 

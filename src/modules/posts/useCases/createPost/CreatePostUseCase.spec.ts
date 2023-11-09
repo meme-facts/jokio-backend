@@ -1,8 +1,7 @@
-import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
-import { User } from "@modules/users/infra/typeorm/entities/Users";
-import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
+import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
+import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
 import { AppError } from "@shared/errors/AppError";
 import { CreatePostUseCase } from "./CreatePostUseCase";

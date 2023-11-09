@@ -8,6 +8,7 @@ interface IPostLikeRepository {
     userId,
   }: IReactionsDTO): Promise<PostLikeEntity | undefined>;
   delete(id: string, tx?: unknown): Promise<void>;
+  getAll(): Promise<PostLikeEntity[]>;
 }
 
 export { IPostLikeRepository };

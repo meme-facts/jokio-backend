@@ -4,6 +4,7 @@ require("dotenv").config();
 module.exports = {
   clearMocks: true,
   collectCoverage: true,
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {

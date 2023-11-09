@@ -1,13 +1,11 @@
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
-import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
-import { IUserRepository } from "@modules/users/repositories/IUserRepository";
-import { inject, injectable } from "tsyringe";
-import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
-import { IPostReactionRepository } from "@modules/posts/repositories/IPostDislikeRepository";
-import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
-import { AppError } from "@shared/errors/AppError";
-import { ResponseStatus, StatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IGetPostsByIdDTO } from "@modules/posts/dtos/IGetPostsByUserIdDTO";
+import { PostEntity } from "@modules/posts/entities/Post";
+import { ResponseStatus, StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
+import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import { IUserRepository } from "@modules/users/repositories/IUserRepository";
+import { AppError } from "@shared/errors/AppError";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
 class ReturnPostByUsersUseCase {
@@ -25,7 +23,7 @@ class ReturnPostByUsersUseCase {
     user_id,
     logged_user,
   }: IGetPostsByIdDTO): Promise<{
-    posts: Post[];
+    posts: PostEntity[];
     count: number;
     relationStatus: StatusEnum | ResponseStatus;
   }> {

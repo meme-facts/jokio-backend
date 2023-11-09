@@ -1,5 +1,5 @@
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { UserEntity } from "@modules/users/entities/User";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
@@ -15,7 +15,7 @@ class GetAllUsersUseCase {
     page,
     limit = 10,
     user_reference,
-  }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }> {
+  }: IGetAllUsersDTO): Promise<{ users: UserEntity[]; count: number }> {
     const { users, count } = await this.usersRepository.getByNameOrNickName({
       page,
       limit,

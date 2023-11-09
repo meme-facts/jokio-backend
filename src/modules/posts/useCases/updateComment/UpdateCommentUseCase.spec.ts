@@ -9,6 +9,8 @@ import { AppError } from "@shared/errors/AppError";
 import { CreateCommentUseCase } from "../createComment/CreateCommentUseCase";
 import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
 import { UpdateCommentUseCase } from "./UpdateCommentUseCase";
+import { UserEntity } from "@modules/users/entities/User";
+import { PostEntity } from "@modules/posts/entities/Post";
 
 let updateCommentUseCase: UpdateCommentUseCase;
 let commentaryRepositoryInMemory: ICommentRepository;
@@ -17,10 +19,10 @@ let postRepositoryInMemory: PostRepositoryInMemory;
 let createUserUseCase: CreateUserUseCase;
 let createPostUseCase: CreatePostUseCase;
 let createCommentaryUseCase: CreateCommentUseCase;
-let user1: User;
-let user2: User;
-let user3: User;
-let post: Post;
+let user1: UserEntity;
+let user2: UserEntity;
+let user3: UserEntity;
+let post: PostEntity;
 let commentId: string;
 
 describe("DeleteCommentaryUseCase", () => {

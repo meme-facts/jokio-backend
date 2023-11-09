@@ -1,8 +1,8 @@
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { UserEntity } from "@modules/users/entities/User";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
-import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
@@ -13,8 +13,8 @@ let followerRepository: IFollowersRepository;
 let createUserUseCase: CreateUserUseCase;
 let requestUserToFollowUseCase: RequestUserToFollowUseCase;
 let removeRelationUseCase: RemoveRelationUseCase;
-let user1: User;
-let user2: User;
+let user1: UserEntity;
+let user2: UserEntity;
 
 describe("RemoveRelationUseCase", () => {
   beforeEach(async () => {

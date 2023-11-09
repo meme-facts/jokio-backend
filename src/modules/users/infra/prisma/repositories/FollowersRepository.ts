@@ -21,7 +21,7 @@ class FollowersRepository implements IFollowersRepository {
     fStatus,
     id,
   }: IFollowerDTO): Promise<void> {
-    this.repository.create({
+    const user = await this.repository.create({
       data: {
         requestedUserId,
         requesterUserId,
@@ -103,7 +103,6 @@ class FollowersRepository implements IFollowersRepository {
         },
       }),
     ]);
-
     return {
       followersQuantity,
       followingQuantity,
