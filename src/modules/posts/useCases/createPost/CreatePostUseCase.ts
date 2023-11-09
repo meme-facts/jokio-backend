@@ -14,6 +14,7 @@ class CreatePostUseCase {
     private userRepository: IUserRepository
   ) {}
   async execute({
+    id,
     postDescription,
     user_id,
     img_url,
@@ -23,6 +24,7 @@ class CreatePostUseCase {
       throw new AppError("This users do not exists.");
     }
     const post = await this.postRepository.create({
+      id,
       postDescription,
       user_id,
       img_url,

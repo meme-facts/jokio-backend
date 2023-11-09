@@ -1,8 +1,8 @@
-
 interface IPostDTO {
-    postDescription:string;
-    img_url?:string;
-    user_id:string;
+  id?: string;
+  postDescription: string;
+  img_url?: string;
+  user_id: string;
 }
 
-export { IPostDTO }
+export { IPostDTO };

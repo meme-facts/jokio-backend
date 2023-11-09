@@ -1,22 +1,20 @@
 import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
 import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
-import { ReactionTypeEnum } from "@modules/posts/enums/ReactionTypeEnum";
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
-import { PostReaction } from "@modules/posts/infra/typeorm/entities/PostReactions";
-import { IPostRepository } from "../IPostRepository";
 import { PostEntity } from "@modules/posts/entities/Post";
 import { randomUUID } from "crypto";
+import { IPostRepository } from "../IPostRepository";
 
 class PostRepositoryInMemory implements IPostRepository {
   posts: PostEntity[] = [];
   async create({
+    id,
     postDescription,
     user_id,
     img_url,
   }: IPostDTO): Promise<PostEntity> {
     const post = new PostEntity();
     Object.assign(post, {
-      id: randomUUID(),
+      id: id ?? randomUUID(),
       postDescription,
       user_id,
       img_url,

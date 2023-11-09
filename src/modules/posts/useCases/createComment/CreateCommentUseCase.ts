@@ -16,7 +16,7 @@ class CreateCommentUseCase {
     const post = await this.postRepository.getById(postId);
 
     if (!post) {
-      throw new AppError("This post does not exist");
+      throw new AppError("This post does not exist", 404);
     }
     await this.commentaryRepository.create({
       userId,
