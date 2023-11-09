@@ -8,7 +8,6 @@ class ReturnCommentsController {
     const { page, limit } = request.query;
 
     const returnCommentsUseCase = container.resolve(ReturnCommentsUseCase);
-    console.log(postId);
     const comments = await returnCommentsUseCase.execute({
       page: +page,
       limit: +limit,

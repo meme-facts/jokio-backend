@@ -66,7 +66,6 @@ describe("ReturnPostUseCase", () => {
       email: "2silva1@teste.com",
       password: "1234",
     });
-    console.log(user);
     await createPostUseCase.execute({
       id: randomId,
       postDescription: `olha ai um teste chegando`,
@@ -88,7 +87,6 @@ describe("ReturnPostUseCase", () => {
       loggedUserId: user.user.id,
       postId: randomId,
     });
-    console.log(user.user.id);
     expect(post).toHaveProperty("id");
     expect(post.id).toEqual(randomId);
   });

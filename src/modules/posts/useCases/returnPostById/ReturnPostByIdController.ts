@@ -6,7 +6,6 @@ class ReturnPostByIdController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: postId } = request.params;
     const { id: userId } = request.user;
-    console.log(postId);
     const returnPostByIdUseCase = container.resolve(ReturnPostByIdUseCase);
     const post = await returnPostByIdUseCase.execute({
       postId,
