@@ -1,14 +1,15 @@
+import { UserEntity } from "@modules/users/entities/User";
 import { AppError } from "../../../../shared/errors/AppError";
 import { User } from "../../infra/typeorm/entities/Users";
-import { UserRepositoryInMemory } from "../../repositories/InMemory/UserRepositoryInMemory";
 import { IUserRepository } from "../../repositories/IUserRepository";
+import { UserRepositoryInMemory } from "../../repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { UpdateUserUseCase } from "./UpdateUserUseCase";
 
 let userRepositoryInMemory: IUserRepository;
 let createUserUseCase: CreateUserUseCase;
 let updateUserUseCase: UpdateUserUseCase;
-let user: User;
+let user: UserEntity;
 describe("UpdateUserUseCase", () => {
   beforeEach(async () => {
     userRepositoryInMemory = new UserRepositoryInMemory();

@@ -9,10 +9,11 @@ let createUserUseCase: CreateUserUseCase;
 describe("AuthenticateUserUseCase", () => {
   beforeEach(async () => {
     userRepositoryInMemory = new UserRepositoryInMemory();
-    authenticateUserUseCase = new AuthenticateUserUseCase(
-      userRepositoryInMemory
-    );
     createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
+    authenticateUserUseCase = new AuthenticateUserUseCase(
+      userRepositoryInMemory,
+      createUserUseCase
+    );
     await createUserUseCase.execute({
       full_name: "Teste da Silva",
       nickname: "Silva",

@@ -1,9 +1,7 @@
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
-import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
-import { IUserRepository } from "@modules/users/repositories/IUserRepository";
-import { inject, injectable } from "tsyringe";
 import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
-import { IPostReactionRepository } from "@modules/posts/repositories/IPostDislikeRepository";
+import { PostEntity } from "@modules/posts/entities/Post";
+import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
+import { inject, injectable } from "tsyringe";
 
 interface IReactionsQuantity {
   likes: number;
@@ -20,7 +18,7 @@ class ReturnPostByUsersUseCase {
     page,
     limit,
     user_id,
-  }: IGetPostsDTO): Promise<{ posts: Post[]; count: number }> {
+  }: IGetPostsDTO): Promise<{ posts: PostEntity[]; count: number }> {
     const { posts, count } = await this.postRepository.getByUser({
       page,
       limit,

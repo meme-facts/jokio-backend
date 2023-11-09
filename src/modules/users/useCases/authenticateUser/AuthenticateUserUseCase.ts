@@ -1,13 +1,11 @@
-import { IUserRepository } from "../../repositories/IUserRepository";
-import { inject, injectable } from "tsyringe";
-import { User } from "../../../users/infra/typeorm/entities/Users";
-import { AppError } from "../../../../shared/errors/AppError";
+import { UserEntity } from "@modules/users/entities/User";
 import { compare } from "bcryptjs";
-import { sign } from "jsonwebtoken";
-import { users } from "@prisma/client";
-import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
-import { IUserDTO } from "@modules/users/dtos/ICreateUsersDTO";
 import * as admin from "firebase-admin";
+import { sign } from "jsonwebtoken";
+import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../shared/errors/AppError";
+import { IUserRepository } from "../../repositories/IUserRepository";
+import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 
 interface ILoginDTO {
   login: string;
@@ -25,7 +23,7 @@ class AuthenticateUserUseCase {
   async execute({
     login,
     password,
-  }: ILoginDTO): Promise<{ user: users; token: string }> {
+  }: ILoginDTO): Promise<{ user: UserEntity; token: string }> {
     const user = await this.userRepository.getByNicknameOrEmail(login);
     if (!user) {
       throw new AppError("Login or password incorrect.");
@@ -68,7 +66,7 @@ class AuthenticateUserUseCase {
         user,
       };
     } catch (error) {
-      throw new AppError("Error with Google login:");
+      throw new AppError("Error with Google login: " + error);
     }
   }
 }

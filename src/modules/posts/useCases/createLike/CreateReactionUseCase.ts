@@ -1,6 +1,5 @@
 import { IPostLikeRepository } from "@modules/posts/repositories/IPostLikeRepository";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
-import { PrismaClient } from "@prisma/client";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 

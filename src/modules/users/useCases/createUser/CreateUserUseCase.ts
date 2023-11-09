@@ -1,10 +1,10 @@
-import { users } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IUserDTO } from "../../dtos/ICreateUsersDTO";
 import { IUserRepository } from "../../repositories/IUserRepository";
+import { UserEntity } from "@modules/users/entities/User";
 
 @injectable()
 class CreateUserUseCase {
@@ -18,7 +18,7 @@ class CreateUserUseCase {
     email,
     password,
     isPrivate,
-  }: IUserDTO): Promise<{ user: users; token: string }> {
+  }: IUserDTO): Promise<{ user: UserEntity; token: string }> {
     const userByEmail = await this.userRepository.getByEmail(email);
     if (userByEmail) {
       throw new AppError("This email is already being used.");

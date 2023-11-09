@@ -1,10 +1,10 @@
 import { ResponseStatus } from "@modules/posts/enums/StatusEnum";
-import { User } from "@modules/users/infra/typeorm/entities/Users";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 
+import { UserEntity } from "@modules/users/entities/User";
 import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
@@ -15,8 +15,8 @@ let followerRepositoryInMemory: IFollowersRepository;
 let createUserUseCase: CreateUserUseCase;
 let requestUserToFollowUseCase: RequestUserToFollowUseCase;
 let getUserByIdUseCase: GetUserByIdUseCase;
-let user1: User;
-let user2: User;
+let user1: UserEntity;
+let user2: UserEntity;
 describe("GetUserByIdUseCase", () => {
   beforeEach(async () => {
     followerRepositoryInMemory = new FollowersRepositoryInMemory();

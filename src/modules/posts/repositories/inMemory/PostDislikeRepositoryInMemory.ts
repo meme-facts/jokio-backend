@@ -1,13 +1,15 @@
-import { PostLikeEntity } from "@modules/posts/entities/Like";
-import { randomUUID } from "crypto";
+import { PostReaction } from "@modules/posts/infra/typeorm/entities/PostReactions";
+import { IPostDislikeRepository } from "../IPostDislikeRepository";
 import { IPostLikeRepository } from "../IPostLikeRepository";
+import { randomUUID } from "crypto";
+import { PostDislikeEntity } from "@modules/posts/entities/Dislike";
 
-class PostReactionsRepositoryInMemory implements IPostLikeRepository {
+class PostDislikeRepositoryInMemory implements IPostDislikeRepository {
   async createLike(
     { postId, userId }: IReactionsDTO,
     tx?: unknown
   ): Promise<void> {
-    const postReaction = new PostLikeEntity();
+    const postReaction = new PostDislikeEntity();
     Object.assign(postReaction, {
       id: randomUUID(),
       postId,
@@ -15,7 +17,7 @@ class PostReactionsRepositoryInMemory implements IPostLikeRepository {
     });
     this.postReactions.push(postReaction);
   }
-  async getLikesByPostId(postId: string): Promise<PostLikeEntity[]> {
+  async getLikesByPostId(postId: string): Promise<PostDislikeEntity[]> {
     const reaction = await this.postReactions.filter(
       (reaction) => reaction.postId === postId
     );
@@ -24,28 +26,28 @@ class PostReactionsRepositoryInMemory implements IPostLikeRepository {
   async getLikeByPostAndUserId({
     postId,
     userId,
-  }: IReactionsDTO): Promise<PostLikeEntity> {
+  }: IReactionsDTO): Promise<PostDislikeEntity> {
     const reaction = await this.postReactions.find(
       (reaction) => reaction.postId === postId && reaction.userId === userId
     );
     return reaction;
   }
-  private postReactions: PostLikeEntity[] = [];
+  private postReactions: PostDislikeEntity[] = [];
   async create({ postId, userId }: IReactionsDTO): Promise<void> {
-    const postReaction = new PostLikeEntity();
+    const postReaction = new PostDislikeEntity();
     Object.assign(postReaction, {
       postId,
       userId,
     });
     this.postReactions.push(postReaction);
   }
-  async getAll(): Promise<PostLikeEntity[]> {
+  async getAll(): Promise<PostDislikeEntity[]> {
     return this.postReactions;
   }
   async getReaction({
     postId,
     userId,
-  }: IReactionsDTO): Promise<PostLikeEntity> {
+  }: IReactionsDTO): Promise<PostDislikeEntity> {
     const reaction = await this.postReactions.find(
       (reaction) => reaction.postId === postId && reaction.userId === userId
     );
@@ -59,4 +61,4 @@ class PostReactionsRepositoryInMemory implements IPostLikeRepository {
   }
 }
 
-export { PostReactionsRepositoryInMemory };
+export { PostDislikeRepositoryInMemory };
