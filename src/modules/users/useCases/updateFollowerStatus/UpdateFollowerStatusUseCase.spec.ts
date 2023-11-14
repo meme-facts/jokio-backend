@@ -1,4 +1,4 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
@@ -52,7 +52,7 @@ describe("UpdateFollowerStatusUseCase", () => {
 
   it("should change fStatus to A when pass A by query param", async () => {
     await updateFollowerStatusUseCase.execute({
-      fStatus: StatusEnum.Accepted,
+      fStatus: FollowerStatusEnum.Accepted,
       requestedUserId: user1.id,
       requesterUserId: user2.id,
     });
@@ -61,12 +61,12 @@ describe("UpdateFollowerStatusUseCase", () => {
       user1.id,
       user2.id
     );
-    expect(relation.fStatus).toBe(StatusEnum.Accepted);
+    expect(relation.fStatus).toBe(FollowerStatusEnum.Accepted);
   });
 
   it("should change fStatus to B when pass B by query param", async () => {
     await updateFollowerStatusUseCase.execute({
-      fStatus: StatusEnum.Blocked,
+      fStatus: FollowerStatusEnum.Blocked,
       requestedUserId: user1.id,
       requesterUserId: user2.id,
     });
@@ -75,13 +75,13 @@ describe("UpdateFollowerStatusUseCase", () => {
       user1.id,
       user2.id
     );
-    expect(relation.fStatus).toBe(StatusEnum.Blocked);
+    expect(relation.fStatus).toBe(FollowerStatusEnum.Blocked);
   });
 
   it("should not be able to update a solicitation if the users doesn't exists.", async () => {
     await expect(
       updateFollowerStatusUseCase.execute({
-        fStatus: StatusEnum.Blocked,
+        fStatus: FollowerStatusEnum.Blocked,
         requestedUserId: user1.id,
         requesterUserId: "wrong_id",
       })

@@ -1,6 +1,6 @@
 interface IGetUserByIdDTO {
   loggedUserId: string;
-  requestedUserId: string;
+  requestedUserNickName: string;
 }
 
 export { IGetUserByIdDTO };

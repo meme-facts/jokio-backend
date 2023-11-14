@@ -1,4 +1,4 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
@@ -88,7 +88,7 @@ describe("UpdateFollowerStatusUseCase", () => {
       followerRepository
     );
     await updateFollowerStatusUseCase.execute({
-      fStatus: StatusEnum.Accepted,
+      fStatus: FollowerStatusEnum.Accepted,
       requestedUserId: user3.id,
       requesterUserId: user2.id,
     });
