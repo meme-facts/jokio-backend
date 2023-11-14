@@ -1,4 +1,4 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { UpdateFollowerStatusUseCase } from "./UpdateFollowerStatusUseCase";
@@ -11,7 +11,7 @@ class UpdateFollowerStatusController {
       UpdateFollowerStatusUseCase
     );
     await updateFollowerStatusUseCase.execute({
-      fStatus: (fStatus as StatusEnum) ?? StatusEnum.Accepted,
+      fStatus: (fStatus as FollowerStatusEnum) ?? FollowerStatusEnum.Accepted,
       requestedUserId,
       requesterUserId: requesterUserId as string,
     });

@@ -51,6 +51,11 @@ describe("RequestUserToFollowUseCase", () => {
       requestUserToFollowUseCase.execute("wrong_user_id", user2.id)
     ).rejects.toEqual(new AppError("This user does not exist!", 404));
   });
+  it("should return error when user send a solicitation to himself.", async () => {
+    await expect(
+      requestUserToFollowUseCase.execute(user2.id, user2.id)
+    ).rejects.toEqual(new AppError("Users can not send self solicitations!"));
+  });
   it("fstatus should be P when user request a relation for a private user ", async () => {
     await requestUserToFollowUseCase.execute(user1.id, user2.id);
     const followers = await followerRepositoryInMemory.getAll();
@@ -61,6 +66,7 @@ describe("RequestUserToFollowUseCase", () => {
     const followers = await followerRepositoryInMemory.getAll();
     expect(followers[0].fStatus).toBe("A");
   });
+
   it("should not be able to create a solicitation if the users has already send a solicitation.", async () => {
     await requestUserToFollowUseCase.execute(user1.id, user2.id);
     await expect(

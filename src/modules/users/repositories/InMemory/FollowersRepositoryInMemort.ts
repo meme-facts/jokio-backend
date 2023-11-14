@@ -1,4 +1,4 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
 import { Follower } from "@modules/users/infra/typeorm/entities/Followers";
@@ -61,7 +61,7 @@ class FollowersRepositoryInMemory implements IFollowersRepository {
   }: IGetRequestsDTO): Promise<{ requests: Follower[]; count: number }> {
     const followers = this.followers.filter(
       (follower) =>
-        follower.fStatus === StatusEnum.Pending &&
+        follower.fStatus === FollowerStatusEnum.Pending &&
         follower.requestedUserId === userId
     );
     const count = followers.length;

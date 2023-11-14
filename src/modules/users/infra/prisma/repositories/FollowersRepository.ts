@@ -1,4 +1,4 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
 import {
@@ -72,13 +72,13 @@ class FollowersRepository implements IFollowersRepository {
     const [count, requests] = await Promise.all([
       this.repository.count({
         where: {
-          fStatus: StatusEnum.Pending,
+          fStatus: FollowerStatusEnum.Pending,
           requestedUserId: userId,
         },
       }),
       this.repository.findMany({
         where: {
-          fStatus: StatusEnum.Pending,
+          fStatus: FollowerStatusEnum.Pending,
           requestedUserId: userId,
         },
         skip: offset,

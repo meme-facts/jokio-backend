@@ -1,4 +1,4 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import {
   Column,
   CreateDateColumn,
@@ -45,7 +45,7 @@ class Follower {
       this.id = uuidV4();
     }
     if (!this.fStatus) {
-      this.fStatus = StatusEnum.Accepted;
+      this.fStatus = FollowerStatusEnum.Accepted;
     }
   }
 }

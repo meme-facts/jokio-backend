@@ -133,11 +133,11 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "Get user by id",
-                "description": "Return user information by your id",
+                "summary": "Get user by nickname",
+                "description": "Return user information by your nickname",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "nickname",
                         "in": "path",
                         "type": "string",
                         "required": true,

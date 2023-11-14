@@ -4,7 +4,7 @@ import { AuthenticateUserController } from "../../../../modules/users/useCases/a
 import { CreateUserController } from "../../../../modules/users/useCases/createUser/CreateUserController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { GetAllUsersController } from "@modules/users/useCases/getAllUsers/GetAllUsersController";
-import { GetUserByIdController } from "@modules/users/useCases/getUserById/GetUserByIdController";
+import { GetUserByNickNameController } from "@modules/users/useCases/getUserById/GetUserByNickNameController";
 
 export const userRouter = Router();
 
@@ -16,11 +16,11 @@ const authenticateUserController = new AuthenticateUserController();
 
 const updateUserController = new UpdateUserController();
 
-const getUserByIdController = new GetUserByIdController();
+const getUserByNickNameController = new GetUserByNickNameController();
 
 userRouter.get("/", ensureAuthenticated, getAllUsersController.handle);
 
-userRouter.get("/:id", ensureAuthenticated, getUserByIdController.handle);
+userRouter.get("/:id", ensureAuthenticated, getUserByNickNameController.handle);
 
 userRouter.post("/", createUserController.handle);
 

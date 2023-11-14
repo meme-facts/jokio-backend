@@ -1,6 +1,6 @@
 import { IGetPostsByIdDTO } from "@modules/posts/dtos/IGetPostsByUserIdDTO";
 import { PostEntity } from "@modules/posts/entities/Post";
-import { ResponseStatus, StatusEnum } from "@modules/posts/enums/StatusEnum";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
@@ -25,30 +25,30 @@ class ReturnPostByUsersUseCase {
   }: IGetPostsByIdDTO): Promise<{
     posts: PostEntity[];
     count: number;
-    relationStatus: StatusEnum | ResponseStatus;
+    relationStatus: FollowerStatusEnum;
   }> {
-    const user = await this.userRepository.getAllById(user_id);
+    const user = await this.userRepository.getByNickName(user_id);
     if (!user) {
       throw new AppError("This users does not exist");
     }
-    let relationStatus: StatusEnum | ResponseStatus | null = null;
-    if (logged_user !== user_id) {
+    let relationStatus: FollowerStatusEnum | null = null;
+    if (logged_user !== user.id) {
       try {
         const { fStatus } = await this.followerRepository.getSolicitation(
-          user_id,
+          user.id,
           logged_user
         );
-        relationStatus = fStatus as StatusEnum;
+        relationStatus = fStatus as FollowerStatusEnum;
       } catch {
-        relationStatus = ResponseStatus.UNKNOWN;
+        relationStatus = FollowerStatusEnum.UNKNOWN;
       }
     } else {
-      relationStatus = ResponseStatus.OWNER;
+      relationStatus = FollowerStatusEnum.OWNER;
     }
     const { posts, count } = await this.postRepository.getAllByUserId({
       page,
       limit,
-      user_id,
+      user_id: user.id,
     });
 
     return { posts, count, relationStatus };
