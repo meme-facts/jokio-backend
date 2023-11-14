@@ -117,8 +117,8 @@ model typeorm_metadata {
 model Users {
   id                                         String          @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(uuid()) @db.Uuid
   full_name                                  String?         @db.VarChar
-  nickname                                   String          @db.VarChar
-  email                                      String          @db.VarChar
+  nickname                                   String          @unique @db.VarChar
+  email                                      String          @unique @db.VarChar
   password                                   String          @db.VarChar
   img_url                                    String?         @db.VarChar
   isPrivate                                  Boolean         @default(false)
@@ -133,4 +133,6 @@ model Users {
   posts                                      Posts[]
   postLikes                                  PostLikes[]
   postDislikes                               PostDislikes[]
+
+  @@index([nickname], type: Hash)
 }
