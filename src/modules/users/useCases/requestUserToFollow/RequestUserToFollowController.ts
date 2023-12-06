@@ -2,11 +2,6 @@ import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { RequestUserToFollowUseCase } from "./RequestUserToFollowUseCase";
 
-interface IRequest {
-  requestedUserId: string;
-  requesterUserId: string;
-}
-
 class RequestUserToFollowController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: requestedUserId } = request.params;
@@ -14,7 +9,10 @@ class RequestUserToFollowController {
     const requestUserToFollowUseCase = container.resolve(
       RequestUserToFollowUseCase
     );
-    await requestUserToFollowUseCase.execute(requestedUserId, requesterUserId);
+    await requestUserToFollowUseCase.execute({
+      requestedUserId,
+      requesterUserId,
+    });
     return response.status(201).send();
   }
 }

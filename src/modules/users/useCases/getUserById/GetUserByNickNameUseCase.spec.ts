@@ -42,7 +42,10 @@ describe("GetUserByNickNameUseCase", () => {
     });
     user1 = firstUserTest.user;
     user2 = secondUserTest.user;
-    await requestUserToFollowUseCase.execute(user2.id, user1.id);
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: user2.id,
+      requesterUserId: user1.id,
+    });
     getUserByIdUseCase = new GetUserByNickNameUseCase(
       userRepositoryInMemory,
       followerRepositoryInMemory

@@ -13,10 +13,10 @@ class RequestUserToFollowUseCase {
     @inject("UserRepository")
     private userRepository: IUserRepository
   ) {}
-  async execute(
-    requestedUserId: string,
-    requesterUserId: string
-  ): Promise<void> {
+  async execute({
+    requestedUserId,
+    requesterUserId,
+  }: IRequestUserToFollowerInputDTO): Promise<void> {
     const requestedUser = await this.userRepository.getById(requestedUserId);
     const requesterUser = await this.userRepository.getById(requesterUserId);
     if (!requestedUser || !requesterUser) {
