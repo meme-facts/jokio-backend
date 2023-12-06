@@ -6,6 +6,8 @@ import { UpdateFollowerStatusController } from "@modules/users/useCases/updateFo
 import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { UpdateFollowersStatusValidator } from "../middlewares/helpers/validators/followers/UpdateFollowersStatusValidator";
+import { GetFollowersByUserController } from "@modules/users/useCases/getFollowers/getFollowingByUserController";
+import { GetFollowingByUserController } from "@modules/users/useCases/getFollowing/getFollowingByUserController";
 
 export const followerRouter = Router();
 
@@ -15,11 +17,24 @@ const removeRelationController = new RemoveRelationController();
 const unFollowController = new UnFollowController();
 const getPendingRelationsByUserController =
   new GetPendingRelationsByUserController();
+const getFollowersByUserController = new GetFollowersByUserController();
+const getFollowingByUserController = new GetFollowingByUserController();
 
 followerRouter.get(
   "/",
   ensureAuthenticated,
   getPendingRelationsByUserController.handle
+);
+
+followerRouter.get(
+  "/:id/followers",
+  ensureAuthenticated,
+  getFollowersByUserController.handle
+);
+followerRouter.get(
+  "/:id/following",
+  ensureAuthenticated,
+  getFollowingByUserController.handle
 );
 
 followerRouter.post(

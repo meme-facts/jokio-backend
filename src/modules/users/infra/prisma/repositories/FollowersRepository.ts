@@ -1,6 +1,12 @@
 import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
+import {
+  IGetAllFollowsDTO,
+  SortByEnum,
+} from "@modules/users/dtos/IGetAllFollowsInputDTO";
+
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
+import { FollowerEntity } from "@modules/users/entities/Follower";
 import {
   IFollowersRepository,
   IRelation,
@@ -13,6 +19,62 @@ class FollowersRepository implements IFollowersRepository {
   private repository: Prisma.FollowersDelegate<DefaultArgs>;
   constructor() {
     this.repository = new PrismaClient().followers;
+  }
+  async getAllFollowers(
+    params: IGetAllFollowsDTO
+  ): Promise<{ followers: FollowerEntity[]; count: number }> {
+    const { userId, sortBy, page, limit } = params;
+    const orderBy = sortBy ? { [sortBy]: "desc" } : undefined;
+    const [count, followers] = await Promise.all([
+      this.repository.count({
+        where: {
+          requestedUserId: userId,
+        },
+      }),
+      this.repository.findMany({
+        include: {
+          requester: true,
+        },
+        where: {
+          requestedUserId: userId,
+        },
+        orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+    ]);
+    return {
+      followers,
+      count,
+    };
+  }
+  async getAllFollowing(
+    params: IGetAllFollowsDTO
+  ): Promise<{ following: FollowerEntity[]; count: number }> {
+    const { userId, sortBy, page, limit } = params;
+    const orderBy = sortBy ? { [sortBy]: "desc" } : undefined;
+    const [count, following] = await Promise.all([
+      this.repository.count({
+        where: {
+          requesterUserId: userId,
+        },
+      }),
+      this.repository.findMany({
+        include: {
+          requested: true,
+        },
+        where: {
+          requesterUserId: userId,
+        },
+        orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+    ]);
+    return {
+      following,
+      count,
+    };
   }
 
   async create({

@@ -41,36 +41,57 @@ describe("RequestUserToFollowUseCase", () => {
     user2 = secondUserTest.user;
   });
   it("should request a user to follow", async () => {
-    await requestUserToFollowUseCase.execute(user1.id, user2.id);
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: user1.id,
+      requesterUserId: user2.id,
+    });
     const followers = await followerRepositoryInMemory.getAll();
     expect(followers[0]).toHaveProperty("id");
   });
   // should return error when some of users do not exist
   it("should return error when user do not exist", async () => {
     await expect(
-      requestUserToFollowUseCase.execute("wrong_user_id", user2.id)
+      requestUserToFollowUseCase.execute({
+        requestedUserId: "wrong_user_id",
+        requesterUserId: user2.id,
+      })
     ).rejects.toEqual(new AppError("This user does not exist!", 404));
   });
   it("should return error when user send a solicitation to himself.", async () => {
     await expect(
-      requestUserToFollowUseCase.execute(user2.id, user2.id)
+      requestUserToFollowUseCase.execute({
+        requestedUserId: user2.id,
+        requesterUserId: user2.id,
+      })
     ).rejects.toEqual(new AppError("Users can not send self solicitations!"));
   });
   it("fstatus should be P when user request a relation for a private user ", async () => {
-    await requestUserToFollowUseCase.execute(user1.id, user2.id);
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: user1.id,
+      requesterUserId: user2.id,
+    });
     const followers = await followerRepositoryInMemory.getAll();
     expect(followers[0].fStatus).toBe("P");
   });
   it("fstatus should be A when user request a relation for a non private user ", async () => {
-    await requestUserToFollowUseCase.execute(user2.id, user1.id);
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: user2.id,
+      requesterUserId: user1.id,
+    });
     const followers = await followerRepositoryInMemory.getAll();
     expect(followers[0].fStatus).toBe("A");
   });
 
   it("should not be able to create a solicitation if the users has already send a solicitation.", async () => {
-    await requestUserToFollowUseCase.execute(user1.id, user2.id);
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: user1.id,
+      requesterUserId: user2.id,
+    });
     await expect(
-      requestUserToFollowUseCase.execute(user1.id, user2.id)
+      requestUserToFollowUseCase.execute({
+        requestedUserId: user1.id,
+        requesterUserId: user2.id,
+      })
     ).rejects.toEqual(new AppError("Users can create only one solicitation!"));
   });
 });

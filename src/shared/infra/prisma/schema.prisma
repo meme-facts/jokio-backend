@@ -20,25 +20,26 @@ model Comments {
 }
 
 model Followers {
-  id                                     String   @id(map: "PK_c90cfc5b18edd29bd15ba95c1a4") @default(uuid()) @db.Uuid
-  fStatus                                String   @db.Char(1)
-  requestedUserId                        String   @db.Uuid
-  requesterUserId                        String   @db.Uuid
-  created_at                             DateTime @default(now()) @db.Timestamp(6)
-  updated_at                             DateTime @default(now()) @db.Timestamp(6)
-  users_followers_requestedUserIdTousers Users    @relation("followers_requestedUserIdTousers", fields: [requestedUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequested")
-  users_followers_requesterUserIdTousers Users    @relation("followers_requesterUserIdTousers", fields: [requesterUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequester")
+  id              String   @id(map: "PK_c90cfc5b18edd29bd15ba95c1a4") @default(uuid()) @db.Uuid
+  fStatus         String   @db.Char(1)
+  requestedUserId String   @db.Uuid
+  requesterUserId String   @db.Uuid
+  points          Int      @default(0)
+  created_at      DateTime @default(now()) @db.Timestamp(6)
+  updated_at      DateTime @default(now()) @db.Timestamp(6)
+  requested       Users    @relation("followers_requestedUserIdTousers", fields: [requestedUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequested")
+  requester       Users    @relation("followers_requesterUserIdTousers", fields: [requesterUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequester")
 }
 
 model Messages {
-  id                             String   @id(map: "PK_18325f38ae6de43878487eff986") @default(uuid()) @db.Uuid
-  message                        String   @db.VarChar
-  isRead                         Boolean
-  fromUser                       String   @db.Uuid
-  toUser                         String   @db.Uuid
-  created_at                     DateTime @default(now()) @db.Timestamp(6)
-  users_messages_fromUserTousers Users    @relation("messages_fromUserTousers", fields: [fromUser], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequested")
-  users_messages_toUserTousers   Users    @relation("messages_toUserTousers", fields: [toUser], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequester")
+  id         String   @id(map: "PK_18325f38ae6de43878487eff986") @default(uuid()) @db.Uuid
+  message    String   @db.VarChar
+  isRead     Boolean
+  fromUserId String   @db.Uuid
+  toUserId   String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  fromUser   Users    @relation("messages_fromUserTousers", fields: [fromUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequested")
+  toUser     Users    @relation("messages_toUserTousers", fields: [toUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequester")
 }
 
 model Migrations {
@@ -115,24 +116,24 @@ model typeorm_metadata {
 }
 
 model Users {
-  id                                         String          @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(uuid()) @db.Uuid
-  full_name                                  String?         @db.VarChar
-  nickname                                   String          @unique @db.VarChar
-  email                                      String          @unique @db.VarChar
-  password                                   String          @db.VarChar
-  img_url                                    String?         @db.VarChar
-  isPrivate                                  Boolean         @default(false)
-  created_at                                 DateTime        @default(now()) @db.Timestamp(6)
-  updated_at                                 DateTime        @default(now()) @updatedAt @db.Timestamp(6)
-  Comments                                   Comments[]
-  followers_followers_requestedUserIdTousers Followers[]     @relation("followers_requestedUserIdTousers")
-  followers_followers_requesterUserIdTousers Followers[]     @relation("followers_requesterUserIdTousers")
-  messages_messages_fromUserTousers          Messages[]      @relation("messages_fromUserTousers")
-  messages_messages_toUserTousers            Messages[]      @relation("messages_toUserTousers")
-  notifications                              Notifications[]
-  posts                                      Posts[]
-  postLikes                                  PostLikes[]
-  postDislikes                               PostDislikes[]
+  id            String          @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(uuid()) @db.Uuid
+  full_name     String?         @db.VarChar
+  nickname      String          @unique @db.VarChar
+  email         String          @unique @db.VarChar
+  password      String          @db.VarChar
+  img_url       String?         @db.VarChar
+  isPrivate     Boolean         @default(false)
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @updatedAt @db.Timestamp(6)
+  Comments      Comments[]
+  requesteds    Followers[]     @relation("followers_requestedUserIdTousers")
+  requesters    Followers[]     @relation("followers_requesterUserIdTousers")
+  fromUsers     Messages[]      @relation("messages_fromUserTousers")
+  toUsers       Messages[]      @relation("messages_toUserTousers")
+  notifications Notifications[]
+  posts         Posts[]
+  postLikes     PostLikes[]
+  postDislikes  PostDislikes[]
 
   @@index([nickname], type: Hash)
 }

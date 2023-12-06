@@ -44,10 +44,10 @@ describe("UpdateFollowerStatusUseCase", () => {
     });
     user1 = firstUserTest.user;
     user2 = secondUserTest.user;
-    await requestUserToFollowUseCase.execute(
-      firstUserTest.user.id,
-      secondUserTest.user.id
-    );
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: firstUserTest.user.id,
+      requesterUserId: secondUserTest.user.id,
+    });
   });
 
   it("should change fStatus to A when pass A by query param", async () => {

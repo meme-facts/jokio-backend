@@ -1093,6 +1093,170 @@
                     }
                 }
             }
+        },
+            "/followers/{id}/followers": {
+                "get": {
+                    "tags": [
+                        "Followers"
+                    ],
+                    "summary": "List Followers from an user",
+                    "description": "Listing followers from and user paginated",
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "in": "path",
+                            "description": "requester user id",
+                            "required": true,
+                            "schema": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "name": "page",
+                            "in": "query",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "type": "string",
+                            "required": false
+                        },
+                        {
+                            "name": "sortBy",
+                            "in": "query",
+                            "type": "string",
+                            "required": false
+                        }                   
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Success",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "requestedUserId": {
+                                                    "type": "string"
+                                                },
+                                                "requesterUserId": {
+                                                    "type": "string"
+                                                },
+                                                "requester": {
+                                                    "type": "object"
+                                                },
+                                                "fStatus": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "User not found."
+                        },
+                        "400":{
+                            "description":"Invalid sort by"
+                                                    }
+                    }
+                }
+        },
+        "/followers/{id}/following": {
+            "get": {
+                "tags": [
+                    "Followers"
+                ],
+                "summary": "List following from an user",
+                "description": "Listing following from and user paginated",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "requester user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "requestedUserId": {
+                                                "type": "string"
+                                            },
+                                            "requesterUserId": {
+                                                "type": "string"
+                                            },
+                                            "requested": {
+                                                "type": "object"
+                                            },
+                                            "fStatus": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "400":{
+                        "description":"Invalid sort by"
+                                                }
+                }
+            }
         }
     }
 }

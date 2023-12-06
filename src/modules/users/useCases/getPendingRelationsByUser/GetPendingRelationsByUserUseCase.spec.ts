@@ -64,26 +64,27 @@ describe("UpdateFollowerStatusUseCase", () => {
     user2 = secondUserTest.user;
     user3 = thirdUserTest.user;
     user4 = fourthUserTest.user;
-    await requestUserToFollowUseCase.execute(
-      secondUserTest.user.id,
-      firstUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      secondUserTest.user.id,
-      thirdUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      thirdUserTest.user.id,
-      secondUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      firstUserTest.user.id,
-      thirdUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      secondUserTest.user.id,
-      fourthUserTest.user.id
-    );
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: secondUserTest.user.id,
+      requesterUserId: firstUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: secondUserTest.user.id,
+      requesterUserId: thirdUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: thirdUserTest.user.id,
+      requesterUserId: secondUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: firstUserTest.user.id,
+      requesterUserId: thirdUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: secondUserTest.user.id,
+      requesterUserId: fourthUserTest.user.id,
+    });
+
     updateFollowerStatusUseCase = new UpdateFollowerStatusUseCase(
       followerRepository
     );
