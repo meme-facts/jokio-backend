@@ -5,6 +5,8 @@ import { postRouter } from "./post.routes";
 import { userRouter } from "./users.routes";
 import { likesRouter } from "./likes.routes";
 import { dislikesRouter } from "./dislike.routes";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { messageRouter } from "./messages.routes";
 
 export const router = Router();
 
@@ -19,3 +21,5 @@ router.use("/comments", commentsRouter);
 router.use("/like", likesRouter);
 
 router.use("/dislike", dislikesRouter);
+
+router.use("/messages", ensureAuthenticated, messageRouter);

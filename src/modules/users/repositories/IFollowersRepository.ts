@@ -13,7 +13,6 @@ interface IFollowersRepository {
     requestedUserId,
     requesterUserId,
     fStatus,
-    id,
   }: IFollowerDTO): Promise<void>;
   getAll(): Promise<FollowerEntity[]>;
   getAllFollowing(

@@ -1,6 +1,6 @@
 import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
-import { IUserDTO } from "../../dtos/ICreateUsersDTO";
+import { CreateUserDTO } from "../../infra/class-validator/user/CreateUsers.dto";
 import { IUserRepository } from "../IUserRepository";
 import { UserEntity } from "@modules/users/entities/User";
 import { v4 as uuidV4 } from "uuid";
@@ -8,13 +8,16 @@ import { v4 as uuidV4 } from "uuid";
 class UserRepositoryInMemory implements IUserRepository {
   post: Post[] = [];
   users: UserEntity[] = [];
+  async getManyByIds(ids: string[]): Promise<UserEntity[]> {
+    return this.users.filter((user) => ids.includes(user.id));
+  }
   async create({
     full_name,
     nickname,
     email,
     password,
     isPrivate = false,
-  }: IUserDTO): Promise<UserEntity> {
+  }: CreateUserDTO): Promise<UserEntity> {
     const user = new UserEntity();
     Object.assign(user, {
       id: uuidV4(),
@@ -64,7 +67,8 @@ class UserRepositoryInMemory implements IUserRepository {
   }
 
   async getById(id: string): Promise<UserEntity> {
-    return this.users.find((user) => user.id === id);
+    const user = this.users.find((user) => user.id === id);
+    return user;
   }
   async update(data: UserEntity): Promise<UserEntity> {
     const user = await this.users.find((user) => user.id === data.id);

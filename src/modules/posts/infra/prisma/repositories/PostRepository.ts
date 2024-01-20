@@ -104,7 +104,7 @@ class PostRepository implements IPostRepository {
       this.repository.count({
         where: {
           users: {
-            followers_followers_requesterUserIdTousers: {
+            requesters: {
               some: {
                 id: user_id,
               },
@@ -115,7 +115,7 @@ class PostRepository implements IPostRepository {
       this.repository.findMany({
         where: {
           users: {
-            followers_followers_requesterUserIdTousers: {
+            requesteds: {
               some: {
                 id: user_id,
               },

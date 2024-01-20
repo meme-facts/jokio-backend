@@ -7,20 +7,24 @@ import { IPostDislikeRepository } from "@modules/posts/repositories/IPostDislike
 import { IPostLikeRepository } from "@modules/posts/repositories/IPostLikeRepository";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { container } from "tsyringe";
+import { EPostRepositories } from "./post.enum";
 
-container.registerSingleton<IPostRepository>("PostRepository", PostRepository);
+container.registerSingleton<IPostRepository>(
+  EPostRepositories.PostRepository,
+  PostRepository
+);
 
 container.registerSingleton<ICommentRepository>(
-  "CommentRepository",
+  EPostRepositories.CommentRepository,
   CommentRepository
 );
 
 container.registerSingleton<IPostLikeRepository>(
-  "PostLikesRepository",
+  EPostRepositories.PostLikesRepository,
   PostLikesRepository
 );
 
 container.registerSingleton<IPostDislikeRepository>(
-  "PostDislikesRepository",
+  EPostRepositories.PostDislikesRepository,
   PostDislikesRepository
 );

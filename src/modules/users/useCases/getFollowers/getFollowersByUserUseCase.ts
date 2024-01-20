@@ -29,7 +29,6 @@ class GetFollowersByUserUseCase {
     if (!user) {
       throw new AppError("User not found.");
     }
-    console.log(sortBy);
     if (sortBy !== SortByEnum.createdAt) {
       throw new AppError("Invalid sort by.");
     }
