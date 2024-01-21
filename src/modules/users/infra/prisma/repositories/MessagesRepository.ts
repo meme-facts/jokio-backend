@@ -57,49 +57,7 @@ class PrismaMessagesRepository implements IMessagesRepository {
     );
     return filterDuplicates;
   }
-  // async getAllFromUser({
-  //   page,
-  //   limit,
-  //   userId,
-  // }: IGetAllMessagesDTO): Promise<MessagesEntity[]> {
-  //   const groupsOfRelation = await this.repository.groupBy({
-  //     by: ["fromUserId", "toUserId"],
-  //     where: {
-  //       OR: [
-  //         {
-  //           fromUserId: userId,
-  //         },
-  //         {
-  //           toUserId: userId,
-  //         },
-  //       ],
-  //     },
-  //   });
 
-  //   const firstMessageOfRelationship = await this.repository.findMany({
-  //     where: {
-  //       OR: groupsOfRelation,
-  //     },
-  //     orderBy: {
-  //       created_at: "desc",
-  //     },
-  //     skip: (page - 1) * limit,
-  //     take: limit,
-  //   });
-  //   const filterDuplicates = firstMessageOfRelationship.filter(
-  //     (value, index, self) => {
-  //       return (
-  //         index ===
-  //         self.findIndex(
-  //           (item) =>
-  //             item.fromUserId === value.fromUserId ||
-  //             item.toUserId === value.toUserId
-  //         )
-  //       );
-  //     }
-  //   );
-  //   return filterDuplicates;
-  // }
   async getMessagesBetweenUsers(
     params: getMessagesBetweenUsersDTO
   ): Promise<MessagesEntity[]> {
