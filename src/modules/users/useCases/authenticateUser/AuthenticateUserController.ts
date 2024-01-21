@@ -1,13 +1,7 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
-
-interface IUserResponse {
-  id: string;
-  nickname: string;
-  email: string;
-  token: string;
-}
+import { IUserResponse } from "@modules/users/dtos/IAuthenticateUserResponseDTO";
 
 class AuthenticateUserController {
   async handle(

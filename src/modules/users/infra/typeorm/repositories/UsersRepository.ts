@@ -1,4 +1,4 @@
-import { IUserDTO } from "../../../dtos/ICreateUsersDTO";
+import { CreateUserDTO } from "../../class-validator/user/CreateUsers.dto";
 import { IUserRepository } from "../../../repositories/IUserRepository";
 import { getRepository, Repository } from "typeorm";
 import { User } from "../entities/Users";
@@ -56,7 +56,7 @@ class UserRepository implements IUserRepository {
     email,
     password,
     isPrivate,
-  }: IUserDTO): Promise<User> {
+  }: CreateUserDTO): Promise<User> {
     const user = this.repository.create({
       full_name,
       nickname,

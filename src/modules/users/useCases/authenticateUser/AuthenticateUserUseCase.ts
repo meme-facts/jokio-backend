@@ -6,6 +6,7 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IUserRepository } from "../../repositories/IUserRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
+import { IAuthenticateUserResponseDTO } from "@modules/users/dtos/IAuthenticateUserResponseDTO";
 
 interface ILoginDTO {
   login: string;
@@ -23,14 +24,14 @@ class AuthenticateUserUseCase {
   async execute({
     login,
     password,
-  }: ILoginDTO): Promise<{ user: UserEntity; token: string }> {
+  }: ILoginDTO): Promise<IAuthenticateUserResponseDTO> {
     const user = await this.userRepository.getByNicknameOrEmail(login);
     if (!user) {
-      throw new AppError("Login or password incorrect.");
+      throw new AppError("Login or password incorrect.", 401);
     }
     const passwordHasMatch = await compare(password, user.password);
     if (!passwordHasMatch) {
-      throw new AppError("Login or password incorrect.");
+      throw new AppError("Login or password incorrect.", 401);
     }
     const token = sign({}, process.env.JWT_SECRET, {
       subject: user.id,
@@ -53,7 +54,8 @@ class AuthenticateUserUseCase {
           full_name: name,
           nickname: email.split("@")[0],
           password: uid,
-          image_url: picture,
+          img_url: picture,
+          isPrivate: false,
         });
         user = createdUser.user;
       }

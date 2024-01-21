@@ -1,5 +1,4 @@
 import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
-import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
 import {
   IFollowersRepository,
@@ -8,6 +7,7 @@ import {
 
 import { getRepository, Repository } from "typeorm";
 import { Follower } from "../entities/Followers";
+import { CreateFollowerDTO } from "@modules/users/infra/class-validator/follower/CreateFollower.dto";
 
 class FollowersRepository implements IFollowersRepository {
   private repository: Repository<Follower>;
@@ -20,13 +20,11 @@ class FollowersRepository implements IFollowersRepository {
     requestedUserId,
     requesterUserId,
     fStatus,
-    id,
-  }: IFollowerDTO): Promise<void> {
+  }: CreateFollowerDTO): Promise<void> {
     const followerRelation = this.repository.create({
       requestedUserId,
       requesterUserId,
       fStatus,
-      id,
     });
     await this.repository.save(followerRelation);
   }
@@ -47,7 +45,7 @@ class FollowersRepository implements IFollowersRepository {
   async delete({
     requestedUserId,
     requesterUserId,
-  }: IFollowerDTO): Promise<void> {
+  }: CreateFollowerDTO): Promise<void> {
     await this.repository.delete({
       requestedUserId,
       requesterUserId,

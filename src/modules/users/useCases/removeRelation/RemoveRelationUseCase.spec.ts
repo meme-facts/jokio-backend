@@ -7,14 +7,15 @@ import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
 import { RemoveRelationUseCase } from "./RemoveRelationUseCase";
+import { UserDto } from "@modules/users/infra/class-validator/user/User.dto";
 
 let userRepository: IUserRepository;
 let followerRepository: IFollowersRepository;
 let createUserUseCase: CreateUserUseCase;
 let requestUserToFollowUseCase: RequestUserToFollowUseCase;
 let removeRelationUseCase: RemoveRelationUseCase;
-let user1: UserEntity;
-let user2: UserEntity;
+let user1: UserDto;
+let user2: UserDto;
 
 describe("RemoveRelationUseCase", () => {
   beforeEach(async () => {

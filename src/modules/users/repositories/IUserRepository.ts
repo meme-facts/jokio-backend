@@ -1,6 +1,7 @@
-import { IUserDTO } from "../dtos/ICreateUsersDTO";
+import { CreateUserDTO } from "../infra/class-validator/user/CreateUsers.dto";
 import { IGetAllUsersDTO } from "../dtos/IGetAllUsersDTO";
 import { UserEntity } from "../entities/User";
+import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
 
 interface IUserRepository {
   create({
@@ -8,8 +9,8 @@ interface IUserRepository {
     nickname,
     email,
     password,
-    id,
-  }: IUserDTO): Promise<UserEntity>;
+  }: ICreateUserDTO): Promise<UserEntity>;
+  getManyByIds(ids: string[]): Promise<UserEntity[]>;
   getByEmail(email: string): Promise<UserEntity>;
   getByNickName(nickname: string): Promise<UserEntity>;
   getByNicknameOrEmail(login: string): Promise<UserEntity>;

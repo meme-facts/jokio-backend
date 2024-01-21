@@ -1,3 +1,4 @@
+import { PostLikeEntity } from "@modules/posts/entities/Like";
 import { IPostLikeRepository } from "@modules/posts/repositories/IPostLikeRepository";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
@@ -6,6 +7,9 @@ class PostLikesRepository implements IPostLikeRepository {
   private repository: Prisma.PostLikesDelegate<DefaultArgs>;
   constructor() {
     this.repository = new PrismaClient().postLikes;
+  }
+  getAll(): Promise<PostLikeEntity[]> {
+    throw new Error("Method not implemented.");
   }
 
   async createLike(

@@ -5,6 +5,7 @@ import { ReturnPostByUserIdController } from "@modules/posts/useCases/returnPost
 import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ReturnPostByIdController } from "@modules/posts/useCases/returnPostById/ReturnPostByIdController";
+import { SharePostWithMultipleUsersController } from "@modules/posts/useCases/sharePostWithMultipleUsers/SharePostWithMultipleUsersController";
 
 export const postRouter = Router();
 
@@ -17,6 +18,8 @@ const returnPostByUserIdController = new ReturnPostByUserIdController();
 const returnPostByUserId = new ReturnPostByIdController();
 
 const returnPosts = new ReturnPostController();
+
+const sharePostWithMultipleUsers = new SharePostWithMultipleUsersController();
 
 postRouter.post("/", ensureAuthenticated, createPostController.handle);
 
@@ -35,3 +38,9 @@ postRouter.get(
 );
 
 postRouter.get("/detail/:id", ensureAuthenticated, returnPostByUserId.handle);
+
+postRouter.post(
+  "/share/:id",
+  ensureAuthenticated,
+  sharePostWithMultipleUsers.handle
+);

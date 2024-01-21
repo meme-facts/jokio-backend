@@ -34,7 +34,7 @@ model Followers {
 model Messages {
   id         String   @id(map: "PK_18325f38ae6de43878487eff986") @default(uuid()) @db.Uuid
   message    String   @db.VarChar
-  isRead     Boolean
+  isRead     Boolean? @default(false)
   fromUserId String   @db.Uuid
   toUserId   String   @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp(6)

@@ -1,13 +1,24 @@
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
 import { Prisma, PrismaClient, Users } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
-import { IUserDTO } from "../../../dtos/ICreateUsersDTO";
+import { CreateUserDTO } from "../../class-validator/user/CreateUsers.dto";
 import { IUserRepository } from "../../../repositories/IUserRepository";
+import { UserEntity } from "@modules/users/entities/User";
+import { prisma } from "@shared/container";
 
 class UserRepository implements IUserRepository {
   private repository: Prisma.UsersDelegate<DefaultArgs>;
   constructor() {
-    this.repository = new PrismaClient().users;
+    this.repository = prisma.users;
+  }
+  getManyByIds(ids: string[]): Promise<UserEntity[]> {
+    return this.repository.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
   }
 
   async getByNicknameOrEmail(login: string): Promise<Users> {
@@ -89,7 +100,7 @@ class UserRepository implements IUserRepository {
     email,
     password,
     isPrivate,
-  }: IUserDTO): Promise<Users> {
+  }: CreateUserDTO): Promise<Users> {
     const user = this.repository.create({
       data: {
         full_name,

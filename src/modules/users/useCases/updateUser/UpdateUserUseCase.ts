@@ -1,10 +1,8 @@
-import { User } from "../../infra/typeorm/entities/Users";
-import { IUserRepository } from "../../repositories/IUserRepository";
-import { inject, injectable } from "tsyringe";
-import { IUserDTO } from "../../dtos/ICreateUsersDTO";
-import { AppError } from "../../../../shared/errors/AppError";
 import { IUpdateUserDTO } from "@modules/users/dtos/IUpdateUsersDTO";
 import { UserEntity } from "@modules/users/entities/User";
+import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../shared/errors/AppError";
+import { IUserRepository } from "../../repositories/IUserRepository";
 
 @injectable()
 class UpdateUserUseCase {

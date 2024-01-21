@@ -1,11 +1,11 @@
 import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
-import { IFollowerDTO } from "@modules/users/dtos/ICreateFollowerDTO";
 import {
   IGetAllFollowsDTO,
   SortByEnum,
 } from "@modules/users/dtos/IGetAllFollowsInputDTO";
 
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
+import { CreateFollowerDTO } from "@modules/users/infra/class-validator/follower/CreateFollower.dto";
 import { FollowerEntity } from "@modules/users/entities/Follower";
 import {
   IFollowersRepository,
@@ -81,14 +81,12 @@ class FollowersRepository implements IFollowersRepository {
     requestedUserId,
     requesterUserId,
     fStatus,
-    id,
-  }: IFollowerDTO): Promise<void> {
+  }: CreateFollowerDTO): Promise<void> {
     const user = await this.repository.create({
       data: {
         requestedUserId,
         requesterUserId,
         fStatus,
-        id,
       },
     });
   }
@@ -111,7 +109,7 @@ class FollowersRepository implements IFollowersRepository {
   async delete({
     requestedUserId,
     requesterUserId,
-  }: IFollowerDTO): Promise<void> {
+  }: CreateFollowerDTO): Promise<void> {
     const { id } = await this.repository.findFirst({
       where: {
         requestedUserId,

@@ -14,6 +14,7 @@ import * as admin from "firebase-admin";
 import * as serviceAccount from "../../../../firebase-config.json";
 
 import * as dotenv from "dotenv";
+import e from "express";
 
 if (process.env.NODE_ENV === "production") {
   dotenv.config({ path: ".env.docker.production" });
