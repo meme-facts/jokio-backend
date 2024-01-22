@@ -31,7 +31,6 @@ class MessageRepositoryInMemory implements IMessagesRepository {
     const sortedByCreatedAtDesc = userMessages.sort((a, b) => {
       return b.created_at.getTime() - a.created_at.getTime();
     });
-    console.log(sortedByCreatedAtDesc);
     const firstMessageOfRelationship = sortedByCreatedAtDesc.filter(
       (value, index, self) => {
         return (
@@ -46,7 +45,6 @@ class MessageRepositoryInMemory implements IMessagesRepository {
         );
       }
     );
-    console.log(firstMessageOfRelationship);
 
     return firstMessageOfRelationship;
   }
