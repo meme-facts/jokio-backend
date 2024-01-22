@@ -31,19 +31,22 @@ class MessageRepositoryInMemory implements IMessagesRepository {
     const sortedByCreatedAtDesc = userMessages.sort((a, b) => {
       return b.created_at.getTime() - a.created_at.getTime();
     });
-
+    console.log(sortedByCreatedAtDesc);
     const firstMessageOfRelationship = sortedByCreatedAtDesc.filter(
       (value, index, self) => {
         return (
           index ===
           self.findIndex(
             (item) =>
-              item.fromUserId === value.fromUserId ||
-              item.toUserId === value.toUserId
+              (item.fromUserId === value.fromUserId &&
+                item.toUserId === value.toUserId) ||
+              (item.fromUserId === value.toUserId &&
+                item.toUserId === value.fromUserId)
           )
         );
       }
     );
+    console.log(firstMessageOfRelationship);
 
     return firstMessageOfRelationship;
   }

@@ -1309,6 +1309,54 @@
                 }
             }
         },
+        "/messages": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get All Messages Route",
+                "description": "This route is used to the first message of each conversation",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            },
+                                            "isRead": {
+                                                "type": "boolean"
+                                            },
+                                            "fromUserId": {
+                                                "type": "string"
+                                            },
+                                            "toUserId": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": 
+                        {
+                            "description": "User not found."
+                        }
+                }
+            }
+        },
         "/messages/{id}": {
             "post": {
                 "tags": [

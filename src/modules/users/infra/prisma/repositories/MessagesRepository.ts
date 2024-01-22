@@ -21,8 +21,6 @@ class PrismaMessagesRepository implements IMessagesRepository {
     });
   }
   async getAllFromUser({
-    page,
-    limit,
     userId,
   }: IGetAllMessagesDTO): Promise<MessagesEntity[]> {
     const lastMessagesBetweenUsers = await this.repository.findMany({
@@ -40,8 +38,6 @@ class PrismaMessagesRepository implements IMessagesRepository {
         created_at: "desc",
       },
       distinct: ["fromUserId", "toUserId"],
-      skip: (page - 1) * limit,
-      take: limit,
     });
     const filterDuplicates = lastMessagesBetweenUsers.filter(
       (value, index, self) => {
@@ -49,8 +45,10 @@ class PrismaMessagesRepository implements IMessagesRepository {
           index ===
           self.findIndex(
             (item) =>
-              item.fromUserId === value.fromUserId ||
-              item.toUserId === value.toUserId
+              (item.fromUserId === value.fromUserId &&
+                item.toUserId === value.toUserId) ||
+              (item.fromUserId === value.toUserId &&
+                item.toUserId === value.fromUserId)
           )
         );
       }
