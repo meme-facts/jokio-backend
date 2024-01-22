@@ -29,7 +29,10 @@ export async function validateAndTransformData<T extends object>(
       const errors: ValidationError[] = await validate(item);
       if (errors.length > 0) {
         // Handle validation errors for individual items (e.g., log or throw an exception)
-        console.error("Validation failed for item:", item, "Errors:", errors);
+        //if node env is not test, console.error
+        if (process.env.NODE_ENV !== "test") {
+          console.error("Validation failed for item:", item, "Errors:", errors);
+        }
         throw new AppError(
           `Validation failed: ${errors
             .map((err) => err.constraints)
@@ -52,7 +55,9 @@ export async function validateAndTransformData<T extends object>(
 
     if (errors.length > 0) {
       // Handle validation errors (e.g., log or throw an exception)
-      console.error("Validation failed:", errors);
+      if (process.env.NODE_ENV !== "test") {
+        console.error("Validation failed:", errors);
+      }
       throw new AppError(
         `Validation failed: ${errors
           .map((err) => err.constraints)
