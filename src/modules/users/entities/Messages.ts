@@ -7,6 +7,9 @@ class MessagesEntity implements Messages {
     if (!this.id) {
       this.id = randomUUID();
     }
+    if (!this.created_at) {
+      this.created_at = new Date();
+    }
   }
   id: string;
   message: string;
