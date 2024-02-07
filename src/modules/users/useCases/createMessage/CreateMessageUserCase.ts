@@ -3,7 +3,9 @@ import { IMessagesRepository } from "@modules/users/repositories/IMessagesReposi
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { EUserRepositories } from "@shared/container/users/user.enum";
 import { AppError } from "@shared/errors/AppError";
+import { plainToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
+import { CreateMessageResponseDto } from "./dto/CreateMessageResponse.dto";
 
 @injectable()
 export class CreateMessageUseCase {
@@ -14,9 +16,11 @@ export class CreateMessageUseCase {
     private userRepository: IUserRepository
   ) {}
   async execute({
+    id,
     fromUserId,
     message,
     toUserId,
+    created_at,
     isRead = false,
   }: ICreateMessageInputDTO) {
     const loggedUser = await this.userRepository.getById(fromUserId);
@@ -30,12 +34,15 @@ export class CreateMessageUseCase {
     if (fromUserId === toUserId) {
       throw new AppError("You can't send a message to yourself", 403);
     }
+
     const createdMessage = await this.messagesRepository.create({
+      id,
       fromUserId,
       message,
       toUserId,
       isRead,
+      created_at,
     });
-    return createdMessage;
+    return plainToInstance(CreateMessageResponseDto, createdMessage);
   }
 }

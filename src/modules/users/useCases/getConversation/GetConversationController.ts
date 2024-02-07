@@ -8,11 +8,11 @@ export class GetConversationController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: loggedUserId } = request.user;
     const { id: targetUserId } = request.params;
-    const { page, limit } = request.query;
+    const { offset, limit } = request.query;
     const parsed = await validateAndTransformData(GetConversationInputDTO, {
       loggedUserId,
       targetUserId,
-      page: Number(page),
+      offset: Number(offset),
       limit: Number(limit),
     });
     const getConversationUseCase = container.resolve(GetConversationUseCase);

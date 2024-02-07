@@ -21,7 +21,7 @@ export class GetConversationInputDTO {
 
   @IsNumber()
   @IsNotEmpty()
-  page: number;
+  offset: number;
 
   @IsNumber()
   @IsNotEmpty()

@@ -44,10 +44,10 @@ describe("GetConversationController", () => {
       .set({
         Authorization: `Bearer ${user.token}`,
       })
-      .query({ page: 1, limit: 10 });
+      .query({ offset: 0, limit: 10 });
 
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(2);
+    expect(response.body.messagesBetweenUsers.length).toBe(2);
   });
   it("should not be able to get a conversation without a valid token", async () => {
     const response = await request(app)
@@ -55,7 +55,7 @@ describe("GetConversationController", () => {
       .set({
         Authorization: `Bearer ${randomUUID()}`,
       })
-      .query({ page: 1, limit: 10 });
+      .query({ offset: 0, limit: 10 });
 
     expect(response.status).toBe(401);
   });
@@ -65,7 +65,7 @@ describe("GetConversationController", () => {
       .set({
         Authorization: `Bearer ${user.token}`,
       })
-      .query({ page: 1, limit: 10 });
+      .query({ offset: 0, limit: 10 });
 
     expect(response.status).toBe(404);
   });
@@ -75,12 +75,12 @@ describe("GetConversationController", () => {
       .set({
         Authorization: `Bearer ${user.token}`,
       })
-      .query({ page: 1, limit: 10 });
+      .query({ offset: 0, limit: 10 });
 
     expect(response.status).toBe(400);
     expect(response.body.message).toContain("Validation failed");
   });
-  it("should return validation error if page is not sent", async () => {
+  it("should return validation error if offset is not sent", async () => {
     const response = await request(app)
       .get(`/messages/${user2.id}`)
       .set({
@@ -97,7 +97,7 @@ describe("GetConversationController", () => {
       .set({
         Authorization: `Bearer ${user.token}`,
       })
-      .query({ page: 1 });
+      .query({ offset: 0 });
 
     expect(response.status).toBe(400);
     expect(response.body.message).toContain("Validation failed");
@@ -108,8 +108,37 @@ describe("GetConversationController", () => {
       .set({
         Authorization: `Bearer ${user.token}`,
       })
-      .query({ page: 1, limit: 10 });
+      .query({ offset: 0, limit: 10 });
 
     expect(response.status).toBe(403);
+  });
+  it("should be able to skip messages when offset is more than 0", async () => {
+    await request(app)
+      .post(`/messages/${user2.id}`)
+      .send({
+        message: "teste",
+      })
+      .set({
+        Authorization: `Bearer ${user.token}`,
+      });
+
+    await request(app)
+      .post(`/messages/${user.id}`)
+      .send({
+        message: "teste",
+      })
+      .set({
+        Authorization: `Bearer ${user2.token}`,
+      });
+
+    const response = await request(app)
+      .get(`/messages/${user2.id}`)
+      .set({
+        Authorization: `Bearer ${user.token}`,
+      })
+      .query({ offset: 1, limit: 10 });
+
+    expect(response.status).toBe(200);
+    expect(response.body.messagesBetweenUsers.length).toBe(1);
   });
 });

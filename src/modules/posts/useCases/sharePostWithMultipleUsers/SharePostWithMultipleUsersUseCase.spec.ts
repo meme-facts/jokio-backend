@@ -106,8 +106,10 @@ describe("SharePostWithMultipleUsersUseCase", () => {
       limit: 10,
     });
 
-    expect(conversation1.length).toBe(1);
-    expect(conversation2.length).toBe(1);
+    expect(conversation1.messagesBetweenUsers.length).toBe(1);
+    expect(conversation1.count).toBe(1);
+    expect(conversation2.messagesBetweenUsers.length).toBe(1);
+    expect(conversation2.count).toBe(1);
   });
   it("should not be able to share a post with multiple users if the post does not exist", async () => {
     await expect(

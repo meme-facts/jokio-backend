@@ -7,6 +7,6 @@ interface IMessagesRepository {
   getAllFromUser(params: IGetAllMessagesDTO): Promise<MessagesEntity[]>;
   getMessagesBetweenUsers(
     params: getMessagesBetweenUsersDTO
-  ): Promise<MessagesEntity[]>;
+  ): Promise<{ count: number; messagesBetweenUsers: MessagesEntity[] }>;
 }
 export { IMessagesRepository };

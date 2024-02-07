@@ -58,8 +58,8 @@ describe("SharePostWithMultipleUsersController", () => {
 
     expect(response.status).toBe(200);
 
-    expect(conversationWithUser2.body.length).toBe(1);
-    expect(conversationWithUser3.body.length).toBe(1);
+    expect(conversationWithUser2.body.messagesBetweenUsers.length).toBe(1);
+    expect(conversationWithUser3.body.messagesBetweenUsers.length).toBe(1);
   });
   it("should not be able to share a post with multiple users if the post does not exist", async () => {
     const response = await request(app)

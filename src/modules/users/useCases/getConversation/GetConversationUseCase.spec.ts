@@ -55,17 +55,18 @@ describe("GetConversationUseCase", () => {
     const conversation = await getConversationUseCase.execute({
       loggedUserId: user.id,
       targetUserId: user2.id,
-      page: 1,
+      offset: 0,
       limit: 10,
     });
-    expect(conversation.length).toBe(1);
+    expect(conversation.messagesBetweenUsers.length).toBe(1);
+    expect(conversation.count).toBe(1);
   });
   it("should not be able to get a conversation if logged user not exists", async () => {
     await expect(
       getConversationUseCase.execute({
         loggedUserId: "wrongId",
         targetUserId: user2.id,
-        page: 1,
+        offset: 0,
         limit: 10,
       })
     ).rejects.toThrow("Logged user not found");
@@ -75,7 +76,7 @@ describe("GetConversationUseCase", () => {
       getConversationUseCase.execute({
         loggedUserId: user.id,
         targetUserId: "wrongId",
-        page: 1,
+        offset: 0,
         limit: 10,
       })
     ).rejects.toThrow("User not found");
