@@ -1,20 +1,21 @@
-import "reflect-metadata";
+import { errors } from "celebrate";
+import cors from "cors";
 import express from "express";
 import "express-async-errors"; // needs to be below express
-import setupSwagger from "../../../../swagger.json";
+import "reflect-metadata";
 import swaggerUi from "swagger-ui-express";
-import { router } from "./routes";
-import { errorHandler } from "./middlewares/helpers/exceptions/errorHandler";
-import cors from "cors";
-import "../../container/users";
+import setupSwagger from "../../../../swagger.json";
 import "../../container/posts";
-import { errors } from "celebrate";
+import "../../container/users";
+import { errorHandler } from "./middlewares/helpers/exceptions/errorHandler";
+import { router } from "./routes";
 
 import * as admin from "firebase-admin";
 import * as serviceAccount from "../../../../firebase-config.json";
 
 import * as dotenv from "dotenv";
-import e from "express";
+import { initializeSocket } from "../socket/server";
+import http from "http";
 
 if (process.env.NODE_ENV === "production") {
   dotenv.config({ path: ".env.docker.production" });
@@ -24,23 +25,27 @@ if (process.env.NODE_ENV === "production") {
   dotenv.config(); // Load the default .env file for local development
 }
 
-const app = express();
+const server = express();
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
   databaseURL: process.env.DATABASE_URL,
 });
 
-app.use(cors());
+server.use(cors());
 
-app.use(express.json());
+server.use(express.json());
 
-app.use("/swagger", swaggerUi.serve, swaggerUi.setup(setupSwagger));
+server.use("/swagger", swaggerUi.serve, swaggerUi.setup(setupSwagger));
 
-app.use(router);
+server.use(router);
 
-app.use(errors());
+server.use(errors());
 
-app.use(errorHandler);
+server.use(errorHandler);
+
+const app = http.createServer(server);
+
+initializeSocket(app);
 
 export { app };

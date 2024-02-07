@@ -7,6 +7,8 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { IUserRepository } from "../../repositories/IUserRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { IAuthenticateUserResponseDTO } from "@modules/users/dtos/IAuthenticateUserResponseDTO";
+import { plainToInstance } from "class-transformer";
+import { UserDto } from "@modules/users/infra/class-validator/user/User.dto";
 
 interface ILoginDTO {
   login: string;
@@ -39,7 +41,7 @@ class AuthenticateUserUseCase {
     });
     return {
       token,
-      user,
+      user: plainToInstance(UserDto, user),
     };
   }
   async google(tokenId: string) {

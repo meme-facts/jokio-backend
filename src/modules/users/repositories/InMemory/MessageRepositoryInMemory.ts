@@ -16,7 +16,7 @@ class MessageRepositoryInMemory implements IMessagesRepository {
   }
   async create(params: ICreateMessageInputDTO): Promise<MessagesEntity> {
     const message = new MessagesEntity();
-    Object.assign(message, params);
+    Object.assign(message, JSON.parse(JSON.stringify(params)));
     this.messages.push(message);
     return message;
   }
@@ -27,7 +27,6 @@ class MessageRepositoryInMemory implements IMessagesRepository {
         message.toUserId === params.userId
       );
     });
-
     const sortedByCreatedAtDesc = userMessages.sort((a, b) => {
       return b.created_at.getTime() - a.created_at.getTime();
     });
@@ -50,7 +49,7 @@ class MessageRepositoryInMemory implements IMessagesRepository {
   }
   async getMessagesBetweenUsers(
     params: getMessagesBetweenUsersDTO
-  ): Promise<MessagesEntity[]> {
+  ): Promise<{ count: number; messagesBetweenUsers: MessagesEntity[] }> {
     const messagesBetweenUsers = this.messages.filter((message) => {
       return (
         (message.fromUserId === params.loggedUser &&
@@ -62,11 +61,15 @@ class MessageRepositoryInMemory implements IMessagesRepository {
     const sortedValues = messagesBetweenUsers.sort((a, b) => {
       return b.created_at.getTime() - a.created_at.getTime();
     });
+    const count = sortedValues.length;
     const paginatedValues = sortedValues.slice(
-      (params.page - 1) * params.limit,
-      params.page * params.limit
+      params.offset,
+      params.offset + params.limit
     );
-    return paginatedValues;
+    return {
+      count,
+      messagesBetweenUsers: paginatedValues,
+    };
   }
 }
 

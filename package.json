@@ -29,6 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
+    "socket.io": "^4.7.4",
     "swagger-ui-express": "^4.4.0",
     "tsyringe": "^4.6.0",
     "typeorm": "0.2.45",

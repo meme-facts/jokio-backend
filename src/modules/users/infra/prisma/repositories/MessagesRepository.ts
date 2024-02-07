@@ -18,6 +18,10 @@ class PrismaMessagesRepository implements IMessagesRepository {
   async create(params: ICreateMessageInputDTO): Promise<MessagesEntity> {
     return this.repository.create({
       data: params,
+      include: {
+        fromUser: true,
+        toUser: true,
+      },
     });
   }
   async getAllFromUser({
@@ -33,6 +37,10 @@ class PrismaMessagesRepository implements IMessagesRepository {
             toUserId: userId,
           },
         ],
+      },
+      include: {
+        fromUser: true,
+        toUser: true,
       },
       orderBy: {
         created_at: "desc",
@@ -58,27 +66,47 @@ class PrismaMessagesRepository implements IMessagesRepository {
 
   async getMessagesBetweenUsers(
     params: getMessagesBetweenUsersDTO
-  ): Promise<MessagesEntity[]> {
-    const messagesBetweenUsers = await this.repository.findMany({
-      where: {
-        OR: [
-          {
-            fromUserId: params.loggedUser,
-            toUserId: params.targetUser,
-          },
-          {
-            fromUserId: params.targetUser,
-            toUserId: params.loggedUser,
-          },
-        ],
-      },
-      orderBy: {
-        created_at: "desc",
-      },
-      skip: (params.page - 1) * params.limit,
-      take: params.limit,
-    });
-    return messagesBetweenUsers;
+  ): Promise<{ count: number; messagesBetweenUsers: MessagesEntity[] }> {
+    const [count, messagesBetweenUsers] = await Promise.all([
+      this.repository.count({
+        where: {
+          OR: [
+            {
+              fromUserId: params.loggedUser,
+              toUserId: params.targetUser,
+            },
+            {
+              fromUserId: params.targetUser,
+              toUserId: params.loggedUser,
+            },
+          ],
+        },
+      }),
+      this.repository.findMany({
+        where: {
+          OR: [
+            {
+              fromUserId: params.loggedUser,
+              toUserId: params.targetUser,
+            },
+            {
+              fromUserId: params.targetUser,
+              toUserId: params.loggedUser,
+            },
+          ],
+        },
+        orderBy: {
+          created_at: "desc",
+        },
+        skip: params.offset,
+        take: params.limit,
+      }),
+    ]);
+
+    return {
+      count,
+      messagesBetweenUsers,
+    };
   }
 }
 

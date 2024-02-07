@@ -1,6 +1,6 @@
 interface getMessagesBetweenUsersDTO {
   loggedUser: string;
   targetUser: string;
-  page: number;
+  offset: number;
   limit: number;
 }

@@ -17,9 +17,7 @@ class AuthenticateUserController {
     });
 
     return response.status(200).json({
-      id: user.id,
-      nickname: user.nickname,
-      email: user.email,
+      ...user,
       token,
     });
   }

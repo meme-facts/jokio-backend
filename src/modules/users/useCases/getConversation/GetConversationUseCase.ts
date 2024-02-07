@@ -17,7 +17,7 @@ export class GetConversationUseCase {
   async execute({
     loggedUserId,
     targetUserId,
-    page,
+    offset,
     limit,
   }: IGetConversationDTO) {
     const loggedUser = await this.userRepository.getById(loggedUserId);
@@ -36,7 +36,7 @@ export class GetConversationUseCase {
     const messages = await this.messagesRepository.getMessagesBetweenUsers({
       loggedUser: loggedUserId,
       targetUser: targetUserId,
-      page,
+      offset,
       limit,
     });
     return messages;
