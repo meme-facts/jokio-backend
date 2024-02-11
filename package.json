@@ -5,9 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --inspect -r tsconfig-paths/register  --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
-    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "migrate":"dotenv -e .env.test -- yarn prisma migrate dev && yarn prisma migrate dev",
-    "migrate-reset":"dotenv -e .env.test -- yarn prisma migrate reset && yarn prisma migrate reset",
+    "migrate": "dotenv -e .env.test -- yarn prisma migrate dev && yarn prisma migrate dev",
+    "migrate-reset": "dotenv -e .env.test -- yarn prisma migrate reset && yarn prisma migrate reset",
     "test": "NODE_ENV=test jest --runInBand --forceExit --detectOpenHandles "
   },
   "prisma": {
@@ -32,7 +31,6 @@
     "socket.io": "^4.7.4",
     "swagger-ui-express": "^4.4.0",
     "tsyringe": "^4.6.0",
-    "typeorm": "0.2.45",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
