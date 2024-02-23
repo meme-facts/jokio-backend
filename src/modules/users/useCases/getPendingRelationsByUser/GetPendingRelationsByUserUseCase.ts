@@ -1,4 +1,5 @@
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
+import { FollowerEntity } from "@modules/users/entities/Follower";
 import { Follower } from "@modules/users/infra/typeorm/entities/Followers";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
@@ -17,7 +18,7 @@ class GetPendingRelationsByUserUseCase {
     page,
     limit = 5,
     userId,
-  }: IGetRequestsDTO): Promise<{ requests: Follower[]; count: number }> {
+  }: IGetRequestsDTO): Promise<{ requests: FollowerEntity[]; count: number }> {
     const user = await this.userRepository.getById(userId);
     if (!user.isPrivate) {
       throw new AppError("Public users do not receive friend request.");

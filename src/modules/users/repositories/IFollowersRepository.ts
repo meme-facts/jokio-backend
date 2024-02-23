@@ -1,6 +1,7 @@
 import { IFollowerDTO } from "../dtos/ICreateFollowerDTO";
+import { IGetAllFollowsDTO } from "../dtos/IGetAllFollowsInputDTO";
 import { IGetRequestsDTO } from "../dtos/IGetRequestsDTO";
-import { Follower } from "../infra/typeorm/entities/Followers";
+import { FollowerEntity } from "../entities/Follower";
 
 export interface IRelation {
   followersQuantity: number;
@@ -12,20 +13,25 @@ interface IFollowersRepository {
     requestedUserId,
     requesterUserId,
     fStatus,
-    id,
   }: IFollowerDTO): Promise<void>;
-  getAll(): Promise<Follower[]>;
+  getAll(): Promise<FollowerEntity[]>;
+  getAllFollowing(
+    params: IGetAllFollowsDTO
+  ): Promise<{ following: FollowerEntity[]; count: number }>;
+  getAllFollowers(
+    params: IGetAllFollowsDTO
+  ): Promise<{ followers: FollowerEntity[]; count: number }>;
   getSolicitation(
     requestedUserId: string,
     requesterUserId: string
-  ): Promise<Follower>;
+  ): Promise<FollowerEntity>;
   delete({ requestedUserId, requesterUserId }: IFollowerDTO): Promise<void>;
   getRelationsQuantityByUser(userId: string): Promise<IRelation>;
   getPendingRequestsById({
     page,
     limit,
     userId,
-  }: IGetRequestsDTO): Promise<{ requests: Follower[]; count: number }>;
+  }: IGetRequestsDTO): Promise<{ requests: FollowerEntity[]; count: number }>;
 }
 
 export { IFollowersRepository };

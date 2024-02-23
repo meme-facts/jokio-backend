@@ -1,21 +1,27 @@
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
-import { IUserDTO } from "../dtos/ICreateUsersDTO";
+import { CreateUserDTO } from "../infra/class-validator/user/CreateUsers.dto";
 import { IGetAllUsersDTO } from "../dtos/IGetAllUsersDTO";
-import { User } from "../infra/typeorm/entities/Users";
+import { UserEntity } from "../entities/User";
+import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
 
 interface IUserRepository {
-  create({ full_name, nickname, email, password, id }: IUserDTO): Promise<User>;
-  getByEmail(email: string): Promise<User>;
-  getByNickName(nickname: string): Promise<User>;
-  getByNicknameOrEmail(login: string): Promise<User>;
-  getById(id: string): Promise<User>;
-  getAllById(id: string): Promise<User>;
-  update(user: User): Promise<User>;
+  create({
+    full_name,
+    nickname,
+    email,
+    password,
+  }: ICreateUserDTO): Promise<UserEntity>;
+  getManyByIds(ids: string[]): Promise<UserEntity[]>;
+  getByEmail(email: string): Promise<UserEntity>;
+  getByNickName(nickname: string): Promise<UserEntity>;
+  getByNicknameOrEmail(login: string): Promise<UserEntity>;
+  getById(id: string): Promise<UserEntity>;
+  getAllById(id: string): Promise<UserEntity>;
+  update(user: UserEntity): Promise<UserEntity>;
   getByNameOrNickName({
     page,
     limit,
     user_reference,
-  }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }>;
+  }: IGetAllUsersDTO): Promise<{ users: UserEntity[]; count: number }>;
 }
 
 export { IUserRepository };

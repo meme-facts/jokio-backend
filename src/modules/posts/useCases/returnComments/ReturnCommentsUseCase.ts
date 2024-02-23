@@ -14,11 +14,7 @@ class ReturnCommentsUseCase {
     private postRepository: IPostRepository
   ) {}
 
-  async execute({
-    page,
-    limit,
-    postId,
-  }: IReturnCommentRequestDTO): Promise<{
+  async execute({ page, limit, postId }: IReturnCommentRequestDTO): Promise<{
     comments: Comments[];
     count: number;
   }> {

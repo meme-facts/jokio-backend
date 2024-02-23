@@ -1,21 +1,26 @@
 import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
-import { IUserDTO } from "../../dtos/ICreateUsersDTO";
-import { User } from "../../infra/typeorm/entities/Users";
+import { CreateUserDTO } from "../../infra/class-validator/user/CreateUsers.dto";
 import { IUserRepository } from "../IUserRepository";
+import { UserEntity } from "@modules/users/entities/User";
+import { v4 as uuidV4 } from "uuid";
 
 class UserRepositoryInMemory implements IUserRepository {
   post: Post[] = [];
-  users: User[] = [];
+  users: UserEntity[] = [];
+  async getManyByIds(ids: string[]): Promise<UserEntity[]> {
+    return this.users.filter((user) => ids.includes(user.id));
+  }
   async create({
     full_name,
     nickname,
     email,
     password,
     isPrivate = false,
-  }: IUserDTO): Promise<User> {
-    const user = new User();
+  }: CreateUserDTO): Promise<UserEntity> {
+    const user = new UserEntity();
     Object.assign(user, {
+      id: uuidV4(),
       full_name,
       nickname,
       email,
@@ -26,13 +31,13 @@ class UserRepositoryInMemory implements IUserRepository {
     return user;
   }
 
-  async getByEmail(email: string): Promise<User> {
+  async getByEmail(email: string): Promise<UserEntity> {
     return this.users.find((user) => user.email === email);
   }
-  async getByNickName(nickName: string): Promise<User> {
+  async getByNickName(nickName: string): Promise<UserEntity> {
     return this.users.find((user) => user.nickname === nickName);
   }
-  async getByNicknameOrEmail(login: string): Promise<User> {
+  async getByNicknameOrEmail(login: string): Promise<UserEntity> {
     return this.users.find(
       (user) => user.nickname === login || user.email === login
     );
@@ -41,7 +46,7 @@ class UserRepositoryInMemory implements IUserRepository {
     page,
     limit,
     user_reference,
-  }: IGetAllUsersDTO): Promise<{ users: User[]; count: number }> {
+  }: IGetAllUsersDTO): Promise<{ users: UserEntity[]; count: number }> {
     let response;
     if (user_reference) {
       const users = this.users.filter(
@@ -61,15 +66,16 @@ class UserRepositoryInMemory implements IUserRepository {
     };
   }
 
-  async getById(id: string): Promise<User> {
-    return this.users.find((user) => user.id === id);
+  async getById(id: string): Promise<UserEntity> {
+    const user = this.users.find((user) => user.id === id);
+    return user;
   }
-  async update(data: User): Promise<User> {
+  async update(data: UserEntity): Promise<UserEntity> {
     const user = await this.users.find((user) => user.id === data.id);
     Object.assign(user, data);
     return user;
   }
-  async getAllById(id: string): Promise<User> {
+  async getAllById(id: string): Promise<UserEntity> {
     const user = await this.users.find((user) => user.id === id);
     return user;
   }

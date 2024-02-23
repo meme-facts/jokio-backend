@@ -2,6 +2,7 @@ import { ICommentDTO } from "@modules/posts/dtos/ICommentDTO";
 import { IReturnCommentRequestDTO } from "@modules/posts/dtos/IReturnCommentRequestDTO";
 import { Comments } from "@modules/posts/infra/typeorm/entities/Comment";
 import { ICommentRepository } from "../ICommentRepository";
+import { randomUUID } from "crypto";
 
 class CommentRepositoryInMemory implements ICommentRepository {
   private commentaries: Comments[] = [];
@@ -12,6 +13,7 @@ class CommentRepositoryInMemory implements ICommentRepository {
     } else {
       const commentary = new Comments();
       Object.assign(commentary, {
+        id: randomUUID(),
         userId,
         postId,
         message,

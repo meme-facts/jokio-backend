@@ -1,18 +1,14 @@
 import { ICommentDTO } from "../dtos/ICommentDTO";
 import { IReturnCommentRequestDTO } from "../dtos/IReturnCommentRequestDTO";
-import { Comments } from "../infra/typeorm/entities/Comment";
+import { CommentEntity } from "../entities/Comments";
 
 interface ICommentRepository {
   create({ userId, postId, message }: ICommentDTO): Promise<void>;
-  getAll(): Promise<Comments[]>;
+  getAll(): Promise<CommentEntity[]>;
   delete(commentId: string): Promise<void>;
-  getById(commentId: string): Promise<Comments>;
-  getAllPaginated({
-    page,
-    limit,
-    postId,
-  }: IReturnCommentRequestDTO): Promise<{
-    comments: Comments[];
+  getById(commentId: string): Promise<CommentEntity>;
+  getAllPaginated({ page, limit, postId }: IReturnCommentRequestDTO): Promise<{
+    comments: CommentEntity[];
     count: number;
   }>;
 }

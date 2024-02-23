@@ -1,0 +1,3 @@
+interface IGetAllMessagesDTO {
+  userId: string;
+}

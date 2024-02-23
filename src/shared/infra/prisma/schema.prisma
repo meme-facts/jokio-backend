@@ -1,0 +1,139 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["windows", "native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comments {
+  id         String   @id(map: "PK_8bf68bc960f2b69e818bdb90dcb") @default(uuid()) @db.Uuid
+  message    String   @db.VarChar
+  userId     String   @db.Uuid
+  postId     String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  posts      Posts    @relation(fields: [postId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKPostComment")
+  users      Users    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserComment")
+}
+
+model Followers {
+  id              String   @id(map: "PK_c90cfc5b18edd29bd15ba95c1a4") @default(uuid()) @db.Uuid
+  fStatus         String   @db.Char(1)
+  requestedUserId String   @db.Uuid
+  requesterUserId String   @db.Uuid
+  points          Int      @default(0)
+  created_at      DateTime @default(now()) @db.Timestamp(6)
+  updated_at      DateTime @default(now()) @db.Timestamp(6)
+  requested       Users    @relation("followers_requestedUserIdTousers", fields: [requestedUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequested")
+  requester       Users    @relation("followers_requesterUserIdTousers", fields: [requesterUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequester")
+}
+
+model Messages {
+  id         String   @id(map: "PK_18325f38ae6de43878487eff986") @default(uuid()) @db.Uuid
+  message    String   @db.VarChar
+  isRead     Boolean? @default(false)
+  fromUserId String   @db.Uuid
+  toUserId   String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  fromUser   Users    @relation("messages_fromUserTousers", fields: [fromUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequested")
+  toUser     Users    @relation("messages_toUserTousers", fields: [toUserId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserFollowerRequester")
+}
+
+model Migrations {
+  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
+}
+
+model Notifications {
+  id         String   @id(map: "PK_6a72c3c0f683f6462415e653c3a") @default(uuid()) @db.Uuid
+  type       String   @db.Char(1)
+  userId     String   @db.Uuid
+  postId     String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  posts      Posts    @relation(fields: [postId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKPostComment")
+  users      Users    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserComment")
+}
+
+model PostLikes {
+  id         String   @id(map: "PK_b524cbc038425198b8a12cc2e13") @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  postId     String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamp(6)
+  posts      Posts    @relation(fields: [postId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKPostPostReaction")
+  users      Users    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserPostReaction")
+}
+
+model PostDislikes {
+  id         String   @id(map: "PK_b524cbc038425198b8a12cc2e14") @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  postId     String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamp(6)
+  posts      Posts    @relation(fields: [postId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKPostPostReaction")
+  users      Users    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserPostReaction")
+}
+
+model Posts {
+  id              String          @id(map: "PK_2829ac61eff60fcec60d7274b9e") @default(uuid()) @db.Uuid
+  postDescription String          @db.VarChar
+  img_url         String?         @db.VarChar
+  isActive        Boolean
+  user_id         String          @db.Uuid
+  created_at      DateTime        @default(now()) @db.Timestamp(6)
+  updated_at      DateTime        @default(now()) @db.Timestamp(6)
+  Comments        Comments[]
+  notifications   Notifications[]
+  users           Users           @relation(fields: [user_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserPost")
+  likeCount       Int             @default(0)
+  dislikeCount    Int             @default(0)
+  postLikes       PostLikes[]
+  postDislikes    PostDislikes[]
+}
+
+model Templates {
+  id                  String   @id(map: "PK_515948649ce0bbbe391de702ae5") @default(uuid()) @db.Uuid
+  title               String   @db.VarChar
+  templateDescription String   @db.VarChar
+  imgUrl              String   @db.VarChar
+  created_at          DateTime @default(now()) @db.Timestamp(6)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model typeorm_metadata {
+  type     String  @db.VarChar
+  database String? @db.VarChar
+  schema   String? @db.VarChar
+  table    String? @db.VarChar
+  name     String? @db.VarChar
+  value    String?
+
+  @@ignore
+}
+
+model Users {
+  id            String          @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(uuid()) @db.Uuid
+  full_name     String?         @db.VarChar
+  nickname      String          @unique @db.VarChar
+  email         String          @unique @db.VarChar
+  password      String          @db.VarChar
+  img_url       String?         @db.VarChar
+  isPrivate     Boolean         @default(false)
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @updatedAt @db.Timestamp(6)
+  Comments      Comments[]
+  requesteds    Followers[]     @relation("followers_requestedUserIdTousers")
+  requesters    Followers[]     @relation("followers_requesterUserIdTousers")
+  fromUsers     Messages[]      @relation("messages_fromUserTousers")
+  toUsers       Messages[]      @relation("messages_toUserTousers")
+  notifications Notifications[]
+  posts         Posts[]
+  postLikes     PostLikes[]
+  postDislikes  PostDislikes[]
+
+  @@index([nickname], type: Hash)
+}

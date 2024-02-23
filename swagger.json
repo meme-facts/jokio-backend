@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "RakagaK",
-        "description": "This is an Api for RakagaK - Meme's social media",
+        "title": "Jokio",
+        "description": "This is an Api for Jokio - Meme's social media",
         "version": "1.0.0"
     },
     "components": {
@@ -133,11 +133,11 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "Get user by id",
-                "description": "Return user information by your id",
+                "summary": "Get user by nickname",
+                "description": "Return user information by your nickname",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "nickname",
                         "in": "path",
                         "type": "string",
                         "required": true,
@@ -294,14 +294,14 @@
                                 }
                             }
                         }
+                    }                  
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
                     },
-                    "responses": {
-                        "201": {
-                            "description": "Created"
-                        },
-                        "404": {
-                            "description": "User not found."
-                        }
+                    "404": {
+                        "description": "User not found."
                     }
                 }
             },
@@ -361,6 +361,122 @@
                     },
                     "404": {
                         "description": "Public users do not receive friend request."
+                    }
+                }
+            }
+        },
+        "/post/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post by Id",
+                "description": "Return post detailed by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "description": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "postDescription": {
+                                                "type": "string"
+                                            },
+                                            "img_url": {
+                                                "type": "string"
+                                            },
+                                            "isActive": {
+                                                "type": "string"
+                                            },
+                                            "user_id": {
+                                                "type": "string"
+                                            },
+                                            "likeCount": {
+                                                "type": "string"
+                                            },
+                                            "dislikeCount": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Public users do not receive friend request."
+                    }
+                }
+            }
+        },
+        "/post/share/{id}": {
+            "post": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Share post by id",
+                "description": "Share post with multiple users by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "description": "uuid"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "usersIds ": {
+                                        "type": "array"
+                                    }
+                                },
+                                "example": {
+                                    "usersIds": ["8345423d-9acb-4937-869c-83e2663a70ba", "ac0e9110-4297-4451-a4ea-44c16035a41b"]
+                                }
+                            }
+                        }
+                    }      
+                },
+                "responses": {
+                    "200": {
+                        "description": "Post shared"
+                    },
+                    "404": [
+                        {
+                            "description": "Sender not found."
+                        },
+                        {
+                            "description": "One or more receivers not found."
+                        }
+                    ],
+                    "403": {
+                        "description": "You can't share a post with yourself"
                     }
                 }
             }
@@ -529,14 +645,14 @@
                                 }
                             }
                         }
+                    }                 
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
                     },
-                    "responses": {
-                        "201": {
-                            "description": "Created"
-                        },
-                        "404": {
-                            "description": "User not found."
-                        }
+                    "404": {
+                        "description": "User not found."
                     }
                 }
             },
@@ -608,15 +724,83 @@
                         "description": "This user does not exist!"
                     }
                 }
-            }
+            },
+                "get": {
+                    "tags": [
+                        "Comments"
+                    ],
+                    "summary": "List Comments by post Id",
+                    "description": "Listing all comments paginated",
+                    "parameters": [
+                        {
+                            "name": "page",
+                            "in": "query",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "type": "string",
+                            "required": false
+                        },
+                        {
+                            "name": "id",
+                            "in": "path",
+                            "description": "post id",
+                            "required": true,
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Success",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "userId": {
+                                                    "type": "string"
+                                                },
+                                                "postId": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "This post does not exist."
+                        }
+                    }
+                }
         },
-        "/reactions/{id}": {
+        "/like/{id}": {
             "post": {
                 "tags": [
                     "Reaction"
                 ],
-                "summary": "Add reaction",
-                "description": "This route is used to add a reaction to a post",
+                "summary": "Add like",
+                "description": "This route is used to add a like to a post",
                 "parameters": [
                     {
                         "name": "id",
@@ -637,24 +821,17 @@
                                     "reactionType ": {
                                         "type": "string"
                                     }
-                                },
-                                "enum": [
-                                    "L",
-                                    "D"
-                                ],
-                                "example": {
-                                    "reactionType": "L"
                                 }
                             }
                         }
+                    }                 
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
                     },
-                    "responses": {
-                        "201": {
-                            "description": "Created"
-                        },
-                        "404": {
-                            "description": "Post not found."
-                        }
+                    "404": {
+                        "description": "Reaction not found."
                     }
                 }
             },
@@ -662,8 +839,8 @@
                 "tags": [
                     "Reaction"
                 ],
-                "summary": "Remove reaction",
-                "description": "This route is used to remove a reaction to a post",
+                "summary": "Remove like",
+                "description": "This route is used to remove a like to a post",
                 "parameters": [
                     {
                         "name": "id",
@@ -684,24 +861,99 @@
                                     "message ": {
                                         "type": "string"
                                     }
-                                },
-                                "enum": [
-                                    "L",
-                                    "D"
-                                ],
-                                "example": {
-                                    "message": "L"
                                 }
                             }
                         }
+                    }                  
+                },
+                "responses": {
+                    "204": {
+                        "description": "Removed"
                     },
-                    "responses": {
-                        "204": {
-                            "description": "Removed"
-                        },
-                        "404": {
-                            "description": "Post not found."
+                    "404": {
+                        "description": "Reaction not found."
+                    }
+                }
+            }
+        },
+        "/dislike/{id}": {
+            "post": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Add Dislike",
+                "description": "This route is used to add a dislike to a post",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "post id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reactionType ": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }                   
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "Reaction not found."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Remove dislike",
+                "description": "This route is used to remove a like from a post",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "post id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message ": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }                 
+                },
+                "responses": {
+                    "204": {
+                        "description": "Removed"
+                    },
+                    "404": {
+                        "description": "Reaction not found."
                     }
                 }
             }
@@ -889,6 +1141,374 @@
                     },
                     "404": {
                         "description": "Relation not found."
+                    }
+                }
+            }
+        },
+            "/followers/{id}/followers": {
+                "get": {
+                    "tags": [
+                        "Followers"
+                    ],
+                    "summary": "List Followers from an user",
+                    "description": "Listing followers from and user paginated",
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "in": "path",
+                            "description": "requester user id",
+                            "required": true,
+                            "schema": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "name": "page",
+                            "in": "query",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "type": "string",
+                            "required": false
+                        },
+                        {
+                            "name": "sortBy",
+                            "in": "query",
+                            "type": "string",
+                            "required": false
+                        }                   
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Success",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "requestedUserId": {
+                                                    "type": "string"
+                                                },
+                                                "requesterUserId": {
+                                                    "type": "string"
+                                                },
+                                                "requester": {
+                                                    "type": "object"
+                                                },
+                                                "fStatus": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "User not found."
+                        },
+                        "400":{
+                            "description":"Invalid sort by"
+                                                    }
+                    }
+                }
+        },
+        "/followers/{id}/following": {
+            "get": {
+                "tags": [
+                    "Followers"
+                ],
+                "summary": "List following from an user",
+                "description": "Listing following from and user paginated",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "requester user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "requestedUserId": {
+                                                "type": "string"
+                                            },
+                                            "requesterUserId": {
+                                                "type": "string"
+                                            },
+                                            "requested": {
+                                                "type": "object"
+                                            },
+                                            "fStatus": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "400":{
+                        "description":"Invalid sort by"
+                                                }
+                }
+            }
+        },
+        "/messages": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get All Messages Route",
+                "description": "This route is used to the first message of each conversation",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            },
+                                            "isRead": {
+                                                "type": "boolean"
+                                            },
+                                            "fromUserId": {
+                                                "type": "string"
+                                            },
+                                            "toUserId": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": 
+                        {
+                            "description": "User not found."
+                        }
+                }
+            }
+        },
+        "/messages/{id}": {
+            "post": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Create Message Route",
+                "description": "This route is used to send a message to a user",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "target user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "message": "This is a test message"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "isRead": {
+                                            "type": "boolean"
+                                        },
+                                        "fromUserId": {
+                                            "type": "string"
+                                        },
+                                        "toUserId": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": [
+                        {
+                            "description": "Logged user not found."
+                        },
+                        {
+                            "description": "User not found."
+                        }
+                    ],
+                    "403": {
+                        "description": "You can't send a message to yourself"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get Conversation Route",
+                "description": "This route is used to get a conversation between two users",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "target user id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }             
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            },
+                                            "isRead": {
+                                                "type": "boolean"
+                                            },
+                                            "fromUserId": {
+                                                "type": "string"
+                                            },
+                                            "toUserId": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": [
+                        {
+                            "description": "Logged user not found."
+                        },
+                        {
+                            "description": "User not found."
+                        }
+                    ],
+                    "403": {
+                        "description": "You can't get a conversation with yourself"
                     }
                 }
             }

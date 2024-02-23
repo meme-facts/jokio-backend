@@ -1,20 +1,21 @@
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { UserEntity } from "@modules/users/entities/User";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
-import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
 import { RemoveRelationUseCase } from "./RemoveRelationUseCase";
+import { UserDto } from "@modules/users/infra/class-validator/user/User.dto";
 
 let userRepository: IUserRepository;
 let followerRepository: IFollowersRepository;
 let createUserUseCase: CreateUserUseCase;
 let requestUserToFollowUseCase: RequestUserToFollowUseCase;
 let removeRelationUseCase: RemoveRelationUseCase;
-let user1: User;
-let user2: User;
+let user1: UserDto;
+let user2: UserDto;
 
 describe("RemoveRelationUseCase", () => {
   beforeEach(async () => {
@@ -40,10 +41,10 @@ describe("RemoveRelationUseCase", () => {
     });
     user1 = firstUserTest.user;
     user2 = secondUserTest.user;
-    await requestUserToFollowUseCase.execute(
-      firstUserTest.user.id,
-      secondUserTest.user.id
-    );
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: firstUserTest.user.id,
+      requesterUserId: secondUserTest.user.id,
+    });
     removeRelationUseCase = new RemoveRelationUseCase(followerRepository);
   });
 

@@ -1,10 +1,7 @@
-export enum StatusEnum {
+export enum FollowerStatusEnum {
   Pending = "P",
   Accepted = "A",
   Blocked = "B",
-}
-
-export enum ResponseStatus {
-  OWNER = "OWNER",
-  UNKNOWN = "UNKNOWN",
+  OWNER = "O",
+  UNKNOWN = "U",
 }

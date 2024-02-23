@@ -8,6 +8,8 @@ import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUser
 import { AppError } from "@shared/errors/AppError";
 import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
 import { CreateCommentUseCase } from "./CreateCommentUseCase";
+import { UserEntity } from "@modules/users/entities/User";
+import { PostEntity } from "@modules/posts/entities/Post";
 
 let commentaryRepositoryInMemory: ICommentRepository;
 let userRepositoryInMemory: UserRepositoryInMemory;
@@ -15,9 +17,9 @@ let postRepositoryInMemory: PostRepositoryInMemory;
 let createUserUseCase: CreateUserUseCase;
 let createPostUseCase: CreatePostUseCase;
 let createCommentaryUseCase: CreateCommentUseCase;
-let user1: User;
-let user2: User;
-let post: Post;
+let user1: UserEntity;
+let user2: UserEntity;
+let post: PostEntity;
 
 describe("CreateCommentaryUseCase", () => {
   beforeEach(async () => {

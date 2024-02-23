@@ -9,28 +9,36 @@ import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUser
 import { CreateCommentUseCase } from "../createComment/CreateCommentUseCase";
 import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
 import { ReturnCommentsUseCase } from "./ReturnCommentsUseCase";
+import { UserEntity } from "@modules/users/entities/User";
+import { PostEntity } from "@modules/posts/entities/Post";
+import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
+import { AppError } from "@shared/errors/AppError";
 
 let commentsRepository: ICommentRepository;
-let userRepository: IUserRepository;
+let userRepositoryInMemory: IUserRepository;
 let postRepository: IPostRepository;
 let returnComments: ReturnCommentsUseCase;
 let createUserUseCase: CreateUserUseCase;
 let createPostUseCase: CreatePostUseCase;
 let createCommentUseCase: CreateCommentUseCase;
-let user1: User;
-let user2: User;
-let post: Post;
+let user1: UserEntity;
+let user2: UserEntity;
+let post: PostEntity;
 
 describe("Return Comments UseCase", () => {
   beforeEach(async () => {
+    userRepositoryInMemory = new UserRepositoryInMemory();
     commentsRepository = new CommentRepositoryInMemory();
     postRepository = new PostRepositoryInMemory();
     returnComments = new ReturnCommentsUseCase(
       commentsRepository,
       postRepository
     );
-    createUserUseCase = new CreateUserUseCase(userRepository);
-    createPostUseCase = new CreatePostUseCase(postRepository, userRepository);
+    createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
+    createPostUseCase = new CreatePostUseCase(
+      postRepository,
+      userRepositoryInMemory
+    );
     createCommentUseCase = new CreateCommentUseCase(
       commentsRepository,
       postRepository
@@ -44,7 +52,7 @@ describe("Return Comments UseCase", () => {
     const secondUserTest = await createUserUseCase.execute({
       full_name: "opateste2",
       nickname: "testelegal2",
-      email: "silvaxabla2@teste.com",
+      email: "asilvaxabla2@teste.com",
       password: "1234",
     });
     user1 = firstUserTest.user;
@@ -63,14 +71,39 @@ describe("Return Comments UseCase", () => {
     }
   });
   it("should return comments", async () => {
-    const comments = await returnComments.execute({
+    const { comments } = await returnComments.execute({
       page: 1,
       limit: 5,
       postId: post.id,
     });
-    expect(comments.comments[0]).toHaveProperty("id");
+    expect(comments[0]).toHaveProperty("id");
   });
-  // should not be able to return comments when post does not exist
-  // should return comments bring just 5 comments when limit is 5
-  // should jump 5 comments when limit is 5 and page is 2
+  it("should not be able to return comments when post does not exist", async () => {
+    await expect(
+      createCommentUseCase.execute({
+        userId: user1.id,
+        postId: "wrong_id",
+        message: `AAAAAAAAAAAAAAAAAAAAAAA`,
+      })
+    ).rejects.toEqual(new AppError("This post does not exist", 404));
+  });
+  it("should return comments bring just 5 comments when limit is 5 and count is more than this", async () => {
+    const { comments, count } = await returnComments.execute({
+      page: 1,
+      limit: 5,
+      postId: post.id,
+    });
+    expect(comments).toHaveLength(5);
+    expect(count).toBeGreaterThan(5);
+  });
+  it("should jump 5 comments when limit is 5 and page is 2", async () => {
+    const { comments, count } = await returnComments.execute({
+      page: 2,
+      limit: 5,
+      postId: post.id,
+    });
+    expect(comments).toHaveLength(5);
+    expect(count).toBeGreaterThan(5);
+    expect(comments[0].message).toEqual("AAAAAAAAAAAAAAAAAAAAAAA6");
+  });
 });

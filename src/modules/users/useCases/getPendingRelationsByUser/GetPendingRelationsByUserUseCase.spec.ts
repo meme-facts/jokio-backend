@@ -1,10 +1,10 @@
-import { StatusEnum } from "@modules/posts/enums/StatusEnum";
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 
+import { UserEntity } from "@modules/users/entities/User";
 import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "../requestUserToFollow/RequestUserToFollowUseCase";
@@ -18,10 +18,10 @@ let getAllPendingRelationsByUserId: GetPendingRelationsByUserUseCase;
 let updateFollowerStatusUseCase: UpdateFollowerStatusUseCase;
 
 let requestUserToFollowUseCase: RequestUserToFollowUseCase;
-let user1: User;
-let user2: User;
-let user3: User;
-let user4: User;
+let user1: UserEntity;
+let user2: UserEntity;
+let user3: UserEntity;
+let user4: UserEntity;
 describe("UpdateFollowerStatusUseCase", () => {
   beforeEach(async () => {
     userRepository = new UserRepositoryInMemory();
@@ -64,31 +64,32 @@ describe("UpdateFollowerStatusUseCase", () => {
     user2 = secondUserTest.user;
     user3 = thirdUserTest.user;
     user4 = fourthUserTest.user;
-    await requestUserToFollowUseCase.execute(
-      secondUserTest.user.id,
-      firstUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      secondUserTest.user.id,
-      thirdUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      thirdUserTest.user.id,
-      secondUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      firstUserTest.user.id,
-      thirdUserTest.user.id
-    );
-    await requestUserToFollowUseCase.execute(
-      secondUserTest.user.id,
-      fourthUserTest.user.id
-    );
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: secondUserTest.user.id,
+      requesterUserId: firstUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: secondUserTest.user.id,
+      requesterUserId: thirdUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: thirdUserTest.user.id,
+      requesterUserId: secondUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: firstUserTest.user.id,
+      requesterUserId: thirdUserTest.user.id,
+    });
+    await requestUserToFollowUseCase.execute({
+      requestedUserId: secondUserTest.user.id,
+      requesterUserId: fourthUserTest.user.id,
+    });
+
     updateFollowerStatusUseCase = new UpdateFollowerStatusUseCase(
       followerRepository
     );
     await updateFollowerStatusUseCase.execute({
-      fStatus: StatusEnum.Accepted,
+      fStatus: FollowerStatusEnum.Accepted,
       requestedUserId: user3.id,
       requesterUserId: user2.id,
     });
