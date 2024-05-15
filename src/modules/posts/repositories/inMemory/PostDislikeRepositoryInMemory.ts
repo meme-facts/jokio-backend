@@ -1,8 +1,6 @@
-import { PostReaction } from "@modules/posts/infra/typeorm/entities/PostReactions";
-import { IPostDislikeRepository } from "../IPostDislikeRepository";
-import { IPostLikeRepository } from "../IPostLikeRepository";
-import { randomUUID } from "crypto";
 import { PostDislikeEntity } from "@modules/posts/entities/Dislike";
+import { randomUUID } from "crypto";
+import { IPostDislikeRepository } from "../IPostDislikeRepository";
 
 class PostDislikeRepositoryInMemory implements IPostDislikeRepository {
   async createLike(

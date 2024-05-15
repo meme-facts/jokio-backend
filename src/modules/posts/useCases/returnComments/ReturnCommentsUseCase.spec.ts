@@ -1,18 +1,16 @@
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
+import { PostEntity } from "@modules/posts/entities/Post";
 import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
+import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { CommentRepositoryInMemory } from "@modules/posts/repositories/inMemory/CommentRepositoryInMemory";
 import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
-import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { UserEntity } from "@modules/users/entities/User";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
+import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
+import { AppError } from "@shared/errors/AppError";
 import { CreateCommentUseCase } from "../createComment/CreateCommentUseCase";
 import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
 import { ReturnCommentsUseCase } from "./ReturnCommentsUseCase";
-import { UserEntity } from "@modules/users/entities/User";
-import { PostEntity } from "@modules/posts/entities/Post";
-import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
-import { AppError } from "@shared/errors/AppError";
 
 let commentsRepository: ICommentRepository;
 let userRepositoryInMemory: IUserRepository;

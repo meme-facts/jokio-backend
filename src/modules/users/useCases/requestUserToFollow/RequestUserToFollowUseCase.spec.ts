@@ -1,12 +1,11 @@
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { UserEntity } from "@modules/users/entities/User";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
+import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { FollowersRepositoryInMemory } from "@modules/users/repositories/InMemory/FollowersRepositoryInMemort";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
-import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { RequestUserToFollowUseCase } from "./RequestUserToFollowUseCase";
-import { UserEntity } from "@modules/users/entities/User";
 
 let userRepositoryInMemory: IUserRepository;
 let followerRepositoryInMemory: IFollowersRepository;

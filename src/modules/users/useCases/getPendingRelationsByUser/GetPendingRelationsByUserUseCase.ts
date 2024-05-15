@@ -1,6 +1,5 @@
 import { IGetRequestsDTO } from "@modules/users/dtos/IGetRequestsDTO";
 import { FollowerEntity } from "@modules/users/entities/Follower";
-import { Follower } from "@modules/users/infra/typeorm/entities/Followers";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";

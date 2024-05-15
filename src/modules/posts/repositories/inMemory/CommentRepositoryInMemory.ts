@@ -1,17 +1,17 @@
 import { ICommentDTO } from "@modules/posts/dtos/ICommentDTO";
 import { IReturnCommentRequestDTO } from "@modules/posts/dtos/IReturnCommentRequestDTO";
-import { Comments } from "@modules/posts/infra/typeorm/entities/Comment";
 import { ICommentRepository } from "../ICommentRepository";
 import { randomUUID } from "crypto";
+import { CommentEntity } from "@modules/posts/entities/Comments";
 
 class CommentRepositoryInMemory implements ICommentRepository {
-  private commentaries: Comments[] = [];
+  private commentaries: CommentEntity[] = [];
   async create({ userId, postId, message, id }: ICommentDTO): Promise<void> {
     const comment = await this.getById(id);
     if (comment) {
       comment.message = message;
     } else {
-      const commentary = new Comments();
+      const commentary = new CommentEntity();
       Object.assign(commentary, {
         id: randomUUID(),
         userId,
@@ -21,7 +21,7 @@ class CommentRepositoryInMemory implements ICommentRepository {
       this.commentaries.push(commentary);
     }
   }
-  async getAll(): Promise<Comments[]> {
+  async getAll(): Promise<CommentEntity[]> {
     return this.commentaries;
   }
   async delete(commentId: string): Promise<void> {
@@ -30,7 +30,7 @@ class CommentRepositoryInMemory implements ICommentRepository {
     );
     this.commentaries.splice(commentIndex, 1);
   }
-  async getById(commentId: string): Promise<Comments> {
+  async getById(commentId: string): Promise<CommentEntity> {
     const comment = this.commentaries.find(
       (comment) => comment.id === commentId
     );
@@ -42,7 +42,7 @@ class CommentRepositoryInMemory implements ICommentRepository {
     limit,
     postId,
   }: IReturnCommentRequestDTO): Promise<{
-    comments: Comments[];
+    comments: CommentEntity[];
     count: number;
   }> {
     const comments = this.commentaries.filter(

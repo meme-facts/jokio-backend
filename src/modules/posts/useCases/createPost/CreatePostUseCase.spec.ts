@@ -51,6 +51,6 @@ describe("CreatePostUseCase", () => {
         user_id: "dwaiohdawhoi",
         img_url: "https://i.ytimg.com/vi/C_73egXn3bs/maxresdefault.jpg",
       });
-    }).rejects.toThrowError("This users do not exists.");
+    }).rejects.toThrowError("This user does not exist.");
   });
 });

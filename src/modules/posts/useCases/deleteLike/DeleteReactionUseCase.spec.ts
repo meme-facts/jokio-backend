@@ -1,19 +1,15 @@
-import { ReactionTypeEnum } from "@modules/posts/enums/ReactionTypeEnum";
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
-import { PostReaction } from "@modules/posts/infra/typeorm/entities/PostReactions";
+import { PostLikeEntity } from "@modules/posts/entities/Like";
+import { PostEntity } from "@modules/posts/entities/Post";
+import { IPostLikeRepository } from "@modules/posts/repositories/IPostLikeRepository";
 import { PostReactionsRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostReactionsRepositoryInMemory";
 import { PostRepositoryInMemory } from "@modules/posts/repositories/inMemory/PostRepositoryInMemory";
-import { User } from "@modules/users/infra/typeorm/entities/Users";
+import { UserEntity } from "@modules/users/entities/User";
 import { UserRepositoryInMemory } from "@modules/users/repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
 import { AppError } from "@shared/errors/AppError";
-import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
 import { CreateLikeUseCase } from "../createLike/CreateReactionUseCase";
-import { IPostLikeRepository } from "@modules/posts/repositories/IPostLikeRepository";
+import { CreatePostUseCase } from "../createPost/CreatePostUseCase";
 import { DeleteLikeUseCase } from "./DeleteReactionUseCase";
-import { UserEntity } from "@modules/users/entities/User";
-import { PostEntity } from "@modules/posts/entities/Post";
-import { PostLikeEntity } from "@modules/posts/entities/Like";
 
 let userRepositoryInMemory: UserRepositoryInMemory;
 let postRepositoryInMemory: PostRepositoryInMemory;

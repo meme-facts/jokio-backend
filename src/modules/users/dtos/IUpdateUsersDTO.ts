@@ -1,8 +1,8 @@
 interface IUpdateUserDTO {
   id?: string;
-  full_name: string;
+  full_name?: string;
   nickname: string;
   email: string;
-  isPrivate: boolean;
+  isPrivate?: boolean;
 }
 export { IUpdateUserDTO };

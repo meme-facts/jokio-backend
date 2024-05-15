@@ -1,12 +1,12 @@
-import { Post } from "@modules/posts/infra/typeorm/entities/Post";
 import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
 import { CreateUserDTO } from "../../infra/class-validator/user/CreateUsers.dto";
 import { IUserRepository } from "../IUserRepository";
 import { UserEntity } from "@modules/users/entities/User";
 import { v4 as uuidV4 } from "uuid";
+import { PostEntity } from "@modules/posts/entities/Post";
 
 class UserRepositoryInMemory implements IUserRepository {
-  post: Post[] = [];
+  post: PostEntity[] = [];
   users: UserEntity[] = [];
   async getManyByIds(ids: string[]): Promise<UserEntity[]> {
     return this.users.filter((user) => ids.includes(user.id));

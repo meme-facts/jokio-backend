@@ -1,6 +1,6 @@
 import { UserEntity } from "@modules/users/entities/User";
 import { AppError } from "../../../../shared/errors/AppError";
-import { User } from "../../infra/typeorm/entities/Users";
+
 import { IUserRepository } from "../../repositories/IUserRepository";
 import { UserRepositoryInMemory } from "../../repositories/InMemory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
@@ -25,7 +25,7 @@ describe("UpdateUserUseCase", () => {
   });
 
   it("should update an user", async () => {
-    const newUser = new User();
+    const newUser = new UserEntity();
     Object.assign(newUser, {
       id: user.id,
       full_name: "Teste da Silva atualizar",
@@ -37,7 +37,7 @@ describe("UpdateUserUseCase", () => {
     expect(updatedUser.email).toBe("update@test.ui");
   });
   it("should return an error when user do not exist", async () => {
-    const newUser = new User();
+    const newUser = new UserEntity();
     Object.assign(newUser, {
       id: "wrong_id",
       full_name: "Teste da Silva",
