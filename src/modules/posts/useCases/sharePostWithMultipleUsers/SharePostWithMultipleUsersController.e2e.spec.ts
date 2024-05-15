@@ -49,12 +49,12 @@ describe("SharePostWithMultipleUsersController", () => {
     const conversationWithUser2 = await request(app)
       .get(`/messages/${user2.id}`)
       .set("Authorization", `Bearer ${user.token}`)
-      .query({ page: 1, limit: 10 });
+      .query({ offset: 0, limit: 10 });
 
     const conversationWithUser3 = await request(app)
       .get(`/messages/${user3.id}`)
       .set("Authorization", `Bearer ${user.token}`)
-      .query({ page: 1, limit: 10 });
+      .query({ offset: 0, limit: 10 });
 
     expect(response.status).toBe(200);
 

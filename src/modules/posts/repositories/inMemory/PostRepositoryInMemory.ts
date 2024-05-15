@@ -1,5 +1,5 @@
 import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
-import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
+import { ICreatePostDTO } from "@modules/posts/dtos/IPostDTO";
 import { PostEntity } from "@modules/posts/entities/Post";
 import { randomUUID } from "crypto";
 import { IPostRepository } from "../IPostRepository";
@@ -11,7 +11,7 @@ class PostRepositoryInMemory implements IPostRepository {
     postDescription,
     user_id,
     img_url,
-  }: IPostDTO): Promise<PostEntity> {
+  }: ICreatePostDTO): Promise<PostEntity> {
     const post = new PostEntity();
     Object.assign(post, {
       id: id ?? randomUUID(),
@@ -42,7 +42,7 @@ class PostRepositoryInMemory implements IPostRepository {
 
     return { posts, count };
   }
-  async getByUser({
+  async getByFollowers({
     page,
     limit,
     user_id,
@@ -52,12 +52,15 @@ class PostRepositoryInMemory implements IPostRepository {
     const posts = postsByUser.slice((page - 1) * limit, page * limit);
     return { posts, count };
   }
-  getAllByUserId({
+  async getAllByUserId({
     page,
     limit,
     user_id,
   }: IGetPostsDTO): Promise<{ posts: PostEntity[]; count: number }> {
-    throw new Error("Method not implemented.");
+    const postsByUser = this.posts.filter((post) => post.user_id === user_id);
+    const count = postsByUser.length;
+    const posts = postsByUser.slice((page - 1) * limit, page * limit);
+    return { posts, count };
   }
   async incrementLike(postId: string, tx?: unknown): Promise<void> {
     const post = await this.posts.find((post) => post.id === postId);

@@ -547,7 +547,7 @@
                 "tags": [
                     "Posts"
                 ],
-                "summary": "List Posts by user Id",
+                "summary": "List Posts by user nickname",
                 "description": "Listing all posts paginated",
                 "parameters": [
                     {
@@ -565,7 +565,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "user id",
+                        "description": "user nickname",
                         "required": true,
                         "schema": {
                             "type": "string"

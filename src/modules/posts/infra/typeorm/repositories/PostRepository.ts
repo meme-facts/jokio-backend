@@ -1,5 +1,5 @@
 import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
-import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
+import { ICreatePostDTO } from "@modules/posts/dtos/IPostDTO";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { getRepository, In, Repository } from "typeorm";
 import { Post } from "../entities/Post";
@@ -10,7 +10,11 @@ class PostRepository implements IPostRepository {
     this.repository = getRepository(Post);
   }
 
-  async create({ postDescription, user_id, img_url }: IPostDTO): Promise<Post> {
+  async create({
+    postDescription,
+    user_id,
+    img_url,
+  }: ICreatePostDTO): Promise<Post> {
     const post = this.repository.create({
       postDescription,
       user_id,

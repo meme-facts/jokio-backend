@@ -1,5 +1,5 @@
 import { IGetPostsDTO } from "@modules/posts/dtos/IGetPostsDTO";
-import { IPostDTO } from "@modules/posts/dtos/IPostDTO";
+import { ICreatePostDTO } from "@modules/posts/dtos/IPostDTO";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { Prisma, PrismaClient, Posts } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
@@ -14,7 +14,7 @@ class PostRepository implements IPostRepository {
     postDescription,
     user_id,
     img_url,
-  }: IPostDTO): Promise<Posts> {
+  }: ICreatePostDTO): Promise<Posts> {
     return this.repository.create({
       data: {
         postDescription,
@@ -93,7 +93,7 @@ class PostRepository implements IPostRepository {
     return { posts, count };
   }
 
-  async getByUser({
+  async getByFollowers({
     page,
     limit,
     user_id,

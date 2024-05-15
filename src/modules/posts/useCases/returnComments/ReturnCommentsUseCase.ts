@@ -1,5 +1,5 @@
 import { IReturnCommentRequestDTO } from "@modules/posts/dtos/IReturnCommentRequestDTO";
-import { Comments } from "@modules/posts/infra/typeorm/entities/Comment";
+import { CommentEntity } from "@modules/posts/entities/Comments";
 import { ICommentRepository } from "@modules/posts/repositories/ICommentRepository";
 import { IPostRepository } from "@modules/posts/repositories/IPostRepository";
 import { AppError } from "@shared/errors/AppError";
@@ -15,7 +15,7 @@ class ReturnCommentsUseCase {
   ) {}
 
   async execute({ page, limit, postId }: IReturnCommentRequestDTO): Promise<{
-    comments: Comments[];
+    comments: CommentEntity[];
     count: number;
   }> {
     const post = await this.postRepository.getById(postId);

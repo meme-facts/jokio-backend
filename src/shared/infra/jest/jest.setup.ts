@@ -2,6 +2,7 @@ import "reflect-metadata";
 import request from "supertest";
 import { app } from "../http/app";
 import { resetDb } from "./helpers/reset-db";
+import { prisma } from "@shared/container";
 
 export interface IUserForTest {
   full_name: string;
@@ -29,4 +30,5 @@ beforeEach(async () => {
 });
 afterAll(async () => {
   await resetDb();
+  await prisma.$disconnect();
 });

@@ -1,15 +1,19 @@
 import { IGetPostsDTO } from "../dtos/IGetPostsDTO";
-import { IPostDTO } from "../dtos/IPostDTO";
+import { ICreatePostDTO } from "../dtos/IPostDTO";
 import { PostEntity } from "../entities/Post";
 
 interface IPostRepository {
-  create({ postDescription, user_id, img_url }: IPostDTO): Promise<PostEntity>;
+  create({
+    postDescription,
+    user_id,
+    img_url,
+  }: ICreatePostDTO): Promise<PostEntity>;
   getById(postId: string, tx?: unknown): Promise<PostEntity>;
   getAll({
     page,
     limit,
   }: IGetPostsDTO): Promise<{ posts: PostEntity[]; count: number }>;
-  getByUser({
+  getByFollowers({
     page,
     limit,
     user_id,

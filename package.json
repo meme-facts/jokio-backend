@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev --inspect -r tsconfig-paths/register  --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "migrate":"dotenv -e .env.test -- yarn prisma migrate dev && yarn prisma migrate dev",
-    "migrate-reset":"dotenv -e .env.test -- yarn prisma migrate reset && yarn prisma migrate reset",
+    "migrate": "dotenv -e .env.test -- yarn prisma migrate dev && yarn prisma migrate dev",
+    "migrate-reset": "dotenv -e .env.test -- yarn prisma migrate reset && yarn prisma migrate reset",
     "test": "NODE_ENV=test jest --runInBand --forceExit --detectOpenHandles "
   },
   "prisma": {
@@ -44,8 +44,10 @@
     "@types/supertest": "^6.0.2",
     "@types/swagger-ui-express": "^4.1.3",
     "@types/uuid": "^8.3.4",
+    "jest-cli": "^29.7.0",
     "prisma": "^5.3.1",
     "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
     "ts-node-dev": "^1.1.8",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.6.3"

@@ -8,7 +8,7 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class ReturnPostByUsersUseCase {
+class ReturnPostByUserNicknameUseCase {
   constructor(
     @inject("PostRepository")
     private postRepository: IPostRepository,
@@ -20,23 +20,24 @@ class ReturnPostByUsersUseCase {
   async execute({
     page,
     limit,
-    user_id,
-    logged_user,
+    userName,
+    logged_user_id,
   }: IGetPostsByIdDTO): Promise<{
     posts: PostEntity[];
     count: number;
     relationStatus: FollowerStatusEnum;
   }> {
-    const user = await this.userRepository.getByNickName(user_id);
+    const user = await this.userRepository.getByNickName(userName);
+
     if (!user) {
-      throw new AppError("This users does not exist");
+      throw new AppError("This user does not exist", 404);
     }
     let relationStatus: FollowerStatusEnum | null = null;
-    if (logged_user !== user.id) {
+    if (logged_user_id !== user.id) {
       try {
         const { fStatus } = await this.followerRepository.getSolicitation(
           user.id,
-          logged_user
+          logged_user_id
         );
         relationStatus = fStatus as FollowerStatusEnum;
       } catch {
@@ -55,4 +56,4 @@ class ReturnPostByUsersUseCase {
   }
 }
 
-export { ReturnPostByUsersUseCase };
+export { ReturnPostByUserNicknameUseCase };

@@ -19,7 +19,7 @@ class ReturnPostByUsersUseCase {
     limit,
     user_id,
   }: IGetPostsDTO): Promise<{ posts: PostEntity[]; count: number }> {
-    const { posts, count } = await this.postRepository.getByUser({
+    const { posts, count } = await this.postRepository.getByFollowers({
       page,
       limit,
       user_id,

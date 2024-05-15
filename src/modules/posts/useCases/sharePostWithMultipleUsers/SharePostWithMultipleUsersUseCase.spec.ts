@@ -96,13 +96,13 @@ describe("SharePostWithMultipleUsersUseCase", () => {
     const conversation1 = await getConversationUseCase.execute({
       loggedUserId: user.id,
       targetUserId: user2.id,
-      page: 1,
+      offset: 0,
       limit: 10,
     });
     const conversation2 = await getConversationUseCase.execute({
       loggedUserId: user.id,
       targetUserId: user3.id,
-      page: 1,
+      offset: 0,
       limit: 10,
     });
 

@@ -1,8 +1,8 @@
 interface IGetPostsByIdDTO {
   page: number;
   limit: number;
-  user_id?: string;
-  logged_user?: string;
+  userName?: string;
+  logged_user_id?: string;
 }
 
 export { IGetPostsByIdDTO };
