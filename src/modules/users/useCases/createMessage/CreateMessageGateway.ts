@@ -20,7 +20,6 @@ const sendMessage = async ({
     message,
     created_at,
   });
-  console.log(response, "opaaa");
 
   io.to(toUserId).emit("private_message", response);
 };

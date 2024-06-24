@@ -50,6 +50,8 @@ class AuthenticateUserUseCase {
       const { uid, email, name, picture } = decodedToken;
 
       let user = await this.userRepository.getByNicknameOrEmail(email);
+      console.log(decodedToken);
+
       if (!user) {
         const createdUser = await this.createUser.execute({
           email,

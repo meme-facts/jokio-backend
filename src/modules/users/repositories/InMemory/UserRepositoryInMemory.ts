@@ -16,6 +16,7 @@ class UserRepositoryInMemory implements IUserRepository {
     nickname,
     email,
     password,
+    img_url,
     isPrivate = false,
   }: CreateUserDTO): Promise<UserEntity> {
     const user = new UserEntity();
@@ -26,6 +27,7 @@ class UserRepositoryInMemory implements IUserRepository {
       email,
       password,
       isPrivate,
+      img_url,
     });
     this.users.push(user);
     return user;

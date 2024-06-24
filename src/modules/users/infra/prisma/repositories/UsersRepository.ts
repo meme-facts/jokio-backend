@@ -22,6 +22,9 @@ class UserRepository implements IUserRepository {
   }
 
   async getByNicknameOrEmail(login: string): Promise<Users> {
+    if (!login) {
+      return null;
+    }
     const user = await this.repository.findFirst({
       where: {
         OR: [
@@ -99,6 +102,7 @@ class UserRepository implements IUserRepository {
     nickname,
     email,
     password,
+    img_url,
     isPrivate,
   }: CreateUserDTO): Promise<Users> {
     const user = this.repository.create({
@@ -107,13 +111,14 @@ class UserRepository implements IUserRepository {
         nickname,
         email,
         password,
+        img_url,
         isPrivate,
       },
     });
     return user;
   }
   async getByEmail(email: string): Promise<Users> {
-    const user = await this.repository.findFirst({
+    const user = await this.repository.findUnique({
       where: {
         email,
       },
@@ -121,7 +126,7 @@ class UserRepository implements IUserRepository {
     return user;
   }
   async getByNickName(nickname: string): Promise<Users> {
-    const user = await this.repository.findFirst({
+    const user = await this.repository.findUnique({
       where: {
         nickname,
       },
@@ -129,7 +134,7 @@ class UserRepository implements IUserRepository {
     return user;
   }
   async getById(id: string): Promise<Users> {
-    const user = await this.repository.findFirst({
+    const user = await this.repository.findUnique({
       where: {
         id,
       },
@@ -137,7 +142,7 @@ class UserRepository implements IUserRepository {
     return user;
   }
   async getAllById(id: string): Promise<Users> {
-    const user = await this.repository.findFirst({
+    const user = await this.repository.findUnique({
       where: {
         id,
       },

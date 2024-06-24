@@ -1,7 +1,6 @@
 import { app } from "@shared/infra/http/app";
 import { IUserForTest, user } from "@shared/infra/jest/jest.setup";
 import { randomUUID } from "crypto";
-import e from "express";
 import request from "supertest";
 
 describe("GetConversationController", () => {

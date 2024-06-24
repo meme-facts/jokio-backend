@@ -4,5 +4,6 @@ interface ICreateUserDTO {
   email: string;
   password: string;
   isPrivate: boolean;
+  img_url: string;
 }
 export { ICreateUserDTO };

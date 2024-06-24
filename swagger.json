@@ -137,11 +137,11 @@
                 "description": "Return user information by your nickname",
                 "parameters": [
                     {
-                        "name": "nickname",
+                        "name": "id",
                         "in": "path",
                         "type": "string",
                         "required": true,
-                        "description": "uuid"
+                        "description": "nickname"
                     }
                 ],
                 "responses": {
@@ -264,6 +264,98 @@
                     },
                     "404": {
                         "description": "User not found."
+                    }
+                }
+            }
+        },
+        "/users/avatar": {
+            "patch": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update User",
+                "description": "This route is used to update a user avatar",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema":{
+                             "type":"object",
+                             "properties":{
+                                "avatar": {
+                                        "type":"string",
+                                        "format":"binary"
+                                }
+                             }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "User not found."
+                    }
+                }
+            }
+        },
+        "/users/nickname/{nickname}/is-available": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Check Username Availability",
+                "description": "Return true or false for username availability",
+                "parameters": [
+                    {
+                        "name": "nickname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "description": "user nickname"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/email/{email}/is-available": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Check Email Availability",
+                "description": "Return true or false for email availability",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "description": "user email"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
                     }
                 }
             }

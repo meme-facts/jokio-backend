@@ -7,6 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import setupSwagger from "../../../../swagger.json";
 import "../../container/posts";
 import "../../container/users";
+import "../../container/shared";
 import { errorHandler } from "./middlewares/helpers/exceptions/errorHandler";
 import { router } from "./routes";
 

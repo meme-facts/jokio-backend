@@ -1,10 +1,12 @@
 import { FollowerStatusEnum } from "@modules/posts/enums/StatusEnum";
 import { IGetUserByIdDTO } from "@modules/users/dtos/IGetUserByIdDTO";
 import { UserEntity } from "@modules/users/entities/User";
+import { GetUserByIdDto } from "@modules/users/infra/class-validator/user/GetUserById.dto";
 import { IFollowersRepository } from "@modules/users/repositories/IFollowersRepository";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
 
 import { AppError } from "@shared/errors/AppError";
+import { plainToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 interface IUserResponse extends Omit<UserEntity, "password"> {
@@ -56,7 +58,7 @@ class GetUserByNickNameUseCase {
       updated_at,
       img_url,
     } = user;
-    const response = {
+    const response = plainToInstance(GetUserByIdDto, {
       id,
       full_name,
       nickname,
@@ -68,7 +70,7 @@ class GetUserByNickNameUseCase {
       followersQuantity,
       followingQuantity,
       relationStatus,
-    };
+    });
 
     return response;
   }
