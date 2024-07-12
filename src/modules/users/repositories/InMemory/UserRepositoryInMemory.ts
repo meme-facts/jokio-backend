@@ -1,11 +1,16 @@
-import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
+import {
+  IGetAllFollowingDTO,
+  IGetAllUsersDTO,
+} from "@modules/users/dtos/IGetAllUsersDTO";
 import { CreateUserDTO } from "../../infra/class-validator/user/CreateUsers.dto";
 import { IUserRepository } from "../IUserRepository";
 import { UserEntity } from "@modules/users/entities/User";
 import { v4 as uuidV4 } from "uuid";
 import { PostEntity } from "@modules/posts/entities/Post";
+import { IFollowersRepository } from "../IFollowersRepository";
 
 class UserRepositoryInMemory implements IUserRepository {
+  constructor(private readonly followersRepository?: IFollowersRepository) {}
   post: PostEntity[] = [];
   users: UserEntity[] = [];
   async getManyByIds(ids: string[]): Promise<UserEntity[]> {
@@ -48,7 +53,33 @@ class UserRepositoryInMemory implements IUserRepository {
     page,
     limit,
     user_reference,
+    logged_user_id,
   }: IGetAllUsersDTO): Promise<{ users: UserEntity[]; count: number }> {
+    let response;
+    if (user_reference) {
+      const users = this.users.filter(
+        (user) =>
+          (user.full_name.includes(user_reference) ||
+            user.nickname.includes(user_reference)) &&
+          user.id !== logged_user_id
+      );
+      response = users;
+    } else {
+      response = this.users.filter((user) => user.id !== logged_user_id);
+    }
+    const paginatedValues = response.slice((page - 1) * limit, page * limit);
+    const count = response.length;
+    return {
+      users: paginatedValues,
+      count,
+    };
+  }
+  async getFollowingByNameOrNickName({
+    page,
+    limit,
+    user_reference,
+    following_id,
+  }: IGetAllFollowingDTO): Promise<{ users: UserEntity[]; count: number }> {
     let response;
     if (user_reference) {
       const users = this.users.filter(
@@ -59,6 +90,20 @@ class UserRepositoryInMemory implements IUserRepository {
       response = users;
     } else {
       response = this.users;
+    }
+
+    if (this.followersRepository) {
+      const followers = await this.followersRepository.getAllFollowing({
+        page: 1,
+        userId: following_id,
+        limit: 1000,
+      });
+
+      response = response.filter((user) =>
+        followers.following.some(
+          (followers) => followers.requestedUserId === user.id
+        )
+      );
     }
     const paginatedValues = response.slice((page - 1) * limit, page * limit);
     const count = response.length;
@@ -77,9 +122,8 @@ class UserRepositoryInMemory implements IUserRepository {
     Object.assign(user, data);
     return user;
   }
-  async getAllById(id: string): Promise<UserEntity> {
-    const user = await this.users.find((user) => user.id === id);
-    return user;
+  async getAllById(id: string): Promise<UserEntity[]> {
+    return this.users.filter((user) => user.id !== id);
   }
 }
 

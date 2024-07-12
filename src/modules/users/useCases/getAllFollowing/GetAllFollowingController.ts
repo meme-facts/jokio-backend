@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { GetAllUsersUseCase } from "./GetAllUsersUseCase";
+import { GetAllFollowingUseCase } from "./GetAllFollowingUseCase";
 
-class GetAllUsersController {
+class GetAllFollowingController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const getAllUsersUseCase = container.resolve(GetAllUsersUseCase);
+    const getAllUsersUseCase = container.resolve(GetAllFollowingUseCase);
     const { page, limit, user_reference } = request.query;
     const { id } = request.user;
     const { users, count } = await getAllUsersUseCase.execute({
       page: Number(page),
       limit: limit ? Number(limit) : 10,
       user_reference: user_reference ? String(user_reference) : undefined,
-      logged_user_id: id,
+      following_id: id,
     });
     return response.status(200).json({
       users,
@@ -20,4 +20,4 @@ class GetAllUsersController {
   }
 }
 
-export { GetAllUsersController };
+export { GetAllFollowingController };

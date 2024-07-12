@@ -10,10 +10,13 @@ import multer from "multer";
 import uploadConfig from "../../../../config/upload";
 import { CheckUsernameAvailabilityController } from "@modules/users/useCases/checkUsernameAvailability/CheckUsernameAvailabilityController";
 import { CheckEmailAvailabilityController } from "@modules/users/useCases/checkEmailAvailability/CheckEmailAvailabilityController";
+import { GetAllFollowingController } from "@modules/users/useCases/getAllFollowing/GetAllFollowingController";
 
 export const userRouter = Router();
 
 const getAllUsersController = new GetAllUsersController();
+
+const getAllFollowingController = new GetAllFollowingController();
 
 const createUserController = new CreateUserController();
 
@@ -33,6 +36,12 @@ const checkEmailAvailabilityController = new CheckEmailAvailabilityController();
 const uploadAvatar = multer(uploadConfig);
 
 userRouter.get("/", ensureAuthenticated, getAllUsersController.handle);
+
+userRouter.get(
+  "/following",
+  ensureAuthenticated,
+  getAllFollowingController.handle
+);
 
 userRouter.get(
   "/nickname/:nickname/is-available",
