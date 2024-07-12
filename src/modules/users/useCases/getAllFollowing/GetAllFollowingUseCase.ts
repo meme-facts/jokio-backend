@@ -1,4 +1,4 @@
-import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
+import { IGetAllFollowingDTO } from "@modules/users/dtos/IGetAllUsersDTO";
 import { UserEntity } from "@modules/users/entities/User";
 import { UserDto } from "@modules/users/infra/class-validator/user/User.dto";
 import { IUserRepository } from "@modules/users/repositories/IUserRepository";
@@ -8,7 +8,7 @@ import { plainToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class GetAllUsersUseCase {
+class GetAllFollowingUseCase {
   constructor(
     @inject(EUserRepositories.UserRepository)
     private usersRepository: IUserRepository
@@ -18,17 +18,18 @@ class GetAllUsersUseCase {
     page,
     limit = 10,
     user_reference,
-    logged_user_id,
-  }: IGetAllUsersDTO): Promise<{ users: UserEntity[]; count: number }> {
-    const { users, count } = await this.usersRepository.getByNameOrNickName({
-      page,
-      limit,
-      user_reference,
-      logged_user_id,
-    });
+    following_id,
+  }: IGetAllFollowingDTO): Promise<{ users: UserEntity[]; count: number }> {
+    const { users, count } =
+      await this.usersRepository.getFollowingByNameOrNickName({
+        page,
+        limit,
+        user_reference,
+        following_id,
+      });
     const parsed = plainToInstance(UserDto, users);
     return { users: parsed, count };
   }
 }
 
-export { GetAllUsersUseCase };
+export { GetAllFollowingUseCase };

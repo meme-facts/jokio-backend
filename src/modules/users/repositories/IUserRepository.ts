@@ -1,5 +1,5 @@
 import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
-import { IGetAllUsersDTO } from "../dtos/IGetAllUsersDTO";
+import { IGetAllFollowingDTO, IGetAllUsersDTO } from "../dtos/IGetAllUsersDTO";
 import { UserEntity } from "../entities/User";
 
 interface IUserRepository {
@@ -16,13 +16,18 @@ interface IUserRepository {
   getByNickName(nickname: string): Promise<UserEntity>;
   getByNicknameOrEmail(login: string): Promise<UserEntity>;
   getById(id: string): Promise<UserEntity>;
-  getAllById(id: string): Promise<UserEntity>;
+  getAllById(id: string): Promise<UserEntity[]>;
   update(user: Partial<UserEntity>): Promise<UserEntity>;
   getByNameOrNickName({
     page,
     limit,
     user_reference,
   }: IGetAllUsersDTO): Promise<{ users: UserEntity[]; count: number }>;
+  getFollowingByNameOrNickName({
+    page,
+    limit,
+    user_reference,
+  }: IGetAllFollowingDTO): Promise<{ users: UserEntity[]; count: number }>;
 }
 
 export { IUserRepository };

@@ -1,4 +1,7 @@
-import { IGetAllUsersDTO } from "@modules/users/dtos/IGetAllUsersDTO";
+import {
+  IGetAllFollowingDTO,
+  IGetAllUsersDTO,
+} from "@modules/users/dtos/IGetAllUsersDTO";
 import { Prisma, PrismaClient, Users } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import { CreateUserDTO } from "../../class-validator/user/CreateUsers.dto";
@@ -11,6 +14,7 @@ class UserRepository implements IUserRepository {
   constructor() {
     this.repository = prisma.users;
   }
+
   getManyByIds(ids: string[]): Promise<UserEntity[]> {
     return this.repository.findMany({
       where: {
@@ -45,45 +49,87 @@ class UserRepository implements IUserRepository {
     page,
     limit = 10,
     user_reference,
+    logged_user_id,
   }: IGetAllUsersDTO): Promise<{ users: Users[]; count: number }> {
     const offset: number = (page - 1) * limit;
+    const whereClause: Prisma.UsersWhereInput = {
+      NOT: {
+        id: logged_user_id,
+      },
+    };
+    if (user_reference) {
+      whereClause.OR = [
+        {
+          full_name: {
+            contains: user_reference,
+            mode: "insensitive",
+          },
+        },
+        {
+          nickname: {
+            contains: user_reference,
+            mode: "insensitive",
+          },
+        },
+      ];
+    }
 
     const [count, users] = await Promise.all([
       this.repository.count({
-        where: {
-          OR: [
-            {
-              full_name: {
-                contains: user_reference,
-                mode: "insensitive",
-              },
-            },
-            {
-              nickname: {
-                contains: user_reference,
-                mode: "insensitive",
-              },
-            },
-          ],
-        },
+        where: whereClause,
       }),
       this.repository.findMany({
-        where: {
-          OR: [
-            {
-              full_name: {
-                contains: user_reference,
-                mode: "insensitive",
-              },
-            },
-            {
-              nickname: {
-                contains: user_reference,
-                mode: "insensitive",
-              },
-            },
-          ],
+        where: whereClause,
+        orderBy: {
+          full_name: "asc",
         },
+        take: limit,
+        skip: offset,
+      }),
+    ]);
+    return {
+      count,
+      users,
+    };
+  }
+  async getFollowingByNameOrNickName({
+    page,
+    limit,
+    user_reference,
+    following_id,
+  }: IGetAllFollowingDTO): Promise<{ users: UserEntity[]; count: number }> {
+    const offset: number = (page - 1) * limit;
+
+    const whereClause: Prisma.UsersWhereInput = {
+      requesteds: {
+        some: {
+          requesterUserId: following_id,
+        },
+      },
+    };
+    if (user_reference) {
+      whereClause.OR = [
+        {
+          full_name: {
+            contains: user_reference,
+            mode: "insensitive",
+          },
+        },
+        {
+          nickname: {
+            contains: user_reference,
+            mode: "insensitive",
+          },
+        },
+      ];
+    }
+
+    const [count, users] = await Promise.all([
+      this.repository.count({
+        where: whereClause,
+      }),
+      this.repository.findMany({
+        where: whereClause,
         orderBy: {
           full_name: "asc",
         },
@@ -141,13 +187,15 @@ class UserRepository implements IUserRepository {
     });
     return user;
   }
-  async getAllById(id: string): Promise<Users> {
-    const user = await this.repository.findUnique({
+  async getAllById(id: string): Promise<Users[]> {
+    const users = await this.repository.findMany({
       where: {
-        id,
+        NOT: {
+          id,
+        },
       },
     });
-    return user;
+    return users;
   }
   async update(user: Users): Promise<Users> {
     const { id, ...rest } = user;
